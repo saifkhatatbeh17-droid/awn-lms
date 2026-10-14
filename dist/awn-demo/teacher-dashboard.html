@@ -1,0 +1,2864 @@
+<!doctype html>
+<html dir="rtl" lang="ar" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="web_dashboard" name="shell-type" />
+    <meta name="awn-api-base-url" content="">
+    <meta name="awn-demo-mode" content="true">
+    <title>منصة عون التعليمية | لوحة تحكم المعلم</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Styles -->
+    <link href="css/variables.css" rel="stylesheet" />
+    <link href="assets/css/styles.css" rel="stylesheet" />
+
+    <!-- Tailwind & Config -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="assets/css/dashboard-theme.css" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+
+  <body class="bg-background text-base font-cairo text-slate-800 min-h-screen dashboard-shell">
+    <!-- SIDEBAR (Light Theme - Ajyal Style) -->
+    <!-- Sidebar Overlay for Mobile -->
+    <div
+      id="sidebar-overlay"
+      onclick="
+        document.getElementById('sidebar').classList.add('translate-x-full');
+        this.classList.add('hidden');
+      "
+      class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"
+    ></div>
+
+    <aside
+      id="sidebar"
+      class="fixed right-0 top-0 h-full w-72 bg-white transform translate-x-full lg:translate-x-0 transition-transform duration-300 z-50 text-slate-700 shadow-[2px_0_24px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto border-l border-slate-100 dashboard-shell__sidebar"
+    >
+      <div class="flex flex-col">
+        <!-- Sidebar Brand -->
+        <div
+          class="h-16 px-4 flex items-center gap-3 border-b border-slate-100 bg-slate-50/50"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-white shadow-md border border-slate-100 shrink-0 p-1 flex items-center justify-center overflow-hidden"
+          >
+            <img
+              alt="Awn Logo"
+              class="w-full h-full object-contain"
+              src="assets/images/awn_logo.jpg"
+            />
+          </div>
+          <div class="flex flex-col">
+            <div class="flex items-center gap-1.5">
+              <span
+                class="font-bold text-lg font-cairo text-[18px] font-bold text-slate-900"
+                >منصة عون</span
+              >
+              <span
+                class="text-[10px] bg-primary-50 text-primary px-1.5 py-0.5 rounded font-bold border border-primary/20"
+                >الأردن</span
+              >
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium"
+              >المنظومة الوطنية لإدارة التعليم</span
+            >
+          </div>
+        </div>
+
+        <nav class="flex flex-col px-3 gap-1 mt-4">
+          <!-- Dashboard Link -->
+          <a
+            href="#view-dashboard" data-path="view-dashboard" onclick="switchView('view-dashboard')"
+            data-path="view-dashboard"
+            class="relative flex items-center justify-between px-4 py-2.5 transition-all bg-primary-50 text-primary font-semibold rounded-xl border-r-4 border-primary cursor-pointer"
+          >
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[22px] text-primary"
+                >dashboard</span
+              >
+              <span class="">الرئيسية</span>
+            </div>
+          </a>
+
+          <!-- Curriculum Section -->
+          <div class="flex flex-col mt-2">
+            <div
+              class="flex items-center justify-between px-4 py-2 rounded-lg text-slate-700 font-semibold bg-slate-50"
+            >
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[20px] text-primary"
+                  >menu_book</span
+                >
+                <span class="">التخطيط الأكاديمي</span>
+              </div>
+              <span class="material-symbols-outlined text-[18px] text-slate-400"
+                >expand_more</span
+              >
+            </div>
+            <div
+              class="pr-6 pl-2 flex flex-col gap-1 mt-1 border-r-2 border-slate-100 mr-3"
+            >
+              <a href="#view-lesson-plans"
+                onclick="switchView('view-lesson-plans')"
+                data-path="view-lesson-plans"
+                class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >calendar_month</span
+                >
+                <span class="">الخطط الفصلية</span>
+              </a>
+              <a href="#view-daily-plans"
+                onclick="switchView('view-daily-plans')"
+                data-path="view-daily-plans"
+                class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >edit_calendar</span
+                >
+                <span class="">الخطط اليومية</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Other Links -->
+          <a href="#view-attendance"
+            onclick="switchView('view-attendance')"
+            data-path="view-attendance"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer mt-2 text-sm font-medium"
+          >
+            <span class="material-symbols-outlined text-[20px]"
+              >how_to_reg</span
+            >
+            <span class="">الحضور والغياب</span>
+          </a>
+          <a href="#view-grades"
+            onclick="switchView('view-grades')"
+            data-path="view-grades"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
+          >
+            <span class="material-symbols-outlined text-[20px]">grade</span>
+            <span class="">سجل العلامات</span>
+          </a>
+          <a href="#view-schedule"
+            onclick="switchView('view-schedule')"
+            data-path="view-schedule"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
+          >
+            <span class="material-symbols-outlined text-[20px]"
+              >calendar_view_week</span
+            >
+            <span class="">الجدول الدراسي</span>
+          </a>
+          <a href="#view-students"
+            onclick="switchView('view-students')"
+            data-path="view-students"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
+          >
+            <span class="material-symbols-outlined text-[20px]">school</span>
+            <span class="">سجل الطلاب</span>
+          </a>
+
+          <!-- Support Links -->
+          <div
+            class="mt-4 mb-2 px-4 text-[11px] font-bold text-slate-500 tracking-wider"
+          >
+            الدعم والمعلومات
+          </div>
+          <a href="#view-feedback"
+            data-path="view-feedback"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
+          >
+            <span class="material-symbols-outlined text-[20px]">feedback</span>
+            <span>الملاحظات والشكاوى</span>
+          </a>
+          <a href="#view-about"
+            data-path="view-about"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
+          >
+            <span class="material-symbols-outlined text-[20px]">info</span>
+            <span>عن النظام</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Bottom Institutional Badge -->
+      <div class="px-4 pb-6 flex flex-col gap-2">
+        <div
+          class="p-3 border border-slate-100 rounded-xl flex items-center justify-between bg-slate-50"
+        >
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-[24px]"
+              >verified</span
+            >
+            <div class="flex flex-col">
+              <span class="text-[11px] font-bold text-slate-800"
+                >بوابة المعلم المعتمدة</span
+              >
+              <span class="text-[10px] text-slate-500"
+                >وزارة التربية والتعليم</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="lg:pr-72 w-full transition-all duration-300">
+      <!-- TOP HEADER -->
+      <header
+        class="fixed top-0 right-0 lg:right-72 left-0 h-16 bg-white/95 backdrop-blur-xl z-40 border-b border-slate-200/80 shadow-[0_1px_8px_rgba(0,0,0,0.03)] no-print dashboard-shell__header"
+      >
+        <div
+          class="h-16 px-4 lg:px-8 flex items-center justify-between gap-3 lg:gap-5"
+        >
+          <!-- Mobile Menu Toggle -->
+          <button type="button"
+            class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            onclick="
+              document
+                .getElementById('sidebar')
+                .classList.toggle('translate-x-full');
+              document
+                .getElementById('sidebar-overlay')
+                .classList.toggle('hidden');
+            "
+          >
+            <span class="material-symbols-outlined text-[24px]">menu</span>
+          </button>
+          <!-- Search -->
+          <div class="flex-1 max-w-lg">
+            <div class="relative flex items-center w-full">
+              <span
+                class="material-symbols-outlined absolute right-3 text-slate-400 text-[20px] pointer-events-none"
+                >search</span
+              >
+              <input
+                type="search"
+                placeholder="ابحث في منصة عون..."
+                class="w-full h-10 pr-10 pl-5 bg-slate-50 border border-slate-200 text-[#111827] rounded-lg focus:outline-none focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-slate-400 transition-colors"
+              />
+            </div>
+          </div>
+
+          <!-- Profile & Actions -->
+          <div class="flex items-center gap-5">
+            <div class="hidden md:flex items-center gap-3">
+              <div
+                class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 font-bold text-[12px] text-secondary"
+              >
+                <span
+                  class="w-2 h-2 rounded-full bg-secondary animate-pulse"
+                ></span>
+                <span class="">OpenEMIS متزامن</span>
+              </div>
+              <div
+                class="flex items-center gap-1 text-[11px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200"
+              >
+                <span class="material-symbols-outlined text-[14px]">sync</span>
+                <span>آخر مزامنة: قبل ١٠ دقائق</span>
+              </div>
+            </div>
+            <button type="button"
+              class="relative p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+            >
+              <span class="material-symbols-outlined text-[22px]"
+                >notifications</span
+              >
+              <span
+                class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary rounded-full ring-2 ring-white"
+              ></span>
+            </button>
+            <div class="h-6 w-px bg-slate-200"></div>
+            <div class="flex items-center gap-3">
+              <div class="flex flex-col text-left">
+                <span
+                  class="text-base font-bold font-cairo text-slate-900 leading-tight"
+                  >أ. سيف خطاطبة</span
+                >
+                <span class="text-[11px] text-secondary font-semibold"
+                  >معلم لغة عربية</span
+                >
+              </div>
+              <img
+                alt="الملف الشخصي"
+                class="w-9 h-9 rounded-full object-cover ring-2 ring-secondary/30"
+                src="https://lh3.googleusercontent.com/aida/AEtjO1XCaKD5fiQn1f3bZipw9X-HaDpUcr_L32g321qTdYLHhNOsrzs_XDw2frYGr7K0Y6yxSWXOwYUX4pgQQCOW54n_g3pedB-c8L9f7GFNB7b5rS9jm1vBy4NNExIgVCShA2fifuWFILabb3IDScxaeO_arPt1T-60QeESUISaOr7MwgbDKCelN5qJ0ktlAZxDFROwltU_U49nbVkuDlBnnttU3r06lJY1wV7Bu8A9DpyzCuM8NEaeRoiCw6w"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main
+        class="w-full pt-24 px-4 md:px-6 lg:px-8 pb-6 md:pb-8 bg-slate-50 min-h-screen dashboard-shell__main"
+      >
+        <!-- ===================================== -->
+        <!-- VIEW 1: DASHBOARD HOME                -->
+        <!-- ===================================== -->
+        <div id="view-dashboard" class="app-view flex flex-col gap-8">
+          <!-- Welcome Hero -->
+          <section
+            class="relative overflow-hidden rounded-xl bg-white p-5 md:p-8 border border-slate-200/80 shadow-sm flex items-center justify-between"
+          >
+            <div class="flex flex-col z-10 relative">
+              <span class="text-sm font-bold text-primary mb-1"
+                >الفصل الدراسي الثاني 2025/2026</span
+              >
+              <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                مرحباً بك مجدداً، أ. سيف 👋
+              </h1>
+              <p class="text-slate-500">
+                منصة عون تتمنى لك يوماً دراسياً موفقاً وحافلاً بالإنجازات.
+              </p>
+            </div>
+            <!-- Abstract Graphic -->
+            <div
+              class="hidden md:flex shrink-0 w-32 h-32 bg-primary/5 rounded-full items-center justify-center"
+            >
+              <span
+                class="material-symbols-outlined text-[64px] text-primary/40"
+                >workspace_premium</span
+              >
+            </div>
+          </section>
+          <!-- Assignment Creation -->
+          <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm mt-6">
+            <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">assignment_add</span>
+              إضافة واجب جديد
+            </h3>
+            <form id="add-assignment-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input name="title" required placeholder="عنوان الواجب (مثال: حل أسئلة الفصل)" class="p-2.5 border border-slate-200 rounded-lg text-sm">
+              <input name="subject" required placeholder="المادة (مثال: رياضيات)" class="p-2.5 border border-slate-200 rounded-lg text-sm">
+              <input name="dueDate" type="date" required class="p-2.5 border border-slate-200 rounded-lg text-sm text-slate-500">
+              <div class="md:col-span-2 flex justify-end">
+                <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-lg font-bold text-sm shadow-sm hover:bg-opacity-90 transition-all">إرسال الواجب</button>
+              </div>
+            </form>
+          </div>
+
+
+          <!-- Quick Stats -->
+          <section class="grid grid-cols-1 md:grid-cols-4 gap-5">
+            <div
+              class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow"
+            >
+              <div
+                class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined">menu_book</span>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 font-semibold">
+                  الخطط المنجزة
+                </p>
+                <h3 class="text-xl font-bold text-slate-900">12 خطة</h3>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow"
+            >
+              <div
+                class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary"
+              >
+                <span class="material-symbols-outlined">how_to_reg</span>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 font-semibold">نسبة الحضور</p>
+                <h3 class="text-xl font-bold text-slate-900">96.5%</h3>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow"
+            >
+              <div
+                class="w-12 h-12 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600"
+              >
+                <span class="material-symbols-outlined">groups</span>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 font-semibold">
+                  إجمالي الطلاب
+                </p>
+                <h3 class="text-xl font-bold text-slate-900">142 طالب</h3>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow"
+            >
+              <div
+                class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600"
+              >
+                <span class="material-symbols-outlined">campaign</span>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 font-semibold">
+                  التعاميم الجديدة
+                </p>
+                <h3 class="text-xl font-bold text-slate-900">3 تعاميم</h3>
+              </div>
+            </div>
+          </section>
+
+
+          <!-- Main Dashboard Content Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Content (2 cols) -->
+            <div class="lg:col-span-2 flex flex-col gap-6">
+              <!-- Learning Analytics Widget -->
+              <section
+                class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden"
+              >
+                <div
+                  class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
+                >
+                  <h3
+                    class="font-bold text-slate-800 flex items-center gap-2 text-lg"
+                  >
+                    <span class="material-symbols-outlined text-primary"
+                      >insights</span
+                    >
+                    التحليل الذكي للأداء
+                  </h3>
+                  <select
+                    class="bg-white border border-slate-200 text-xs font-semibold text-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option>عاشر (أ)</option>
+                    <option>عاشر (ب)</option>
+                  </select>
+                </div>
+                <div class="p-6">
+                  <div
+                    class="h-52 w-full flex items-end justify-around gap-2 border-b border-slate-100 pb-4 relative"
+                  >
+                    <!-- Simple CSS Bar Chart -->
+                    <div
+                      class="flex flex-col items-center gap-3 h-full justify-end group"
+                    >
+                      <div
+                        class="w-12 bg-slate-100 rounded-t-lg h-full flex flex-col justify-end relative overflow-hidden"
+                      >
+                        <div
+                          class="w-full bg-blue-400 rounded-t-lg transition-all duration-500 group-hover:bg-blue-500"
+                          style="height: 65%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-slate-500 font-bold text-center"
+                        >الشهر الأول</span
+                      >
+                    </div>
+                    <div
+                      class="flex flex-col items-center gap-3 h-full justify-end group"
+                    >
+                      <div
+                        class="w-12 bg-slate-100 rounded-t-lg h-full flex flex-col justify-end relative overflow-hidden"
+                      >
+                        <div
+                          class="w-full bg-blue-400 rounded-t-lg transition-all duration-500 group-hover:bg-blue-500"
+                          style="height: 82%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-slate-500 font-bold text-center"
+                        >الشهر الثاني</span
+                      >
+                    </div>
+                    <div
+                      class="flex flex-col items-center gap-3 h-full justify-end group"
+                    >
+                      <div
+                        class="w-12 bg-slate-100 rounded-t-lg h-full flex flex-col justify-end relative overflow-hidden"
+                      >
+                        <div
+                          class="w-full bg-emerald-400 rounded-t-lg transition-all duration-500 group-hover:bg-emerald-500"
+                          style="height: 45%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-slate-500 font-bold text-center"
+                        >المشاركة</span
+                      >
+                    </div>
+                    <div
+                      class="flex flex-col items-center gap-3 h-full justify-end group"
+                    >
+                      <div
+                        class="w-12 bg-slate-100 rounded-t-lg h-full flex flex-col justify-end relative overflow-hidden"
+                      >
+                        <div
+                          class="w-full bg-primary/50 rounded-t-lg transition-all duration-500 group-hover:bg-primary/70"
+                          style="height: 75%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-slate-500 font-bold text-center"
+                        >المتوسط</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="mt-4 flex items-center justify-center gap-6 text-xs font-bold text-slate-600"
+                  >
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-3 h-3 rounded-sm bg-blue-400"></span
+                      >الاختبارات
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-3 h-3 rounded-sm bg-emerald-400"></span
+                      >التقييم المستمر
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-3 h-3 rounded-sm bg-primary/50"></span
+                      >المعدل العام
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+
+              <!-- Smart Task Management -->
+              <section
+                class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden"
+              >
+                <div
+                  class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
+                >
+                  <h3
+                    class="font-bold text-slate-800 flex items-center gap-2 text-lg"
+                  >
+                    <span class="material-symbols-outlined text-secondary"
+                      >task_alt</span
+                    >
+                    المهام اليومية
+                  </h3>
+                  <span
+                    class="bg-secondary/10 text-secondary text-xs font-bold px-2.5 py-1 rounded-full"
+                    >مهمتين قادمتين</span
+                  >
+                </div>
+                <div class="p-2">
+                  <label
+                    class="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-xl cursor-pointer transition-colors group"
+                  >
+                    <input
+                      type="checkbox"
+                      class="mt-1 w-5 h-5 rounded border-slate-300 text-secondary focus:ring-secondary/30 transition-all cursor-pointer"
+                    />
+                    <div class="flex flex-col">
+                      <span
+                        class="text-sm font-bold text-slate-800 group-hover:text-secondary transition-colors"
+                        >تصحيح واجب الوحدة الثالثة</span
+                      >
+                      <span class="text-xs text-slate-500 font-semibold mt-0.5"
+                        >عاشر (أ) - قبل الساعة 2:00 م</span
+                      >
+                    </div>
+                  </label>
+                  <label
+                    class="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-xl cursor-pointer transition-colors group"
+                  >
+                    <input
+                      type="checkbox"
+                      class="mt-1 w-5 h-5 rounded border-slate-300 text-secondary focus:ring-secondary/30 transition-all cursor-pointer"
+                    />
+                    <div class="flex flex-col">
+                      <span
+                        class="text-sm font-bold text-slate-800 group-hover:text-secondary transition-colors"
+                        >إدخال علامات الشهر الأول للشعبة</span
+                      >
+                      <span class="text-xs text-slate-500 font-semibold mt-0.5"
+                        >جميع الشعب - بنهاية الدوام الرسمي</span
+                      >
+                    </div>
+                  </label>
+                  <label
+                    class="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-xl cursor-pointer transition-colors group opacity-50"
+                  >
+                    <input
+                      type="checkbox"
+                      checked
+                      class="mt-1 w-5 h-5 rounded border-slate-300 text-secondary focus:ring-secondary/30 transition-all cursor-pointer"
+                    />
+                    <div class="flex flex-col">
+                      <span
+                        class="text-sm font-bold text-slate-500 line-through"
+                        >تحضير الخطة اليومية للغد</span
+                      >
+                      <span
+                        class="text-xs text-emerald-600 font-bold mt-0.5 flex items-center gap-1"
+                        ><i class="fa-solid fa-check"></i> مكتمل</span
+                      >
+                    </div>
+                  </label>
+                </div>
+              </section>
+
+            </div>
+
+            <!-- Sidebar Widgets (1 col) -->
+            <div class="flex flex-col gap-6">
+              <!-- At-Risk Students Alerts -->
+              <section
+                class="bg-gradient-to-br from-red-50 to-white rounded-xl border border-red-100 shadow-sm overflow-hidden"
+              >
+                <div
+                  class="p-4 border-b border-red-100/50 flex items-center justify-between"
+                >
+                  <h3
+                    class="font-bold text-red-700 flex items-center gap-2 text-sm"
+                  >
+                    <span class="material-symbols-outlined text-[20px]"
+                      >warning</span
+                    >
+                    تنبيهات الطلاب المعرضين للخطر
+                  </h3>
+                </div>
+                <div class="p-4 flex flex-col gap-3">
+                  <div
+                    class="bg-white p-3.5 rounded-xl border border-red-100 shadow-[0_2px_10px_rgba(239,68,68,0.05)] flex items-start gap-3"
+                  >
+                    <div
+                      class="w-9 h-9 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0"
+                    >
+                      <span class="material-symbols-outlined text-[18px]"
+                        >person_off</span
+                      >
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-sm font-bold text-slate-800"
+                        >عمر خالد بني صخر</span
+                      >
+                      <span
+                        class="text-[11px] bg-red-100 text-red-700 px-2 py-0.5 rounded font-bold self-start mt-1"
+                        >تجاوز نسبة الغياب (15%)</span
+                      >
+                      <span
+                        class="text-[11px] text-slate-500 mt-1 font-semibold"
+                        >الصف: عاشر (أ)</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white p-3.5 rounded-xl border border-orange-100 shadow-[0_2px_10px_rgba(249,115,22,0.05)] flex items-start gap-3"
+                  >
+                    <div
+                      class="w-9 h-9 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center shrink-0"
+                    >
+                      <span class="material-symbols-outlined text-[18px]"
+                        >trending_down</span
+                      >
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-sm font-bold text-slate-800"
+                        >زيد محمد الرواشدة</span
+                      >
+                      <span
+                        class="text-[11px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-bold self-start mt-1"
+                        >تراجع ملحوظ في العلامات</span
+                      >
+                      <span
+                        class="text-[11px] text-slate-500 mt-1 font-semibold"
+                        >الصف: عاشر (ب)</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+
+              <!-- Communication & Behavior Hub -->
+              <section
+                class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden"
+              >
+                <div
+                  class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"
+                >
+                  <h3
+                    class="font-bold text-slate-800 flex items-center gap-2 text-sm"
+                  >
+                    <span
+                      class="material-symbols-outlined text-amber-500 text-[20px]"
+                      >psychology</span
+                    >
+                    السلوك والمشاركة السريعة
+                  </h3>
+                </div>
+                <div class="p-3 flex flex-col gap-1">
+                  <div
+                    class="flex items-center justify-between p-2.5 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100 group"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs border border-slate-200"
+                      >
+                        أ.ع
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-800"
+                          >أحمد إبراهيم العبادي</span
+                        >
+                        <span class="text-[11px] text-slate-500 font-semibold"
+                          >عاشر (أ)</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <button type="button"
+                        class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition-colors shadow-sm border border-emerald-100 font-bold text-sm"
+                        title="إضافة نقطة إيجابية"
+                      >
+                        +1
+                      </button>
+                      <button type="button"
+                        class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition-colors shadow-sm border border-red-100 font-bold text-sm"
+                        title="إضافة نقطة سلبية"
+                      >
+                        -1
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="flex items-center justify-between p-2.5 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100 group"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs border border-slate-200"
+                      >
+                        ل.ز
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-800"
+                          >ليث محمد الزعبي</span
+                        >
+                        <span class="text-[11px] text-slate-500 font-semibold"
+                          >عاشر (ب)</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <button type="button"
+                        class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 flex items-center justify-center transition-colors shadow-sm border border-emerald-100 font-bold text-sm"
+                        title="إضافة نقطة إيجابية"
+                      >
+                        +1
+                      </button>
+                      <button type="button"
+                        class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition-colors shadow-sm border border-red-100 font-bold text-sm"
+                        title="إضافة نقطة سلبية"
+                      >
+                        -1
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+</div></div>
+
+
+            
+
+
+
+        
+
+<!-- ===================================== -->
+        <!-- VIEW 2: LESSON PLANS (الخطط الفصلية)   -->
+
+        </div>
+        <!-- ===================================== -->
+        <div
+          id="view-lesson-plans"
+          class="app-view hidden flex flex-col gap-8 w-full"
+        >
+          <!-- Breadcrumb & Top Actions -->
+          <div class="flex flex-col gap-5 mb-2 no-print">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div
+                class="flex items-center gap-2 text-slate-600 text-sm font-bold font-cairo"
+              >
+                <a
+                  href="#view-dashboard" data-path="view-dashboard" onclick="switchView('view-dashboard')"
+                  class="hover:text-primary transition-colors cursor-pointer"
+                  >الرئيسية</a
+                >
+                <span class="material-symbols-outlined text-[14px]"
+                  >chevron_left</span
+                >
+                <span class="text-primary font-bold">الخطط الفصلية</span>
+                <span class="mx-2 text-slate-300">•</span>
+                <span
+                  class="bg-slate-100 text-slate-800 px-3 py-0.5 rounded text-xs font-bold font-cairo"
+                  >QF71-47rev.a</span
+                >
+              </div>
+              <!-- Live Plan Status Badge -->
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex items-center gap-1.5 px-5 py-1 rounded-full bg-secondary-50 text-secondary text-sm font-bold font-cairo font-bold"
+                >
+                  <span
+                    class="w-2 h-2 rounded-full bg-secondary animate-pulse"
+                  ></span>
+                  <span class="">جاهزة للاعتماد الأكاديمي</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Title and Actions Row -->
+            <div
+              class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200/80"
+            >
+              <div class="flex items-center gap-5">
+                <div
+                  class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-sm"
+                >
+                  <span
+                    class="material-symbols-outlined text-[26px] text-secondary"
+                    >menu_book</span
+                  >
+                </div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-3">
+                    <h1
+                      class="font-bold text-xl font-cairo text-[20px] text-slate-900 font-bold"
+                    >
+                      نموذج الخطة الفصلية للمبحث الدراسي
+                    </h1>
+                    <span
+                      class="bg-primary-50 text-primary text-xs font-bold font-cairo px-2.5 py-0.5 rounded-full font-bold border border-primary/20"
+                      >معتمد وزارياً</span
+                    >
+                  </div>
+                  <p class="text-sm font-cairo text-slate-500 mt-0.5">
+                    وزارة التربية والتعليم — إدارة المناهج والكتب المدرسية
+                    والإشراف التربوي
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button"
+                  onclick="addNewRow()"
+                  class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold transition-all shadow-sm"
+                >
+                  <span
+                    class="material-symbols-outlined text-[18px] text-secondary"
+                    >add_circle</span
+                  >
+                  إضافة نتاج جديد
+                </button>
+                <button type="button"
+                  onclick="saveDraftNotification()"
+                  class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-primary/30 bg-white hover:bg-primary/10 text-primary font-bold transition-all shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >save</span
+                  >
+                  حفظ كمسودة
+                </button>
+                <button type="button"
+                  onclick="window.print()"
+                  class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-[#142e47] text-white font-bold transition-all shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >print</span
+                  >
+                  طباعة
+                </button>
+                <button type="button"
+                  onclick="submitForReview()"
+                  class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-50 text-white font-bold transition-all shadow-sm"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >send</span
+                  >
+                  إرسال للاعتماد
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notification Toast -->
+          <div
+            id="toast-msg"
+            class="hidden no-print mb-5 p-5 rounded-lg bg-secondary-50 text-secondary text-sm font-bold font-cairo flex items-center justify-between shadow-sm transition-all duration-300 border border-secondary/20"
+          >
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-secondary"
+                >check_circle</span
+              >
+              <span id="toast-text" class="font-bold"></span>
+            </div>
+            <button type="button"
+              class="material-symbols-outlined text-[18px]"
+              onclick="this.parentElement.classList.add('hidden')"
+            >
+              close
+            </button>
+          </div>
+
+                    <!-- Official Paper Form Container -->
+          <div
+            class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
+            style="font-family: 'Amiri', serif"
+          >
+            <!-- Document Header -->
+            <div class="text-center mb-3 border-b-2 border-black pb-2.5">
+              <div
+                class="flex items-center justify-between text-xs font-[Cairo] font-bold mb-1 text-slate-700 px-2"
+                style="font-family: 'Cairo', sans-serif"
+              >
+                <span class="">المملكة الأردنية الهاشمية</span>
+                <span class="text-slate-900 font-black text-sm tracking-wide"
+                  >وزارة التربية والتعليم</span
+                >
+                <input type="text" value="مديرية التربية والتعليم للواء ماركا" class="text-xs font-bold font-cairo text-slate-700 bg-transparent outline-none border-b border-transparent focus:border-black text-left w-64" placeholder="أدخل اسم المديرية...">
+              </div>
+              <h2
+                class="text-2xl font-bold font-[Cairo] tracking-normal inline-block text-black px-6 pt-1"
+                style="font-family: 'Cairo', sans-serif"
+              >
+                الخطة الفصلية للمبحث الدراسي
+              </h2>
+              <p class="text-xs text-slate-600 font-[Cairo] font-medium mt-0.5">
+                نموذج رقم (QF71-47rev.a)
+              </p>
+              <div class="text-sm font-bold font-cairo mt-1 font-bold text-black" style="font-family: 'Cairo', sans-serif">
+                العام الدراسي: 2025 / 2026 م
+              </div>
+            </div>
+
+            <!-- Meta Data Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2 text-base font-bold font-[Cairo] pb-2" style="font-family: 'Cairo', sans-serif">
+                <div class="flex items-center gap-1.5">
+                  <span class="whitespace-nowrap font-extrabold text-black">الصف / المستوى:</span>
+                  <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="الثاني الأساسي" />
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="whitespace-nowrap font-extrabold text-black">الفصل الدراسي:</span>
+                  <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="الثاني" />
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="whitespace-nowrap font-extrabold text-black">المبحث:</span>
+                  <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="اللغة العربية" />
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="whitespace-nowrap font-extrabold text-black">عنوان الوحدة:</span>
+                  <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="مدن بلدي" />
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4 text-base font-bold font-[Cairo] border-b-2 border-black pb-3" style="font-family: 'Cairo', sans-serif">
+                <div class="flex items-center gap-1.5">
+                  <span class="whitespace-nowrap font-extrabold text-black">عدد الدروس:</span>
+                  <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="number" value="5" />
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="whitespace-nowrap font-extrabold text-black">الفترة الزمنية:</span>
+                  <span class="text-sm font-bold text-black">من</span>
+                  <input class="bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-01-19" />
+                  <span class="text-sm font-bold text-black">إلى</span>
+                  <input class="bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-02-13" />
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="whitespace-nowrap font-extrabold text-black">عدد الحصص:</span>
+                  <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="number" placeholder="..." />
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="overflow-x-auto font-[Cairo]" style="font-family: 'Cairo', sans-serif">
+              <table class="w-full min-w-[1400px] border-2 border-black text-right border-collapse table-auto text-black" id="plan-table">
+                <thead>
+                  <tr class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-[13px]    text-black">
+                    <th rowspan="2" class="w-10 py-2 px-1 text-center font-black border border-black">م</th>
+                    <th rowspan="2" class="w-64 py-2 px-2 text-center font-black border border-black">النتاجات العامة</th>
+                    <th rowspan="2" class="w-40 py-2 px-2 text-center font-black border border-black">مصادر التعلم</th>
+                    <th rowspan="2" class="w-56 py-2 px-2 text-center font-black border border-black">استراتيجيات التدريس</th>
+                    <th colspan="2" class="py-2 px-2 text-center font-black border-b-2 border-black">التقويم</th>
+                    <th rowspan="2" class="w-48 py-2 px-2 text-center font-black border border-black">الأنشطة المرافقة</th>
+                    <th rowspan="2" class="w-48 py-2 px-2 text-center font-black border border-black">التأمل الذاتي</th>
+                    <th rowspan="2" class="w-14 py-2 px-1 text-center font-black no-print border border-black">إجراء</th>
+                  </tr>
+                  <tr class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-[12px]    text-black">
+                    <th class="w-56 py-1 px-1 text-center font-black border border-black">الاستراتيجيات</th>
+                    <th class="w-40 py-1 px-1 text-center font-black border border-black">الأدوات</th>
+                  </tr>
+                </thead>
+                <tbody id="plan-tbody" class="text-[13px]">
+                  <tr class="align-top hover:bg-slate-50/50 group">
+                    <td class="p-2 text-center font-bold text-black align-middle border border-black">1</td>
+                    <td class="p-2 border border-black">
+                      <textarea class="w-full h-[260px] text-sm leading-relaxed font-semibold bg-transparent border border-transparent hover:border-slate-300 focus:border-black rounded focus:ring-0 p-1 resize-y" placeholder="أدخل النتاجات العامة...">* يتوقع من الطالب بعد دراسة الوحدة أن يكون قادرا على:
+
+أولا (مهارة الاستماع):
+- الانتباه والتركيز لنص الاستماع ضمن زمن محدد
+- ذكر بعض الأحداث والأماكن التي وردت في النص
+
+ثانيا (مهارة التحدث):
+- احترام حق الآخرين بالحديث وتجنب المقاطعة
+- التحدث بوضوح واستخدام لغة سليمة</textarea>
+                    </td>
+                    <td class="p-2 align-top border border-black">
+                      <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الكتاب المدرسي</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الدليل</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الإنترنت</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> البيئة المحلية</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> السماعة</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> البطاقات</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الماسح الضوئي</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> كتاب التمارين</label>
+                      </div>
+                      <div class="mt-2">
+                        <input type="text" class="w-full bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-xs font-semibold" placeholder="إضافة مصدر آخر..."/>
+                      </div>
+                    </td>
+                    <td class="p-2 align-top border border-black">
+                      <div class="flex flex-col gap-3">
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">1- التدريس المباشر:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> أسئلة وأجوبة</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> أوراق عمل</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> عرض توضيحي</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الكتاب المدرسي</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> التدريبات</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> البطاقات</label>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">2- التعلم في مجموعات:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> المناقشة</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> التعاوني</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> المقابلة</label>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">3- التعلم من خلال النشاط:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الألعاب</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> التدريب</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الزيارة</label>
+                          </div>
+                        </div>
+                        <div>
+                          <label class="flex items-center gap-1.5 cursor-pointer font-black text-black text-[12px]"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> 4- التفكير الناقد</label>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-2 align-top border border-black">
+                      <div class="flex flex-col gap-3">
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">1- المعتمد على الأداء:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> التقديم</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الأداء</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الحديث</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> لعب الأدوار</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> المناقشة</label>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">2- القلم والورقة:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> اختبار قصير</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الكتابة</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> التدريبات</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الإملاء</label>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">3- الملاحظة:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> تلقائية</label>
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> منظمة</label>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="font-black text-black mb-2 border-b border-dashed border-gray-300 pb-1 text-[12px]">4- التواصل:</div>
+                          <div class="flex flex-col gap-1.5 text-[12px] font-semibold text-black px-1">
+                            <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-3.5 h-3.5 text-black border-black focus:ring-black"/> الأسئلة والأجوبة</label>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-2 align-top border border-black">
+                      <div class="flex flex-col gap-2 text-[12px] font-semibold text-black">
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 text-black border-black focus:ring-black"/> 1- سلم التقدير</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 text-black border-black focus:ring-black"/> 2- سلم التقدير اللفظي</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 text-black border-black focus:ring-black"/> 3- قائمة رصد</label>
+                        <label class="flex items-center gap-1.5 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 text-black border-black focus:ring-black"/> 4- السجل القصصي</label>
+                      </div>
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea class="w-full h-[260px] text-sm leading-relaxed font-semibold bg-transparent border border-transparent hover:border-slate-300 focus:border-black rounded focus:ring-0 p-1 resize-y" placeholder="أدخل الأنشطة المرافقة...">1- نشاط إكمال قصة
+2- لعبة التخمين
+3- عائلة الكلمات
+4- شبكة المفردات
+5- صندوق البطاقات</textarea>
+                    </td>
+                    <td class="p-2 align-top border border-black">
+                      <div class="flex flex-col gap-2 h-full">
+                        <div class="flex flex-col flex-1">
+                          <label class="font-black text-black text-xs pb-1 mb-1 border-b border-dashed border-gray-300">أشعر بالرضا عن:</label>
+                          <textarea class="w-full bg-transparent p-1 outline-none border border-transparent hover:border-slate-300 focus:border-black rounded resize-none flex-1 min-h-[50px] text-sm font-semibold" placeholder="......................................."></textarea>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                          <label class="font-black text-black text-xs pb-1 mb-1 border-b border-dashed border-gray-300">التحديات:</label>
+                          <textarea class="w-full bg-transparent p-1 outline-none border border-transparent hover:border-slate-300 focus:border-black rounded resize-none flex-1 min-h-[50px] text-sm font-semibold" placeholder="......................................."></textarea>
+                        </div>
+                        <div class="flex flex-col flex-1">
+                          <label class="font-black text-black text-xs pb-1 mb-1 border-b border-dashed border-gray-300">مقترحات:</label>
+                          <textarea class="w-full bg-transparent p-1 outline-none border border-transparent hover:border-slate-300 focus:border-black rounded resize-none flex-1 min-h-[50px] text-sm font-semibold" placeholder="......................................."></textarea>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="p-2 text-center no-print align-middle border border-black">
+                      <button type="button" class="w-8 h-8 rounded-lg text-slate-300 hover:text-red-600 transition-all flex items-center justify-center mx-auto opacity-0 group-hover:opacity-100" title="حذف النتاج" onclick="deleteRow(this)">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Bottom Summary & Signature -->
+            <div class="flex flex-wrap items-start justify-between gap-4 mt-6 text-base font-bold font-[Cairo] pt-2" style="font-family: 'Cairo', sans-serif">
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-black">إعداد معلم المبحث:</span>
+                <input class="w-48 text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-center" type="text" value="أ. سيف خطاطبة" placeholder="الاسم..." />
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-black">اعتماد مدير المدرسة:</span>
+                <input class="w-48 text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-center" type="text" value="د. محمد القضاة" placeholder="الاسم..." />
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-black">المشرف التربوي:</span>
+                <input class="w-48 text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-center" type="text" value="أ. إبراهيم عبد الرحمن" placeholder="الاسم..." />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- VIEW 3: DAILY PLANS (الخطط اليومية)    -->
+        <!-- ===================================== -->
+        <div
+          id="view-daily-plans"
+          class="app-view hidden flex flex-col gap-8 w-full"
+        >
+          <!-- Interactive Screen Banner / Controls -->
+          <div
+            class="no-print bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex flex-wrap items-center justify-between gap-3"
+            id="action-banner"
+          >
+            <div class="flex items-center gap-3">
+              <span
+                class="w-10 h-10 rounded-xl bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary font-bold text-lg"
+                ><i class="fa-solid fa-file-signature"></i
+              ></span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-sm font-bold text-slate-900">
+                    نموذج خطة الدرس الرسمية (FORM #QF71-1-47 rev.b)
+                  </h2>
+                  <span
+                    class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono border border-slate-200 font-semibold"
+                    >معتمد وزارياً</span
+                  >
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  مبني وفق استراتيجية التدريس التفاعلي الخماسي (5Es) المعتمدة
+                  لدى وزارة التربية والتعليم الأردنية
+                </p>
+              </div>
+            </div>
+            <!-- Preset Loaders & Assist Tools -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-medium text-slate-600"
+                >نموذج تعبئة سريع:</span
+              >
+              <button type="button"
+                class="px-3 py-1.5 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-300 transition-colors"
+                id="loadArabicSampleBtn"
+              >
+                عينة: البترا درّة الأردن
+              </button>
+              <button type="button"
+                class="px-3 py-1.5 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-300 transition-colors"
+                id="loadEmptyTemplateBtn"
+              >
+                نموذج فارغ للطباعة
+              </button>
+              <button type="button"
+                class="px-3 py-1.5 text-xs font-semibold bg-secondary/10 text-secondary hover:bg-secondary/20 rounded-lg border border-secondary/30 transition-colors flex items-center gap-1.5 shadow-sm"
+                id="addPromptHelperBtn"
+              >
+                <i
+                  class="fa-solid fa-wand-magic-sparkles text-xs text-secondary"
+                ></i>
+                <span class="">اقتراح عبارات تربوية</span>
+              </button>
+              <button type="button"
+                class="px-3 py-1.5 text-xs font-semibold bg-primary text-white hover:bg-primary-50 rounded-lg border transition-colors flex items-center gap-1.5 shadow-sm"
+                onclick="submitForReview()"
+              >
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+                <span class="">إرسال للاعتماد</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Official Ministry Paper Document -->
+          <div
+            class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
+            style="font-family: &quot;Amiri&quot;, serif"
+          >
+            <!-- Official Header -->
+            <div class="text-center mb-3 border-b-2 border-black pb-2.5">
+              <div
+                class="flex items-center justify-between text-xs font-[Cairo] font-bold mb-1 text-slate-700 px-2"
+                style="font-family: &quot;Cairo&quot;, sans-serif"
+              >
+                <span class="">المملكة الأردنية الهاشمية</span>
+                <span class="text-slate-900 font-black text-sm tracking-wide"
+                  >وزارة التربية والتعليم</span
+                >
+                <span class="">إدارة المناهج والكتب المدرسية</span>
+              </div>
+              <h2
+                class="text-2xl font-bold font-[Cairo] tracking-normal inline-block text-black px-6 pt-1"
+                style="font-family: &quot;Cairo&quot;, sans-serif"
+              >
+                خطة الدرس اليومية
+              </h2>
+              <p class="text-xs text-slate-600 font-[Cairo] font-medium mt-0.5">
+                نموذج رقم (QF71-1-47 rev.b)
+              </p>
+            </div>
+
+            <!-- Top Document Metadata Bar -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2 text-base font-bold font-[Cairo] border-b-2 border-black pb-2"
+              style="font-family: &quot;Cairo&quot;, sans-serif"
+            >
+              <div class="flex items-center gap-1.5">
+                <span class="whitespace-nowrap font-extrabold text-black"
+                  >المبحث :</span
+                >
+                <input
+                  class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5"
+                  id="subjectField"
+                  type="text"
+                  value=""
+                  placeholder="المبحث..."
+                />
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="whitespace-nowrap font-extrabold text-black"
+                  >عنوان الوحدة :</span
+                >
+                <input
+                  class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5"
+                  id="unitTitleField"
+                  type="text"
+                  value=""
+                  placeholder="عنوان الوحدة..."
+                />
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="whitespace-nowrap font-extrabold text-black"
+                  >موضوع الدرس :</span
+                >
+                <input
+                  class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5"
+                  id="lessonTopicField"
+                  type="text"
+                  value=""
+                  placeholder="موضوع الدرس..."
+                />
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1">
+                  <span class="whitespace-nowrap font-extrabold text-black"
+                    >عدد الحصص:</span
+                  >
+                  <input
+                    class="w-24 text-center font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5"
+                    id="periodCountField"
+                    type="text"
+                    value=""
+                    placeholder="..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="flex items-center gap-2 mb-2 text-base font-bold font-[Cairo] border-b-2 border-black pb-2"
+              style="font-family: &quot;Cairo&quot;, sans-serif"
+            >
+              <span class="whitespace-nowrap font-extrabold text-black"
+                >التعلم القبلي :</span
+              >
+              <input
+                class="w-full font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5"
+                id="priorLearningField"
+                type="text"
+                value=""
+                placeholder="......................................."
+              />
+            </div>
+
+            <!-- النتاجات التعليمية Row -->
+            <div
+              class="flex items-start gap-2 border-b-2 border-black pb-2 mb-2 font-[Cairo]"
+              style="font-family: &quot;Cairo&quot;, sans-serif"
+            >
+              <span class="font-extrabold text-base whitespace-nowrap pt-1"
+                >النتاجات التعليمية :</span
+              >
+              <textarea
+                class="w-full text-sm leading-relaxed font-semibold bg-transparent border border-transparent hover:border-slate-300 focus:border-black rounded focus:ring-0 p-1 resize-y"
+                id="outcomesField"
+                rows="3"
+                placeholder="1) ............................................................................&#10;2) ............................................................................&#10;3) ............................................................................"
+              ></textarea>
+            </div>
+
+            <!-- Main Interactive Stages Table -->
+            <div
+              class="overflow-x-auto font-[Cairo]"
+              style="font-family: &quot;Cairo&quot;, sans-serif"
+            >
+              <table
+                class="w-full min-w-[800px] border-2 border-black text-right border-collapse table-fixed text-black"
+              >
+                <thead>
+                  <tr
+                    class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-base   "
+                  >
+                    <th class="w-16 py-2 px-1 text-center font-black border border-black">الزمن</th>
+                    <th class="w-[43%] py-2 px-3 text-center font-black border border-black">
+                      دور المتعلّم
+                    </th>
+                    <th class="w-[43%] py-2 px-3 text-center font-black border border-black">
+                      دور المعلّم
+                    </th>
+                    <th class="w-24 py-2 px-1 text-center font-black border border-black">
+                      المراحل
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-sm">
+                  <!-- STAGE 1 -->
+                  <tr
+                    class="align-top"
+                  >
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
+                    >
+                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
+                        type="text"
+                        value=""
+                        placeholder="..."
+                      />
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="4"
+                        placeholder="دور المتعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="4"
+                        placeholder="دور المعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
+                    >
+                      <div class="font-extrabold text-black">
+                        1- التهيئة والاندماج
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- STAGE 2 -->
+                  <tr
+                    class="align-top"
+                  >
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
+                    >
+                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
+                        type="text"
+                        value=""
+                        placeholder="..."
+                      />
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="5"
+                        placeholder="دور المتعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="5"
+                        placeholder="دور المعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
+                    >
+                      <div class="font-extrabold text-black">
+                        2- الشرح والتفسير
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- STAGE 3 -->
+                  <tr
+                    class="align-top"
+                  >
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
+                    >
+                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
+                        type="text"
+                        value=""
+                        placeholder="..."
+                      />
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="4"
+                        placeholder="دور المتعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="4"
+                        placeholder="دور المعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
+                    >
+                      <div class="font-extrabold text-black">
+                        3- التوسع ودعم التميز
+                      </div>
+                    </td>
+                  </tr>
+                  <!-- STAGE 4 -->
+                  <tr
+                    class="align-top"
+                  >
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
+                    >
+                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
+                        type="text"
+                        value=""
+                        placeholder="..."
+                      />
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="3"
+                        placeholder="دور المتعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 border border-black">
+                      <textarea
+                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
+                        rows="3"
+                        placeholder="دور المعلّم..."
+                      ></textarea>
+                    </td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
+                    >
+                      <div class="font-extrabold text-black">
+                        4- تأكيد التعلم
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Lower Grid Section -->
+            <div
+              class="mt-3 border-2 border-black grid grid-cols-1 md:grid-cols-12 text-black font-[Cairo]"
+              style="font-family: &quot;Cairo&quot;, sans-serif"
+            >
+              <div
+                class="md:col-span-6 border-b-2 md:border-b-0 md:border-l-2 border-black"
+              >
+                <table
+                  class="w-full border-collapse text-xs md:text-sm text-center"
+                >
+                  <tbody>
+                    <tr class="border-b-2 border-black font-bold">
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 font-bold bg-slate-100 whitespace-nowrap w-28 border border-black"
+                      >
+                        الصف/الشعبة
+                      </td>
+                    </tr>
+                    <tr class="border-b-2 border-black">
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 font-bold bg-slate-100 whitespace-nowrap text-xs border border-black"
+                      >
+                        الغياب/العدد الكلي
+                      </td>
+                    </tr>
+                    <tr class="border-b-2 border-black">
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 font-bold bg-slate-100 whitespace-nowrap border border-black"
+                      >
+                        ترتيب الحصة
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center text-xs font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center text-xs font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 border-l-2 border-black">
+                        <input
+                          class="w-full text-center font-semibold bg-transparent border-0 p-0 focus:ring-0"
+                          type="text"
+                          value=""
+                        />
+                      </td>
+                      <td class="p-1.5 font-bold bg-slate-100 whitespace-nowrap border border-black"
+                      >
+                        اليوم والتاريخ
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Self Reflection Column -->
+              <div class="md:col-span-6 p-2.5 flex flex-col justify-between">
+                <div>
+                  <div
+                    class="font-bold text-sm mb-1 text-black flex items-center gap-1"
+                  >
+                    <span class=""
+                      >*التأمل الذاتي : حول عمليتي التعلم والتعليم</span
+                    >
+                  </div>
+                  <textarea
+                    class="w-full text-xs md:text-sm font-semibold leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black rounded resize-none outline-none"
+                    id="reflectionField"
+                    rows="5"
+                    placeholder="تدوين التأمل الذاتي للموقف الصفي..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Signatures Footer -->
+            <div
+              class="mt-4 pt-2 border-t-2 border-black grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-[Cairo] font-bold text-black items-end"
+              style="font-family: &quot;Cairo&quot;, sans-serif"
+            >
+              <div class="space-y-1">
+                <div class="">مستشار التطوير المدرسي :</div>
+                <div
+                  class="h-8 border-b border-dashed border-gray-400 flex items-center text-xs text-gray-600"
+                >
+                  د. ريم المجالي
+                </div>
+              </div>
+              <div class="space-y-1">
+                <div class="">مدير المدرسة:</div>
+                <div
+                  class="h-8 border-b border-dashed border-gray-400 flex items-center text-xs text-gray-600"
+                >
+                  أ. عبدالله الرواشدة
+                </div>
+              </div>
+              <div class="space-y-1">
+                <div class="">اخصائي المبحث:</div>
+                <div
+                  class="h-8 border-b border-dashed border-gray-400 flex items-center text-xs text-gray-600"
+                >
+                  د. محمد العبادي
+                </div>
+              </div>
+              <div class="space-y-1">
+                <div class="">توقيع المعلم :</div>
+                <div
+                  class="h-8 border-b border-dashed border-gray-400 flex items-center justify-between text-xs text-slate-900 font-bold"
+                >
+                  <span class="">أ. سيف خطاطبة</span>
+                  <span
+                    class="text-[10px] bg-secondary/10 text-secondary px-1.5 py-0.5 rounded font-mono"
+                    >معتمد ✓</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Helper Modal -->
+          <div
+            class="no-print hidden fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
+            id="promptsModal"
+          >
+            <div
+              class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-5 border border-slate-200 text-right"
+            >
+              <div class="flex items-center justify-between border-b pb-3 mb-3">
+                <h3
+                  class="font-bold text-base text-slate-800 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-lightbulb text-amber-500"></i>بنك
+                  العبارات التربوية
+                </h3>
+                <button type="button"
+                  class="text-slate-400 hover:text-slate-600 p-1"
+                  id="closeModalBtn" aria-label="إغلاق نافذة المساعدة"
+                >
+                  <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+              </div>
+              <div class="space-y-3 text-xs">
+                <div
+                  class="bg-slate-50 p-2.5 rounded-lg border border-slate-200"
+                >
+                  <span class="font-bold text-slate-800 block mb-1"
+                    >عبارات مرحلة (التهيئة والاندماج):</span
+                  >
+                  <p class="text-slate-600 leading-relaxed">
+                    • المعلم: إثارة التفكير عبر صور معبرة وطرح أسئلة مفتوحة
+                    النهاية.<br />• الطالب: التفكير الفردي ثم مشاركة الزميل
+                    (فكر-زاوج-شارك).
+                  </p>
+                </div>
+                <div
+                  class="bg-slate-50 p-2.5 rounded-lg border border-slate-200"
+                >
+                  <span class="font-bold text-slate-800 block mb-1"
+                    >عبارات مرحلة (التوسع ودعم التميز):</span
+                  >
+                  <p class="text-slate-600 leading-relaxed">
+                    • المعلم: تقديم مهام أدائية متدرجة في الصعوبة تناسب الذكاءات
+                    المتعددة.<br />• الطالب: تطبيق المفهوم في سياقات جديدة وحل
+                    مشكلات واقعية مرتبطة بالبيئة الأردنية.
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 pt-3 border-t flex justify-end">
+                <button type="button"
+                  class="px-4 py-1.5 bg-slate-800 text-white font-semibold text-xs rounded-lg hover:bg-slate-900"
+                  id="closeModalBtn2"
+                >
+                  إغلاق النافذة
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- VIEW 4: ATTENDANCE (الحضور والغياب)   -->
+        <!-- ===================================== -->
+        <div
+          id="view-attendance"
+          class="app-view hidden flex flex-col gap-8 w-full"
+        >
+          <!-- Action Banner -->
+          <div
+            class="no-print bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex flex-wrap items-center justify-between gap-3"
+          >
+            <div class="flex items-center gap-3">
+              <span
+                class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-lg"
+                ><i class="fa-solid fa-clipboard-user"></i
+              ></span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-sm font-bold text-slate-900">
+                    سجل الحضور والغياب اليومي
+                  </h2>
+                  <span
+                    class="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-mono border border-primary/20 font-semibold"
+                    >تزامن تلقائي</span
+                  >
+                </div>
+                <p
+                  class="text-xs text-slate-500 mt-0.5 flex items-center gap-2"
+                >
+                  <span class="">الأحد، 16 شباط 2025</span>
+                  <span class="">•</span>
+                  <span class="text-primary font-semibold"
+                    >الفصل الدراسي الثاني</span
+                  >
+                </p>
+              </div>
+            </div>
+            <!-- Right Controls -->
+            <div class="flex items-center gap-2">
+              <div
+                class="hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm"
+              >
+                <i class="fa-solid fa-shield-check text-emerald-600"></i>
+                <span class="">متصل بنظام الوزارة</span>
+              </div>
+              <button type="button"
+                class="px-3 py-1.5 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-300 transition-colors flex items-center gap-1.5 shadow-sm"
+                onclick="window.print()"
+              >
+                <i class="fa-solid fa-print text-xs text-slate-500"></i>
+                <span class="">طباعة الكشف</span>
+              </button>
+              <button
+                class="px-3 py-1.5 text-xs font-semibold bg-primary text-white hover:bg-primary-50 rounded-lg border transition-colors flex items-center gap-1.5 shadow-sm"
+                type="button"
+              >
+                <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+                <span class="">ترحيل السجل</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 no-print">
+            <div class="md:col-span-2 flex gap-4">
+              <div
+                class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 p-4"
+              >
+                <label class="block text-xs font-bold text-slate-700 mb-1.5"
+                  >الصف والشعبة</label
+                >
+                <select
+                  class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                >
+                  <option selected>العاشر الأساسي - شعبة (أ)</option>
+                  <option>العاشر الأساسي - شعبة (ب)</option>
+                  <option>الأول الثانوي - علمي (أ)</option>
+                </select>
+              </div>
+              <div
+                class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 p-4"
+              >
+                <label class="block text-xs font-bold text-slate-700 mb-1.5"
+                  >الحصة</label
+                >
+                <select
+                  class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                >
+                  <option selected>الحصة الأولى (08:00 - 08:45)</option>
+                  <option>الحصة الثانية (08:50 - 09:35)</option>
+                  <option>الحصة الثالثة (09:40 - 10:25)</option>
+                </select>
+              </div>
+            </div>
+
+            <div
+              class="md:col-span-1 bg-gradient-to-br from-primary-container to-primary rounded-xl shadow-sm border border-primary p-4 flex flex-col justify-center text-white relative overflow-hidden"
+            >
+              <i
+                class="fa-solid fa-users absolute -left-2 -bottom-2 text-6xl text-white/10"
+              ></i>
+              <h3 class="text-sm font-bold mb-1">إحصائية الحضور</h3>
+              <div class="flex justify-between items-end">
+                <div class="text-3xl font-black">
+                  29<span class="text-sm font-medium text-white/80">/32</span>
+                </div>
+                <div
+                  class="text-xs bg-white/20 px-2 py-1 rounded font-semibold backdrop-blur-sm"
+                >
+                  3 غياب
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden print-page-boundary font-[Cairo]"
+          >
+            <div
+              class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between"
+            >
+              <h3
+                class="text-sm font-bold text-slate-800 flex items-center gap-2"
+              >
+                <i class="fa-solid fa-list-check text-slate-400"></i>
+                قائمة طلاب الشعبة
+              </h3>
+              <button
+                type="button"
+                id="markAllPresentBtn"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-lg text-xs font-bold transition-all border border-emerald-200 shadow-sm no-print"
+              >
+                <i class="fa-solid fa-check-double text-emerald-600"></i>
+                <span class="">تحديد الكل حاضر</span>
+              </button>
+            </div>
+
+            <div class="divide-y divide-slate-100" id="studentAttendanceList">
+              <!-- Student 1 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >01</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >أحمد إبراهيم العبادي</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-emerald-500 text-white shadow-sm"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 2 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >02</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >عمر خالد بني صخر</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-red-500 text-white shadow-sm"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 3 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >03</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >زيد محمد الرواشدة</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-amber-500 text-white shadow-sm"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 4 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >04</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >هاشم طارق المجالي</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-emerald-500 text-white shadow-sm"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 5 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >05</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >عبدالله فيصل الطراونة</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-emerald-500 text-white shadow-sm"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 6 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >06</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >يوسف علاء الكساسبة</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-emerald-500 text-white shadow-sm"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 7 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >07</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >كرم محمود الخطيب</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-emerald-500 text-white shadow-sm"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student 8 -->
+              <div
+                class="p-3.5 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors student-item"
+              >
+                <div class="flex items-center gap-3">
+                  <span
+                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 border border-slate-200"
+                    >08</span
+                  >
+                  <span class="text-sm font-bold text-slate-800"
+                    >محمد ناصر الحديد</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg no-print"
+                >
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-bold transition-colors bg-emerald-500 text-white shadow-sm"
+                    data-status="present"
+                  >
+                    حاضر
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="absent"
+                  >
+                    غائب
+                  </button>
+                  <button
+                    type="button"
+                    class="status-btn w-16 py-1.5 rounded text-xs font-medium text-slate-600 hover:bg-white transition-colors"
+                    data-status="late"
+                  >
+                    متأخر
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end no-print">
+            <button
+              type="button"
+              id="saveAttendanceBtn"
+              class="px-8 py-3 bg-primary hover:bg-primary-50 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-primary/50"
+            >
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span class="">حفظ وتثبيت سجل الحضور</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- VIEW 5: GRADES (سجل العلامات)          -->
+        <!-- ===================================== -->
+        <div
+          id="view-grades"
+          class="app-view hidden flex flex-col gap-6 w-full"
+        >
+          <!-- Action Banner -->
+          <div
+            class="no-print bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3"
+          >
+            <div class="flex items-center gap-4">
+              <span
+                class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl"
+                ><i class="fa-solid fa-star"></i
+              ></span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-base font-bold text-slate-900">
+                    سجل العلامات والتقييمات
+                  </h2>
+                  <span
+                    class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-mono border border-emerald-200 font-semibold"
+                    >مفتوح للإدخال</span
+                  >
+                </div>
+                <p class="text-xs text-slate-500 mt-1 flex items-center gap-2">
+                  <span class="">الفصل الدراسي الثاني 2024/2025</span>
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button"
+                class="px-4 py-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 transition-colors flex items-center gap-1.5 shadow-sm"
+                onclick="window.print()"
+              >
+                <i class="fa-solid fa-print text-slate-500"></i>
+                <span class="">طباعة السجل</span>
+              </button>
+              <button
+                class="px-4 py-2 text-xs font-semibold bg-primary text-white hover:bg-primary-hover rounded-lg transition-colors flex items-center gap-1.5 shadow-sm"
+                type="button"
+              >
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span class="">حفظ وإرسال للوزارة</span>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 no-print"
+          >
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5"
+                  >الصف والشعبة</label
+                >
+                <select
+                  class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                >
+                  <option selected>العاشر الأساسي - شعبة (أ)</option>
+                  <option>العاشر الأساسي - شعبة (ب)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5"
+                  >المبحث</label
+                >
+                <select
+                  class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                >
+                  <option selected>اللغة العربية</option>
+                  <option>التربية الإسلامية</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden font-[Cairo]"
+          >
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-right whitespace-nowrap">
+                <thead
+                  class="text-xs text-slate-600 bg-slate-50 border-b border-slate-200 font-bold"
+                >
+                  <tr>
+                    <th scope="col" class="px-6 py-4 border border-black">الرقم</th>
+                    <th scope="col" class="px-6 py-4 border border-black">اسم الطالب</th>
+                    <th scope="col" class="px-4 py-4 text-center border border-black">
+                      الشهر الأول (20)
+                    </th>
+                    <th scope="col" class="px-4 py-4 text-center border border-black">
+                      الشهر الثاني (20)
+                    </th>
+                    <th scope="col" class="px-4 py-4 text-center border border-black">
+                      المشاركة (20)
+                    </th>
+                    <th scope="col" class="px-4 py-4 text-center border border-black">
+                      النهائي (40)
+                    </th>
+                    <th scope="col" class="px-6 py-4 text-center text-primary border border-black">
+                      المجموع (100)
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50/70 transition-colors">
+                    <td class="px-6 py-3 font-mono text-slate-400 font-bold text-xs border border-black"
+                    >
+                      01
+                    </td>
+                    <td class="px-6 py-3 font-bold text-slate-800 border border-black">
+                      أحمد إبراهيم العبادي
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="20"
+                        min="0"
+                        value="18"
+                        class="w-20 mx-auto block text-center bg-white border border-slate-200 rounded p-1.5 text-sm font-semibold focus:ring-1 focus:ring-primary"
+                      />
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="20"
+                        min="0"
+                        value="17"
+                        class="w-20 mx-auto block text-center bg-white border border-slate-200 rounded p-1.5 text-sm font-semibold focus:ring-1 focus:ring-primary"
+                      />
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="20"
+                        min="0"
+                        value="19"
+                        class="w-20 mx-auto block text-center bg-white border border-slate-200 rounded p-1.5 text-sm font-semibold focus:ring-1 focus:ring-primary"
+                      />
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="40"
+                        min="0"
+                        class="w-20 mx-auto block text-center bg-slate-50 border border-slate-200 rounded p-1.5 text-sm font-semibold text-slate-400"
+                        placeholder="-"
+                      />
+                    </td>
+                    <td class="px-6 py-3 text-center font-bold text-primary text-base border border-black"
+                    >
+                      54
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/70 transition-colors">
+                    <td class="px-6 py-3 font-mono text-slate-400 font-bold text-xs border border-black"
+                    >
+                      02
+                    </td>
+                    <td class="px-6 py-3 font-bold text-slate-800 border border-black">
+                      عمر خالد بني صخر
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="20"
+                        min="0"
+                        value="15"
+                        class="w-20 mx-auto block text-center bg-white border border-slate-200 rounded p-1.5 text-sm font-semibold focus:ring-1 focus:ring-primary"
+                      />
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="20"
+                        min="0"
+                        value="14"
+                        class="w-20 mx-auto block text-center bg-white border border-slate-200 rounded p-1.5 text-sm font-semibold focus:ring-1 focus:ring-primary"
+                      />
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="20"
+                        min="0"
+                        value="16"
+                        class="w-20 mx-auto block text-center bg-white border border-slate-200 rounded p-1.5 text-sm font-semibold focus:ring-1 focus:ring-primary"
+                      />
+                    </td>
+                    <td class="px-4 py-3 border border-black">
+                      <input
+                        type="number"
+                        max="40"
+                        min="0"
+                        class="w-20 mx-auto block text-center bg-slate-50 border border-slate-200 rounded p-1.5 text-sm font-semibold text-slate-400"
+                        placeholder="-"
+                      />
+                    </td>
+                    <td class="px-6 py-3 text-center font-bold text-primary text-base border border-black"
+                    >
+                      45
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- Old TIMETABLE view removed by user request -->
+
+        <!-- ===================================== -->
+        <!-- VIEW 7: STUDENT RECORDS (سجل الطلاب)    -->
+        <!-- ===================================== -->
+        <div
+          id="view-students"
+          class="app-view hidden flex flex-col gap-6 w-full"
+        >
+          <!-- Action Banner -->
+          <div
+            class="no-print bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3"
+          >
+            <div class="flex items-center gap-4">
+              <span
+                class="w-12 h-12 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-xl"
+                ><i class="fa-solid fa-user-graduate"></i
+              ></span>
+              <div>
+                <h2 class="text-base font-bold text-slate-900">
+                  سجل بيانات وسلوك الطلاب
+                </h2>
+                <p class="text-xs text-slate-500 mt-1 flex items-center gap-2">
+                  <span class=""
+                    >إدارة البيانات الشاملة والملاحظات السلوكية</span
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button"
+                class="px-4 py-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-slate-300 transition-colors flex items-center gap-1.5 shadow-sm"
+              >
+                <i class="fa-solid fa-filter text-slate-500"></i>
+                <span class="">تصفية السجل</span>
+              </button>
+              <button
+                class="px-4 py-2 text-xs font-semibold bg-primary text-white hover:bg-primary-hover rounded-lg transition-colors flex items-center gap-1.5 shadow-sm"
+                type="button"
+              >
+                <i class="fa-solid fa-plus"></i>
+                <span class="">إضافة ملاحظة عامة</span>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 no-print"
+          >
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-1">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5"
+                  >الصف والشعبة</label
+                >
+                <select
+                  class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                >
+                  <option selected>العاشر الأساسي - شعبة (أ)</option>
+                  <option>العاشر الأساسي - شعبة (ب)</option>
+                  <option>الأول الثانوي الأدبي</option>
+                </select>
+              </div>
+              <div class="md:col-span-2 relative">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5"
+                  >البحث عن طالب</label
+                >
+                <span
+                  class="material-symbols-outlined absolute right-3 top-[34px] text-slate-400 text-xl"
+                  >search</span
+                >
+                <input
+                  type="text"
+                  placeholder="أدخل اسم الطالب أو الرقم الوطني..."
+                  class="w-full bg-white border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 pr-10 focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Student Cards Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <!-- Student Card 1 -->
+            <div
+              class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+            >
+              <div
+                class="absolute top-0 right-0 w-1.5 h-full bg-emerald-500"
+              ></div>
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-14 h-14 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-400 flex-shrink-0"
+                >
+                  <span class="material-symbols-outlined text-3xl">person</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-sm font-bold text-slate-900 truncate">
+                    أحمد إبراهيم العبادي
+                  </h3>
+                  <p class="text-xs text-slate-500 mt-0.5">
+                    الرقم الوطني: 2011004561
+                  </p>
+
+                  <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-100"
+                    >
+                      <i class="fa-solid fa-check-circle text-[10px]"></i> منتظم
+                    </span>
+                    <span
+                      class="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-100"
+                    >
+                      <i class="fa-solid fa-star text-[10px]"></i> متفوق
+                    </span>
+                  </div>
+                </div>
+                <button type="button"
+                  class="text-slate-400 hover:text-primary transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >more_vert</span
+                  >
+                </button>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2">
+                <button type="button"
+                  class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-200 text-center"
+                >
+                  السجل الأكاديمي
+                </button>
+                <button type="button"
+                  class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-200 text-center"
+                >
+                  الملاحظات (2)
+                </button>
+              </div>
+            </div>
+
+            <!-- Student Card 2 -->
+            <div
+              class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+            >
+              <div
+                class="absolute top-0 right-0 w-1.5 h-full bg-orange-400"
+              ></div>
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-14 h-14 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-400 flex-shrink-0"
+                >
+                  <span class="material-symbols-outlined text-3xl">person</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-sm font-bold text-slate-900 truncate">
+                    عمر خالد بني صخر
+                  </h3>
+                  <p class="text-xs text-slate-500 mt-0.5">
+                    الرقم الوطني: 2011009872
+                  </p>
+
+                  <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="inline-flex items-center gap-1 bg-orange-50 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-orange-100"
+                    >
+                      <i
+                        class="fa-solid fa-triangle-exclamation text-[10px]"
+                      ></i>
+                      كثرة الغياب
+                    </span>
+                  </div>
+                </div>
+                <button type="button"
+                  class="text-slate-400 hover:text-primary transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >more_vert</span
+                  >
+                </button>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2">
+                <button type="button"
+                  class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-200 text-center"
+                >
+                  السجل الأكاديمي
+                </button>
+                <button type="button"
+                  class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-200 text-center"
+                >
+                  الملاحظات (5)
+                </button>
+              </div>
+            </div>
+
+            <!-- Student Card 3 -->
+            <div
+              class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+            >
+              <div
+                class="absolute top-0 right-0 w-1.5 h-full bg-emerald-500"
+              ></div>
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-14 h-14 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-400 flex-shrink-0"
+                >
+                  <span class="material-symbols-outlined text-3xl">person</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-sm font-bold text-slate-900 truncate">
+                    ليث محمد الزعبي
+                  </h3>
+                  <p class="text-xs text-slate-500 mt-0.5">
+                    الرقم الوطني: 2011003322
+                  </p>
+
+                  <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-100"
+                    >
+                      <i class="fa-solid fa-check-circle text-[10px]"></i> منتظم
+                    </span>
+                  </div>
+                </div>
+                <button type="button"
+                  class="text-slate-400 hover:text-primary transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >more_vert</span
+                  >
+                </button>
+              </div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2">
+                <button type="button"
+                  class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-200 text-center"
+                >
+                  السجل الأكاديمي
+                </button>
+                <button type="button"
+                  class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg transition-colors border border-slate-200 text-center"
+                >
+                  الملاحظات (0)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- VIEW: SCHEDULE (الجدول الدراسي)       -->
+        <!-- ===================================== -->
+        <div
+          id="view-schedule"
+          class="app-view hidden flex flex-col gap-6 w-full"
+        >
+          <!-- Header -->
+          <div class="bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[24px]">calendar_month</span>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-slate-800">الجدول الدراسي الأسبوعي</h2>
+                <p class="text-sm text-slate-500">نصاب المعلم: 15 حصة / الأسبوع | المبحث: اللغة العربية</p>
+              </div>
+            </div>
+            <button type="button" onclick="window.print()" class="no-print flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors shadow-sm">
+              <span class="material-symbols-outlined text-[18px]">print</span>
+              طباعة الجدول
+            </button>
+          </div>
+
+          <!-- Schedule Grid -->
+          <div class="bg-white border border-slate-200/80 rounded-xl shadow-sm overflow-hidden print-page-boundary">
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[900px] text-center border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold text-sm">
+                    <th class="p-4 border-l border-slate-200 w-24">اليوم / الحصة</th>
+                    <th class="p-4 border-l border-slate-200 w-32">الأولى<br><span class="text-xs text-slate-400 font-normal">08:00 - 08:45</span></th>
+                    <th class="p-4 border-l border-slate-200 w-32">الثانية<br><span class="text-xs text-slate-400 font-normal">08:45 - 09:30</span></th>
+                    <th class="p-4 border-l border-slate-200 w-32">الثالثة<br><span class="text-xs text-slate-400 font-normal">09:30 - 10:15</span></th>
+                    <th class="p-4 border-l border-slate-200 w-32">الرابعة<br><span class="text-xs text-slate-400 font-normal">10:15 - 11:00</span></th>
+                    <th class="p-4 border-l border-slate-200 w-24 bg-slate-100/50">الاستراحة<br><span class="text-xs text-slate-400 font-normal">11:00 - 11:30</span></th>
+                    <th class="p-4 border-l border-slate-200 w-32">الخامسة<br><span class="text-xs text-slate-400 font-normal">11:30 - 12:15</span></th>
+                    <th class="p-4 border-l border-slate-200 w-32">السادسة<br><span class="text-xs text-slate-400 font-normal">12:15 - 01:00</span></th>
+                    <th class="p-4 w-32 border border-black">السابعة<br><span class="text-xs text-slate-400 font-normal">01:00 - 01:45</span></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                  <!-- Sunday -->
+                  <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="p-4 font-bold text-slate-800 border-l border-slate-200 bg-slate-50/30">الأحد</td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (أ)</span><span class="text-[10px] text-blue-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (ب)</span><span class="text-[10px] text-emerald-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-purple-50 text-purple-700 border border-purple-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>أول ثانوي</span><span class="text-[10px] text-purple-500 font-normal">عربي تخصص</span></div></td>
+                    <td class="p-2 border-l border-slate-100 bg-slate-50/50 text-slate-400 font-bold text-xs"><i class="fa-solid fa-mug-hot mb-1 block text-lg"></i> استراحة</td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (أ)</span><span class="text-[10px] text-blue-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border border-black"></td>
+                  </tr>
+                  <!-- Monday -->
+                  <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="p-4 font-bold text-slate-800 border-l border-slate-200 bg-slate-50/30">الإثنين</td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-purple-50 text-purple-700 border border-purple-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>أول ثانوي</span><span class="text-[10px] text-purple-500 font-normal">عربي تخصص</span></div></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (ب)</span><span class="text-[10px] text-emerald-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100 bg-slate-50/50 text-slate-400 font-bold text-xs"><i class="fa-solid fa-mug-hot mb-1 block text-lg"></i> استراحة</td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-purple-50 text-purple-700 border border-purple-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>أول ثانوي</span><span class="text-[10px] text-purple-500 font-normal">عربي تخصص</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border border-black"><div class="bg-slate-100 text-slate-700 border border-slate-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>إشراف</span><span class="text-[10px] text-slate-500 font-normal">ساحة المدرسة</span></div></td>
+                  </tr>
+                  <!-- Tuesday -->
+                  <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="p-4 font-bold text-slate-800 border-l border-slate-200 bg-slate-50/30">الثلاثاء</td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (ب)</span><span class="text-[10px] text-emerald-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (أ)</span><span class="text-[10px] text-blue-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (أ)</span><span class="text-[10px] text-blue-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100 bg-slate-50/50 text-slate-400 font-bold text-xs"><i class="fa-solid fa-mug-hot mb-1 block text-lg"></i> استراحة</td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-purple-50 text-purple-700 border border-purple-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>أول ثانوي</span><span class="text-[10px] text-purple-500 font-normal">عربي تخصص</span></div></td>
+                    <td class="p-2 border border-black"></td>
+                  </tr>
+                  <!-- Wednesday -->
+                  <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="p-4 font-bold text-slate-800 border-l border-slate-200 bg-slate-50/30">الأربعاء</td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (ب)</span><span class="text-[10px] text-emerald-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (ب)</span><span class="text-[10px] text-emerald-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100 bg-slate-50/50 text-slate-400 font-bold text-xs"><i class="fa-solid fa-mug-hot mb-1 block text-lg"></i> استراحة</td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (أ)</span><span class="text-[10px] text-blue-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border border-black"><div class="bg-purple-50 text-purple-700 border border-purple-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>أول ثانوي</span><span class="text-[10px] text-purple-500 font-normal">عربي تخصص</span></div></td>
+                  </tr>
+                  <!-- Thursday -->
+                  <tr class="hover:bg-slate-50/50 transition-colors group">
+                    <td class="p-4 font-bold text-slate-800 border-l border-slate-200 bg-slate-50/30">الخميس</td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-slate-100 text-slate-700 border border-slate-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>نشاط</span><span class="text-[10px] text-slate-500 font-normal">حرة</span></div></td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-purple-50 text-purple-700 border border-purple-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>أول ثانوي</span><span class="text-[10px] text-purple-500 font-normal">عربي تخصص</span></div></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (ب)</span><span class="text-[10px] text-emerald-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border-l border-slate-100 bg-slate-50/50 text-slate-400 font-bold text-xs"><i class="fa-solid fa-mug-hot mb-1 block text-lg"></i> استراحة</td>
+                    <td class="p-2 border-l border-slate-100"></td>
+                    <td class="p-2 border-l border-slate-100"><div class="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg p-2 font-bold flex flex-col gap-1 shadow-sm"><span>عاشر (أ)</span><span class="text-[10px] text-blue-500 font-normal">لغة عربية</span></div></td>
+                    <td class="p-2 border border-black"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Action Button (Quick Actions) -->
+        <div
+          class="fixed bottom-6 left-6 z-50 group no-print flex flex-col items-start"
+        >
+          <div
+            class="flex flex-col items-start gap-2 mb-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all translate-y-2 group-hover:translate-y-0 origin-bottom"
+          >
+            <button type="button"
+              class="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-slate-200 hover:bg-slate-50 transition-colors text-slate-700 font-bold text-sm w-max"
+            >
+              <span>رسالة لولي الأمر</span>
+              <span
+                class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center"
+                ><span class="material-symbols-outlined text-[16px]"
+                  >chat</span
+                ></span
+              >
+            </button>
+            <button type="button"
+              class="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-slate-200 hover:bg-slate-50 transition-colors text-slate-700 font-bold text-sm w-max"
+            >
+              <span>إضافة غياب سريع</span>
+              <span
+                class="w-8 h-8 rounded-full bg-red-50 text-red-600 flex items-center justify-center"
+                ><span class="material-symbols-outlined text-[16px]"
+                  >person_off</span
+                ></span
+              >
+            </button>
+          </div>
+          <button type="button"
+            class="w-14 h-14 bg-primary text-white rounded-full shadow-[0_4px_20px_rgba(138,21,56,0.3)] hover:shadow-[0_4px_25px_rgba(138,21,56,0.5)] transition-all flex items-center justify-center relative"
+          >
+            <span
+              class="material-symbols-outlined text-[28px] transition-transform duration-300 group-hover:rotate-45"
+              >add</span
+            >
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    
+    <!-- Config -->
+    <script src="js/config/tailwind.js"></script>
+    <script src="js/config/app-config.js"></script>
+    <!-- Services (Future Backend Integration) -->
+    <script src="js/services/apiService.js"></script>
+    <script src="js/services/assignment-service.js"></script>
+    <!-- Utils -->
+    <script src="js/utils/helpers.js"></script>
+    <!-- Components -->
+    <script src="js/components/navigation.js"></script>
+    <script src="js/components/feedback.js"></script>
+    <script src="js/components/about.js"></script>
+    <!-- Features -->
+    <script src="js/features/student.js"></script>
+    <script src="js/features/parent.js"></script>
+    <script src="js/features/teacher.js"></script>
+    <!-- Core -->
+    <script src="js/core/events.js"></script>
+    <script src="js/core/init.js"></script>
+
+  </body>
+</html>

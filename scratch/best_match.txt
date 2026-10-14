@@ -1,0 +1,209 @@
+Created At: 2026-10-09T22:13:08+03:00
+Completed At: 2026-10-09T22:13:08+03:00
+File Path: `file:///c:/Users/user/Desktop/project/awn/teacher-dashboard.html`
+Total Lines: 2870
+Total Bytes: 155674
+Showing lines 800 to 1000
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+800:                 <span
+801:                   class="bg-slate-100 text-slate-800 px-3 py-0.5 rounded text-xs font-bold font-cairo"
+802:                   >QF71-47rev.a</span
+803:                 >
+804:               </div>
+805:               <!-- Live Plan Status Badge -->
+806:               <div class="flex items-center gap-3">
+807:                 <div
+808:                   class="flex items-center gap-1.5 px-5 py-1 rounded-full bg-secondary-50 text-secondary text-sm font-bold font-cairo font-bold"
+809:                 >
+810:                   <span
+811:                     class="w-2 h-2 rounded-full bg-secondary animate-pulse"
+812:                   ></span>
+813:                   <span class="">جاهزة للاعتماد الأكاديمي</span>
+814:                 </div>
+815:               </div>
+816:             </div>
+817: 
+818:             <!-- Title and Actions Row -->
+819:             <div
+820:               class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200/80"
+821:             >
+822:               <div class="flex items-center gap-5">
+823:                 <div
+824:                   class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-sm"
+825:                 >
+826:                   <span
+827:                     class="material-symbols-outlined text-[26px] text-secondary"
+828:                     >menu_book</span
+829:                   >
+830:                 </div>
+831:                 <div class="flex flex-col">
+832:                   <div class="flex items-center gap-3">
+833:                     <h1
+834:                       class="font-bold text-xl font-cairo text-[20px] text-slate-900 font-bold"
+835:                     >
+836:                       نموذج الخطة الفصلية للمبحث الدراسي
+837:                     </h1>
+838:                     <span
+839:                       class="bg-primary-50 text-primary text-xs font-bold font-cairo px-2.5 py-0.5 rounded-full font-bold border border-primary/20"
+840:                       >معتمد وزارياً</span
+841:                     >
+842:                   </div>
+843:                   <p class="text-sm font-cairo text-slate-500 mt-0.5">
+844:                     وزارة التربية والتعليم — إدارة المناهج والكتب المدرسية
+845:                     والإشراف التربوي
+846:                   </p>
+847:                 </div>
+848:               </div>
+849: 
+850:               <div class="flex flex-wrap items-center gap-3">
+851:                 <button
+852:                   onclick="addNewRow()"
+853:                   class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold transition-all shadow-sm"
+854:                 >
+855:                   <span
+856:                     class="material-symbols-outlined text-[18px] text-secondary"
+857:                     >add_circle</span
+858:                   >
+859:                   إضافة نتاج جديد
+860:                 </button>
+861:                 <button
+862:                   onclick="saveDraftNotification()"
+863:                   class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-primary/30 bg-white hover:bg-primary/10 text-primary font-bold transition-all shadow-sm"
+864:                 >
+865:                   <span class="material-symbols-outlined text-[18px]"
+866:                     >save</span
+867:                   >
+868:                   حفظ كمسودة
+869:                 </button>
+870:                 <button
+871:                   onclick="window.print()"
+872:                   class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-[#142e47] text-white font-bold transition-all shadow-sm"
+873:                 >
+874:                   <span class="material-symbols-outlined text-[18px]"
+875:                     >print</span
+876:                   >
+877:                   طباعة
+878:                 </button>
+879:                 <button
+880:                   onclick="submitForReview()"
+881:                   class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-50 text-white font-bold transition-all shadow-sm"
+882:                 >
+883:                   <span class="material-symbols-outlined text-[18px]"
+884:                     >send</span
+885:                   >
+886:                   إرسال للاعتماد
+887:                 </button>
+888:               </div>
+889:             </div>
+890:           </div>
+891: 
+892:           <!-- Notification Toast -->
+893:           <div
+894:             id="toast-msg"
+895:             class="hidden no-print mb-5 p-5 rounded-lg bg-secondary-50 text-secondary text-sm font-bold font-cairo flex items-center justify-between shadow-sm transition-all duration-300 border border-secondary/20"
+896:           >
+897:             <div class="flex items-center gap-3">
+898:               <span class="material-symbols-outlined text-[20px] text-secondary"
+899:                 >check_circle</span
+900:               >
+901:               <span id="toast-text" class="font-bold"></span>
+902:             </div>
+903:             <button
+904:               class="material-symbols-outlined text-[18px]"
+905:               onclick="this.parentElement.classList.add('hidden')"
+906:             >
+907:               close
+908:             </button>
+909:           </div>
+910: 
+911:                     <!-- Official Paper Form Container -->
+912:           <div
+913:             class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
+914:             style="font-family: 'Amiri', serif"
+915:           >
+916:             <!-- Document Header -->
+917:             <div class="text-center mb-3 border-b-2 border-black pb-2.5">
+918:               <div
+919:                 class="flex items-center justify-between text-xs font-[Cairo] font-bold mb-1 text-slate-700 px-2"
+920:                 style="font-family: 'Cairo', sans-serif"
+921:               >
+922:                 <span class="">المملكة الأردنية الهاشمية</span>
+923:                 <span class="text-slate-900 font-black text-sm tracking-wide"
+924:                   >وزارة التربية والتعليم</span
+925:                 >
+926:                 <input type="text" value="مديرية التربية والتعليم للواء ماركا" class="text-xs font-bold font-cairo text-slate-700 bg-transparent outline-none border-b border-transparent focus:border-black text-left w-64" placeholder="أدخل اسم المديرية...">
+927:               </div>
+928:               <h2
+929:                 class="text-2xl font-bold font-[Cairo] tracking-normal inline-block text-black px-6 pt-1"
+930:                 style="font-family: 'Cairo', sans-serif"
+931:               >
+932:                 الخطة الفصلية للمبحث الدراسي
+933:               </h2>
+934:               <p class="text-xs text-slate-600 font-[Cairo] font-medium mt-0.5">
+935:                 نموذج رقم (QF71-47rev.a)
+936:               </p>
+937:               <div class="text-sm font-bold font-cairo mt-1 font-bold text-black" style="font-family: 'Cairo', sans-serif">
+938:                 العام الدراسي: 2025 / 2026 م
+939:               </div>
+940:             </div>
+941: 
+942:             <!-- Meta Data Fields -->
+943:             <div class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-2 text-base font-bold font-[Cairo] pb-2" style="font-family: 'Cairo', sans-serif">
+944:                 <div class="flex items-center gap-1.5">
+945:                   <span class="whitespace-nowrap font-extrabold text-black">الصف / المستوى:</span>
+946:                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="الثاني الأساسي" />
+947:                 </div>
+948:                 <div class="flex items-center gap-1.5">
+949:                   <span class="whitespace-nowrap font-extrabold text-black">الفصل الدراسي:</span>
+950:                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="الثاني" />
+951:                 </div>
+952:                 <div class="flex items-center gap-1.5">
+953:                   <span class="whitespace-nowrap font-extrabold text-black">المبحث:</span>
+954:                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="اللغة العربية" />
+955:                 </div>
+956:                 <div class="flex items-center gap-1.5">
+957:                   <span class="whitespace-nowrap font-extrabold text-black">عنوان الوحدة:</span>
+958:                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="مدن بلدي" />
+959:                 </div>
+960:             </div>
+961:             
+962:             <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4 text-base font-bold font-[Cairo] border-b-2 border-black pb-3" style="font-family: 'Cairo', sans-serif">
+963:                 <div class="flex items-center gap-1.5">
+964:                   <span class="whitespace-nowrap font-extrabold text-black">عدد الدروس:</span>
+965:                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="number" value="5" />
+966:                 </div>
+967:                 <div class="flex items-center gap-2">
+968:                   <span class="whitespace-nowrap font-extrabold text-black">الفترة الزمنية:</span>
+969:                   <span class="text-sm font-bold text-black">من</span>
+970:                   <input class="bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-01-19" />
+971:                   <span class="text-sm font-bold text-black">إلى</span>
+972:                   <input class="bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-02-13" />
+973:                 </div>
+974:                 <div class="flex items-center gap-1.5">
+975:                   <span class="whitespace-nowrap font-extrabold text-black">عدد الحصص:</span>
+976:                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="number" placeholder="..." />
+977:                 </div>
+978:             </div>
+979: 
+980:             <!-- Data Table -->
+981:             <div class="overflow-x-auto font-[Cairo]" style="font-family: 'Cairo', sans-serif">
+982:               <table class="w-full min-w-[1400px] border-2 border-black text-right border-collapse table-auto text-black" id="plan-table">
+983:                 <thead>
+984:                   <tr class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-[13px] divide-x-2 divide-x-reverse divide-black text-black">
+985:                     <th rowspan="2" class="w-10 py-2 px-1 text-center font-black">م</th>
+986:                     <th rowspan="2" class="w-64 py-2 px-2 text-center font-black">النتاجات العامة</th>
+987:                     <th rowspan="2" class="w-40 py-2 px-2 text-center font-black">مصادر التعلم</th>
+988:                     <th rowspan="2" class="w-56 py-2 px-2 text-center font-black">استراتيجيات التدريس</th>
+989:                     <th colspan="2" class="py-2 px-2 text-center font-black border-b-2 border-black">التقويم</th>
+990:                     <th rowspan="2" class="w-48 py-2 px-2 text-center font-black">الأنشطة المرافقة</th>
+991:                     <th rowspan="2" class="w-48 py-2 px-2 text-center font-black">التأمل الذاتي</th>
+992:                     <th rowspan="2" class="w-14 py-2 px-1 text-center font-black no-print">إجراء</th>
+993:                   </tr>
+994:                   <tr class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-[12px] divide-x-2 divide-x-reverse divide-black text-black">
+995:                     <th class="w-56 py-1 px-1 text-center font-black">الاستراتيجيات</th>
+996:                     <th class="w-40 py-1 px-1 text-center font-black">الأدوات</th>
+997:                   </tr>
+998:                 </thead>
+999:                 <tbody id="plan-tbody" class="divide-y-2 divide-black text-[13px]">
+1000:                   <tr class="divide-x-2 divide-x-reverse divide-black align-top hover:bg-slate-50/50 group">
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

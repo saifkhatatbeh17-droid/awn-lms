@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#8a1538">
+    <meta name="awn-api-base-url" content="">
+    <meta name="awn-demo-mode" content="true">
+    <title>إدارة النظام | عون</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin-dashboard.css">
+    <script src="js/config/app-config.js"></script>
+    <script type="module" src="js/features/admin-dashboard.js"></script>
+  </head>
+  <body class="admin-app">
+    <a class="admin-skip-link" href="#admin-main">انتقل إلى المحتوى</a>
+    <div class="admin-layout">
+      <div class="admin-backdrop" data-sidebar-close hidden></div>
+      <aside class="admin-sidebar" id="admin-sidebar" aria-label="القائمة الرئيسية">
+        <a class="admin-brand" href="admin-dashboard.html" aria-label="عون، لوحة آدمن النظام"><span class="admin-brand__mark" aria-hidden="true">ع</span><span><strong>عون</strong><small>إدارة النظام</small></span></a>
+        <div class="admin-sidebar__identity"><span class="admin-avatar" aria-hidden="true">آ</span><span><strong data-admin-name>آدمن النظام</strong><small>مسؤول المنظومة</small></span></div>
+        <nav class="admin-nav" aria-label="أقسام لوحة الإدارة">
+          <button class="admin-nav__item is-active" type="button" data-view="overview" aria-current="page"><span aria-hidden="true">▦</span>نظرة عامة</button>
+          <button class="admin-nav__item" type="button" data-view="users"><span aria-hidden="true">♙</span>إدارة المستخدمين</button>
+          <button class="admin-nav__item" type="button" data-view="system"><span aria-hidden="true">⚙</span>حالة الربط</button>
+        </nav>
+        <div class="admin-sidebar__footer"><span class="admin-status-dot" aria-hidden="true"></span><span data-mode-label>وضع تجريبي</span><a href="index.html" data-admin-logout>تسجيل الخروج</a></div>
+      </aside>
+
+      <div class="admin-workspace">
+        <header class="admin-topbar">
+          <button class="admin-icon-button admin-menu-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="admin-sidebar" data-sidebar-toggle><span aria-hidden="true">☰</span></button>
+          <div class="admin-topbar__context"><span>وزارة التربية والتعليم</span><span aria-hidden="true">/</span><strong>إدارة المنظومة</strong></div>
+          <div class="admin-topbar__user"><span class="admin-avatar admin-avatar--small" aria-hidden="true">آ</span><span data-admin-name>آدمن النظام</span></div>
+        </header>
+
+        <main class="admin-main" id="admin-main" tabindex="-1">
+          <div class="admin-page-heading"><div><p class="admin-eyebrow">منصة عون التعليمية</p><h1 data-page-title>نظرة عامة</h1><p data-page-description>إدارة مركزية لحسابات المنظومة ومتابعة حالة الربط.</p></div><span class="admin-date" data-current-date></span></div>
+          <p class="admin-alert" data-admin-error role="alert" hidden></p>
+          <p class="admin-live-region" data-admin-status role="status" aria-live="polite"></p>
+
+          <section class="admin-view" id="view-overview" data-panel="overview" aria-labelledby="overview-heading">
+            <h2 class="admin-visually-hidden" id="overview-heading">ملخص المنظومة</h2>
+            <div class="admin-banner"><div><span class="admin-banner__tag">لوحة آدمن النظام</span><h2>مرحبًا، <span data-admin-name>آدمن النظام</span></h2><p>تابع حسابات المنظومة وأدوارها من مكان واحد.</p></div><div class="admin-banner__seal" aria-hidden="true"><span>عون</span><small>إدارة المنظومة</small></div></div>
+            <div class="admin-stats" aria-label="إحصاءات المستخدمين">
+              <article class="admin-stat"><span class="admin-stat__icon" aria-hidden="true">♙</span><span class="admin-stat__label">إجمالي الحسابات</span><strong data-stat="total">—</strong><small>حساب مسجل</small></article>
+              <article class="admin-stat"><span class="admin-stat__icon admin-stat__icon--gold" aria-hidden="true">✓</span><span class="admin-stat__label">الحسابات النشطة</span><strong data-stat="active">—</strong><small>حساب نشط</small></article>
+              <article class="admin-stat"><span class="admin-stat__icon" aria-hidden="true">▤</span><span class="admin-stat__label">الهيئات التعليمية</span><strong data-stat="educators">—</strong><small>معلم ومدير ومشرف</small></article>
+              <article class="admin-stat"><span class="admin-stat__icon admin-stat__icon--green" aria-hidden="true">⌂</span><span class="admin-stat__label">الأدوار المعرفة</span><strong data-stat="roles">6</strong><small>أدوار للمنظومة</small></article>
+            </div>
+            <div class="admin-content-grid">
+              <section class="admin-card"><div class="admin-card__heading"><div><h2>توزيع الحسابات</h2><p>عدد الحسابات حسب الدور المسجل.</p></div><button class="admin-text-button" type="button" data-go-users>عرض المستخدمين</button></div><div class="admin-role-list" data-role-summary></div></section>
+              <section class="admin-card"><div class="admin-card__heading"><div><h2>حالة الواجهة</h2><p>مؤشرات إعداد الربط.</p></div><span class="admin-pill" data-api-state>تجريبي</span></div><div class="admin-connection-body"><span class="admin-connection-mark" aria-hidden="true">✓</span><div><strong data-api-heading>الواجهة تعمل في وضع تجريبي</strong><p data-api-description>البيانات محلية وغير معتمدة كسجلات رسمية.</p></div></div><button class="admin-secondary-button" type="button" data-view="system">تفاصيل الربط</button></section>
+            </div>
+            <section class="admin-card admin-recent"><div class="admin-card__heading"><div><h2>أحدث الحسابات</h2><p>مراجعة سريعة للحسابات المسجلة.</p></div><button class="admin-text-button" type="button" data-go-users>إدارة الحسابات</button></div><div class="admin-table-wrap"><table class="admin-table"><caption class="admin-visually-hidden">أحدث حسابات المستخدمين</caption><thead><tr><th scope="col">المستخدم</th><th scope="col">اسم الدخول</th><th scope="col">الدور</th><th scope="col">الحالة</th></tr></thead><tbody data-recent-users></tbody></table></div></section>
+          </section>
+
+          <section class="admin-view" id="view-users" data-panel="users" aria-labelledby="users-heading" hidden>
+            <div class="admin-card"><div class="admin-card__heading admin-card__heading--users"><div><h2 id="users-heading">إدارة المستخدمين</h2><p>عرض حسابات الأدوار وتفعيلها أو إيقافها.</p></div><button class="admin-primary-button" type="button" data-add-user>＋ إضافة مستخدم</button></div>
+              <div class="admin-toolbar"><label class="admin-search"><span aria-hidden="true">⌕</span><span class="admin-visually-hidden">بحث عن مستخدم</span><input type="search" data-user-search placeholder="ابحث بالاسم أو اسم الدخول" autocomplete="off"></label><label class="admin-filter"><span>الدور</span><select data-role-filter><option value="all">جميع الأدوار</option><option value="admin">آدمن النظام</option><option value="principal">مدير مدرسة</option><option value="supervisor">مشرف تربوي</option><option value="teacher">معلم</option><option value="student">طالب</option><option value="parent">ولي أمر</option></select></label><span class="admin-result-count" data-user-count></span></div>
+              <div class="admin-table-wrap"><table class="admin-table admin-table--users"><caption class="admin-visually-hidden">قائمة حسابات المنظومة</caption><thead><tr><th scope="col">المستخدم</th><th scope="col">اسم الدخول</th><th scope="col">الدور</th><th scope="col">الجهة</th><th scope="col">الحالة</th><th scope="col">إجراء</th></tr></thead><tbody data-users-body></tbody></table></div><p class="admin-empty" data-users-empty hidden>لا توجد حسابات مطابقة لخيارات البحث.</p>
+            </div>
+          </section>
+
+          <section class="admin-view" id="view-system" data-panel="system" aria-labelledby="system-heading" hidden>
+            <section class="admin-card"><div class="admin-card__heading"><div><h2 id="system-heading">حالة الربط والتشغيل</h2><p>مؤشرات إعداد الواجهة، وليست فحصًا لصحة الخادم.</p></div></div><dl class="admin-system-list"><div><dt>وضع البيانات</dt><dd data-system-mode>—</dd></div><div><dt>عنوان خدمة API</dt><dd data-system-api>—</dd></div><div><dt>التحقق من الجلسة</dt><dd>مسؤولية الخادم عند ربط API</dd></div><div><dt>إدارة المستخدمين</dt><dd data-system-users>—</dd></div></dl><div class="admin-note"><strong>مهم:</strong> صلاحيات الواجهة للعرض فقط. يجب أن يتحقق خادم .NET من دور آدمن النظام قبل أي عملية إدارية.</div></section>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <dialog class="admin-dialog" data-user-dialog aria-labelledby="user-dialog-title"><form class="admin-dialog__form" data-user-form>
+      <div class="admin-dialog__heading"><div><p class="admin-eyebrow">إدارة الحسابات</p><h2 id="user-dialog-title">إضافة مستخدم</h2></div><button class="admin-icon-button" type="button" aria-label="إغلاق النافذة" data-dialog-close>×</button></div>
+      <p class="admin-dialog__notice" data-dialog-notice>في وضع التجربة يُضاف سجل محلي فقط. إنشاء بيانات الدخول الفعلية يتم عبر الخادم.</p><p class="admin-alert" data-form-error role="alert" hidden></p>
+      <label class="admin-field"><span>الاسم الكامل</span><input name="name" required maxlength="100" autocomplete="name"></label>
+      <label class="admin-field"><span>اسم الدخول</span><input name="username" required minlength="3" maxlength="50" autocomplete="off" dir="ltr"></label>
+      <label class="admin-field"><span>الدور الوظيفي</span><select name="role" required><option value="">اختر الدور</option><option value="principal">مدير مدرسة</option><option value="supervisor">مشرف تربوي</option><option value="teacher">معلم</option><option value="student">طالب</option><option value="parent">ولي أمر</option><option value="admin">آدمن النظام</option></select></label>
+      <label class="admin-field"><span>اسم المدرسة أو الجهة <small>(اختياري)</small></span><input name="organization" maxlength="120"></label>
+      <div class="admin-dialog__actions"><button class="admin-secondary-button" type="button" data-dialog-close>إلغاء</button><button class="admin-primary-button" type="submit" data-save-user>حفظ المستخدم</button></div>
+    </form></dialog>
+  </body>
+</html>

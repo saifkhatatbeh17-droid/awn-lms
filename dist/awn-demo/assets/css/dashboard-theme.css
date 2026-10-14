@@ -1,0 +1,161 @@
+:root {
+  --brand-black: #171717;
+  --brand-primary: #8a1538;
+  --brand-primary-soft: #fdf4f6;
+  --brand-white: #ffffff;
+  --brand-gold: #745719;
+  --brand-gold-surface: #f3ead4;
+  --brand-gold-soft: #f3ead4;
+  --brand-green-status: #006b36;
+  --brand-red-alert: #8a1538;
+  --surface-page: #f5f4f0;
+  --surface-card: #ffffff;
+  --border-subtle: #dedbd3;
+  --text-muted: #5f5d58;
+  --shadow-card: 0 0.35rem 1.25rem rgb(23 23 23 / 6%);
+  --radius-card: 1rem;
+}
+
+body.dashboard-shell {
+  min-height: 100vh;
+  background: var(--surface-page) !important;
+  color: var(--brand-black) !important;
+  font-family: "Cairo", Tahoma, sans-serif;
+}
+
+.dashboard-shell__sidebar {
+  background: var(--surface-card) !important;
+  color: var(--brand-black) !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: 0 0.5rem 1.75rem rgb(23 23 23 / 7%) !important;
+}
+.dashboard-shell__sidebar > div:first-child { background: var(--surface-card) !important; border-color: var(--border-subtle) !important; }
+.dashboard-shell__sidebar [data-path] { color: var(--text-muted) !important; border-radius: 0.65rem; }
+.dashboard-shell__sidebar [data-path]:hover { color: var(--brand-black) !important; background: var(--surface-page) !important; }
+.dashboard-shell__sidebar [data-path].bg-primary-50,
+.dashboard-shell__sidebar [data-path].text-primary { color: var(--brand-primary) !important; background: var(--brand-primary-soft) !important; }
+.dashboard-shell__sidebar .text-primary { color: var(--brand-primary) !important; }
+
+.dashboard-shell__header {
+  color: var(--brand-black) !important;
+  background: rgb(255 255 255 / 96%) !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: 0 0.2rem 0.8rem rgb(23 23 23 / 5%) !important;
+  backdrop-filter: blur(0.75rem);
+}
+.dashboard-shell__main {
+  color: var(--brand-black);
+  background: var(--surface-page) !important;
+}
+
+.dashboard-shell .bg-primary,
+.dashboard-shell button.bg-primary {
+  color: #ffffff !important;
+  background-color: #8a1538 !important;
+  border-color: #8a1538 !important;
+}
+.dashboard-shell .hover\:bg-primary:hover { background-color: #72122e !important; }
+.dashboard-shell .bg-primary-50,
+.dashboard-shell .bg-primary-100 { background-color: var(--brand-primary-soft) !important; }
+.dashboard-shell .text-primary,
+.dashboard-shell .border-primary { color: var(--brand-primary) !important; border-color: var(--brand-primary) !important; }
+.dashboard-shell .text-secondary { color: var(--brand-gold) !important; }
+.dashboard-shell .bg-secondary,
+.dashboard-shell .bg-secondary\/10,
+.dashboard-shell .bg-secondary\/20 { background-color: var(--brand-gold-soft) !important; }
+.dashboard-shell .border-secondary,
+.dashboard-shell .border-secondary\/30 { border-color: #d8bd7b !important; }
+
+.dashboard-shell__main .bg-white,
+.dashboard-shell__main [class*="bg-white/"] {
+  background-color: var(--surface-card) !important;
+}
+.dashboard-shell__main .border-slate-100,
+.dashboard-shell__main .border-slate-200,
+.dashboard-shell__main .border-slate-200\/80,
+.dashboard-shell__main .border-slate-300 { border-color: var(--border-subtle) !important; }
+.dashboard-shell__main [class*="shadow-"] { box-shadow: var(--shadow-card) !important; }
+.dashboard-shell__main [class*="bg-gradient-"] {
+  color: var(--brand-black) !important;
+  background-color: var(--surface-card) !important;
+  background-image: none !important;
+  border: 1px solid var(--border-subtle);
+  border-inline-start: 0.25rem solid var(--brand-primary);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card) !important;
+}
+.dashboard-shell__main [class*="bg-gradient-"] * { color: inherit !important; }
+.dashboard-shell__main [class*="bg-slate-900"],
+.dashboard-shell__main [class*="bg-slate-800"] {
+  color: var(--brand-black) !important;
+  background-color: var(--brand-gold-surface) !important;
+  background-image: none !important;
+}
+.dashboard-shell__main [class*="bg-slate-900"] *,
+.dashboard-shell__main [class*="bg-slate-800"] * { color: inherit !important; }
+.dashboard-shell__main [class*="bg-repeat"] { display: none !important; }
+.dashboard-shell__main [class*="bg-blue-"],
+.dashboard-shell__main [class*="bg-indigo-"],
+.dashboard-shell__main [class*="bg-purple-"] { background-color: var(--brand-gold-soft) !important; }
+.dashboard-shell__main [class*="text-blue-"],
+.dashboard-shell__main [class*="text-indigo-"],
+.dashboard-shell__main [class*="text-purple-"] { color: var(--brand-black) !important; }
+.dashboard-shell__main [class*="border-blue-"],
+.dashboard-shell__main [class*="border-indigo-"],
+.dashboard-shell__main [class*="border-purple-"] { border-color: var(--border-subtle) !important; }
+.dashboard-shell__main .bg-slate-50,
+.dashboard-shell__main .bg-slate-50\/50 { background-color: var(--surface-page) !important; }
+.dashboard-shell__main .text-slate-900,
+.dashboard-shell__main .text-slate-800 { color: var(--brand-black) !important; }
+.dashboard-shell__main .text-slate-600,
+.dashboard-shell__main .text-slate-500 { color: var(--text-muted) !important; }
+.dashboard-shell__main input:not([type="checkbox"]),
+.dashboard-shell__main select,
+.dashboard-shell__main textarea {
+  border-color: #aaa69d;
+  color: var(--brand-black);
+  background-color: var(--brand-white);
+}
+.dashboard-shell__main input:focus,
+.dashboard-shell__main select:focus,
+.dashboard-shell__main textarea:focus { outline-color: var(--brand-gold); border-color: var(--brand-gold) !important; }
+.dashboard-shell__main button:focus-visible,
+.dashboard-shell__sidebar a:focus-visible,
+.dashboard-shell__sidebar button:focus-visible { outline: 3px solid var(--brand-gold); outline-offset: 2px; }
+
+/* Red and green remain reserved for alerts and state indicators. */
+.dashboard-shell .text-red-500,
+.dashboard-shell .text-red-600 { color: var(--brand-red-alert) !important; }
+.dashboard-shell .bg-red-500,
+.dashboard-shell .bg-red-600 { color: var(--brand-white) !important; background-color: var(--brand-red-alert) !important; }
+.dashboard-shell .bg-emerald-500,
+.dashboard-shell .bg-green-500 { color: var(--brand-white) !important; background-color: var(--brand-green-status) !important; }
+.dashboard-shell .bg-red-50,
+.dashboard-shell .bg-red-100 { background-color: #fff2f5 !important; }
+.dashboard-shell .text-emerald-600,
+.dashboard-shell .text-green-600 { color: var(--brand-green-status) !important; }
+.dashboard-shell .bg-emerald-50,
+.dashboard-shell .bg-green-50 { background-color: #edf7f1 !important; }
+
+@media (max-width: 1023px) {
+  .dashboard-shell__sidebar { box-shadow: -0.5rem 0 1.75rem rgb(23 23 23 / 12%) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-shell *, .dashboard-shell *::before, .dashboard-shell *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+/* Keep legacy dark highlight panels within the shared light system. */
+.dashboard-shell__main [class*="bg-slate-900"],
+.dashboard-shell__main [class*="bg-slate-800"] {
+  color: #171717 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #dedbd3;
+  border-inline-start: 0.25rem solid #8a1538;
+}
+.dashboard-shell__main [class*="bg-slate-900"] *,
+.dashboard-shell__main [class*="bg-slate-800"] * { color: inherit !important; }

@@ -1,0 +1,44 @@
+[
+  {
+    "username": "admin",
+    "password": "123",
+    "role": "admin",
+    "name": "آدمن النظام",
+    "redirect": "admin-dashboard.html"
+  },
+  {
+    "username": "teacher",
+    "password": "123",
+    "role": "teacher",
+    "name": "أ. رامي الحمد",
+    "redirect": "teacher-dashboard.html"
+  },
+  {
+    "username": "principal",
+    "password": "123",
+    "role": "principal",
+    "name": "د. محمد القضاة",
+    "redirect": "principal-dashboard.html"
+  },
+  {
+    "username": "supervisor",
+    "password": "123",
+    "role": "supervisor",
+    "name": "أ. خليل عبدالرحمن",
+    "redirect": "supervisor-dashboard.html"
+  },
+  {
+    "username": "student",
+    "password": "123",
+    "role": "student",
+    "name": "عمر خالد بني صخر",
+    "redirect": "student-dashboard.html"
+  },
+  {
+    "username": "parent",
+    "password": "123",
+    "role": "parent",
+    "name": "خالد بني صخر",
+    "redirect": "parent-dashboard.html"
+  }
+]
