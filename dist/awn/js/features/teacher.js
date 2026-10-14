@@ -1,4 +1,3 @@
-
 const STATUS_ON = {
   present: "bg-emerald-500 text-white shadow-sm",
   absent: "bg-red-500 text-white shadow-sm",
@@ -22,25 +21,32 @@ function setRowStatus(row, status) {
 }
 
 // Restores today's saved attendance, or marks everyone present by default.
-function renderAttendance() {
+async function renderAttendance() {
   const rows = document.querySelectorAll(".student-item");
   if (!rows.length) return;
-  const saved = ApiService.getAttendance(todayISO());
+  const res = typeof ApiService?.getAttendance === "function" ? await ApiService.getAttendance(todayISO()) : null;
+  const saved = res?.success ? res.data : res;
   rows.forEach((row) => {
-    const name = row.querySelector(".text-sm.font-bold").textContent.trim();
-    const rec = saved && saved.records.find((r) => r.name === name);
+    const nameEl = row.querySelector(".text-sm.font-bold");
+    if (!nameEl) return;
+    const name = nameEl.textContent.trim();
+    const rec = saved && saved.records && saved.records.find((r) => r.name === name);
     setRowStatus(row, rec ? rec.status : "present");
   });
 }
 
 // Reads every row and saves today's attendance through ApiService.
-function saveAttendanceUI() {
+async function saveAttendanceUI() {
   if (!requireDemoMode()) return;
   const records = [...document.querySelectorAll(".student-item")].map((row) => ({
-    name: row.querySelector(".text-sm.font-bold").textContent.trim(),
+    name: row.querySelector(".text-sm.font-bold")?.textContent?.trim() || "",
     status: row.dataset.status || "present",
   }));
-  if (!savePlanSafely(() => ApiService.saveAttendance(todayISO(), records), "attendance")) return;
+  const res = await ApiService.saveAttendance(todayISO(), records);
+  if (res && res.success === false) {
+    window.Swal?.fire({ icon: "error", title: "تعذر حفظ الحضور" });
+    return;
+  }
   window.Swal?.fire({
     icon: "success",
     title: "تم حفظ سجل الحضور",
@@ -76,15 +82,18 @@ const SAMPLE_PLAN = {
 function collectDailyPlan(status) {
   const plan = { status, updated: new Date().toISOString(), stages: [] };
   DAILY_FIELDS.forEach((id) => {
-    plan[id] = document.getElementById(id).value;
+    const el = document.getElementById(id);
+    if (el) plan[id] = el.value;
   });
   document.querySelectorAll("#view-daily-plans tbody tr").forEach((tr) => {
-    const f = tr.querySelectorAll("input, textarea"); // order: time, learner, teacher
-    plan.stages.push({
-      time: f[0].value,
-      learner: f[1].value,
-      teacher: f[2].value,
-    });
+    const f = tr.querySelectorAll("input, textarea"); // order: teacher, learner, time
+    if (f.length >= 3) {
+      plan.stages.push({
+        time: f[2].value,
+        learner: f[1].value,
+        teacher: f[0].value,
+      });
+    }
   });
   return plan;
 }
@@ -92,7 +101,8 @@ function collectDailyPlan(status) {
 // Writes a saved plan back into the form. Missing values become blank.
 function fillDailyPlan(plan) {
   DAILY_FIELDS.forEach((id) => {
-    document.getElementById(id).value = plan[id] || "";
+    const el = document.getElementById(id);
+    if (el) el.value = plan[id] || "";
   });
   document.querySelectorAll("#view-daily-plans tbody tr").forEach((tr, i) => {
     const s = (plan.stages && plan.stages[i]) || {
@@ -101,9 +111,11 @@ function fillDailyPlan(plan) {
       teacher: "",
     };
     const f = tr.querySelectorAll("input, textarea");
-    f[0].value = s.time;
-    f[1].value = s.learner;
-    f[2].value = s.teacher;
+    if (f.length >= 3) {
+      f[0].value = s.teacher;
+      f[1].value = s.learner;
+      f[2].value = s.time;
+    }
   });
 }
 
@@ -121,6 +133,7 @@ function savePlanSafely(save, context) {
     return false;
   }
 }
+
 function autosaveDaily() {
   cancelPendingPlanAutosave("daily");
   if (window.AWN_CONFIG?.demoMode === false) return false;
@@ -178,25 +191,28 @@ function autosaveQuarterly() {
 function renumberRows() {
   if (isFillingQuarterlyPlan) return;
   document.querySelectorAll("#plan-tbody tr").forEach((tr, i) => {
-    tr.cells[0].textContent = i + 1;
+    if (tr.cells[0]) tr.cells[0].textContent = i + 1;
   });
 }
 
 function deleteRow(btn) {
   const tbody = document.getElementById("plan-tbody");
+  if (!tbody) return;
   if (tbody.rows.length > 1) {
-    btn.closest("tr").remove();
+    btn.closest("tr")?.remove();
     autosaveQuarterly();
     renumberRows();
-  } else
-    Swal.fire({
+  } else if (window.Swal?.fire) {
+    window.Swal.fire({
       icon: "warning",
       title: "يجب أن تحتوي الخطة على نتاج واحد على الأقل.",
     });
+  }
 }
 
 function addNewRow() {
   const tbody = document.getElementById("plan-tbody");
+  if (!tbody) return;
   const tr = document.createElement("tr");
   tr.className = "hover:bg-slate-50 align-top";
   const area = (p) =>

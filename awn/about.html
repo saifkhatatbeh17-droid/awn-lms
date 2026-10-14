@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#8a1538">
+    <meta name="description" content="عن عون - المنظومة الوطنية لإدارة التعليم في المملكة الأردنية الهاشمية - وزارة التربية والتعليم">
+    <meta name="awn-demo-mode" content="false">
+    <meta name="awn-api-base-url" content="">
+    <title>عن عون | المنظومة الوطنية لإدارة التعليم</title>
+    
+    <!-- High Quality Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/about.css?v=10">
+    
+    <!-- GSAP & Animation Suite -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script defer src="js/features/about-page.js?v=10"></script>
+  </head>
+  <body class="royal-light-theme">
+
+    <!-- Top Reading Progress Indicator -->
+    <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
+    
+    <!-- Slim, Modern Sticky Navbar -->
+    <nav class="navbar-elegant" id="main-nav" aria-label="التنقل الرئيسي">
+      <div class="nav-container">
+        <a class="nav-brand" href="index.html">
+          <img class="nav-logo" src="assets/images/moe_logo.jpg" alt="شعار وزارة التربية والتعليم">
+          <img class="nav-logo-app" src="assets/images/awn_logo.jpg" alt="شعار عون">
+          <div class="nav-brand-text">
+            <span class="nav-title">عون</span>
+            <span class="nav-subtitle">المنظومة الوطنية لإدارة التعليم</span>
+          </div>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="#impact" class="nav-link">الأثر بالأرقام</a>
+          <a href="#ecosystem" class="nav-link">أركان المنظومة</a>
+          <a href="#excellence" class="nav-link">معايير التميز</a>
+        </div>
+
+        <div class="nav-actions">
+          <a href="index.html" class="btn-primary">
+            <span>بوابة الدخول</span>
+            <span class="material-symbols-outlined nav-icon-arrow" aria-hidden="true">login</span>
+          </a>
+          <button class="mobile-toggle" id="mobileToggle" aria-label="فتح القائمة" aria-expanded="false">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div class="mobile-menu" id="mobileMenu" hidden>
+        <a href="#impact" class="mobile-link">الأثر بالأرقام</a>
+        <a href="#ecosystem" class="mobile-link">أركان المنظومة</a>
+        <a href="#excellence" class="mobile-link">معايير التميز</a>
+        <a href="index.html" class="mobile-cta-btn">بوابة الدخول للمنظومة</a>
+      </div>
+    </nav>
+
+    <main id="main-content">
+      <!-- 1. Cinematic Hero Section (Spacious, Uncluttered, Pure Clarity) -->
+      <header class="hero-premium">
+        <video class="hero-video" autoplay muted loop playsinline disablepictureinpicture preload="auto" poster="assets/images/jordanian_teacher_1.jpg" aria-hidden="true" tabindex="-1">
+          <source src="assets/videos/awn-hero.mp4" type="video/mp4">
+          <source src="assets/videos/snapsave-app_1354090233153508_hd.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Clean Cinematic Contrast Overlay (Zero White Gradient) -->
+        <div class="hero-overlay" aria-hidden="true"></div>
+
+        <div class="hero-container container">
+          <div class="badge-premium fade-hero">
+            <span class="badge-dot"></span>
+            <span>رؤية وطنية لتعليم مستدام • المملكة الأردنية الهاشمية</span>
+          </div>
+
+          <h1 class="hero-headline fade-hero">
+            البيئة التعليمية <span class="text-gradient">الأذكى</span> في الأردن
+          </h1>
+
+          <p class="hero-lead fade-hero">
+            نجمع بين أصالة القيم التربوية الأردنية وأحدث المعايير العالمية في تقنيات (EdTech)؛ لتمكين المعلم، وإثراء مسيرة الطالب، وبناء بيئة مدرسية متكاملة ترتكز على البيداغوجيا الرقمية وحوكمة البيانات.
+          </p>
+
+          <div class="hero-cta-group fade-hero">
+            <a href="index.html" class="hero-cta">
+              <span>بوابة الدخول للمنظومة</span>
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+            </a>
+            <a href="#impact" class="hero-cta-secondary">
+              <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+              <span>استكشف المنظومة</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Delicate Bottom Scroll Indicator (Pure Full-Viewport Experience) -->
+        <a href="#impact" class="hero-scroll-indicator fade-hero" aria-label="تمرير لاستكشاف المنظومة">
+          <span class="scroll-indicator-text">استكشف الأثر والمنظومة</span>
+          <span class="material-symbols-outlined scroll-indicator-arrow" aria-hidden="true">keyboard_arrow_down</span>
+        </a>
+      </header>
+
+      <!-- 2. National Impact Stats (Unified Luxury Executive Ribbon) -->
+      <section class="impact-section" id="impact">
+        <div class="container">
+          <div class="impact-ribbon fade-up">
+            
+            <div class="impact-item">
+              <div class="impact-item-header">
+                <div class="impact-mini-badge">
+                  <span class="material-symbols-outlined">school</span>
+                </div>
+                <div class="impact-number-box">
+                  <span class="impact-prefix">+</span>
+                  <span class="stat-counter" data-target="1250000">0</span>
+                </div>
+              </div>
+              <h3 class="impact-item-title">طالب وطالبة</h3>
+              <p class="impact-item-desc">محتوى رقمي متمايز يواكب المناهج الأردنية الحديثة.</p>
+            </div>
+
+            <div class="impact-item">
+              <div class="impact-item-header">
+                <div class="impact-mini-badge icon-gold">
+                  <span class="material-symbols-outlined">badge</span>
+                </div>
+                <div class="impact-number-box">
+                  <span class="impact-prefix">+</span>
+                  <span class="stat-counter" data-target="92000">0</span>
+                </div>
+              </div>
+              <h3 class="impact-item-title">معلم وكادر إداري</h3>
+              <p class="impact-item-desc">أدوات رصد، تخطيط دراسي، وتقييم فوري وتفاعلي.</p>
+            </div>
+
+            <div class="impact-item">
+              <div class="impact-item-header">
+                <div class="impact-mini-badge icon-rose">
+                  <span class="material-symbols-outlined">domain</span>
+                </div>
+                <div class="impact-number-box">
+                  <span class="impact-prefix">+</span>
+                  <span class="stat-counter" data-target="4200">0</span>
+                </div>
+              </div>
+              <h3 class="impact-item-title">صرح تعليمي متصل</h3>
+              <p class="impact-item-desc">شبكة رقمية موحدة تغطي كافة مديريات المملكة.</p>
+            </div>
+
+            <div class="impact-item">
+              <div class="impact-item-header">
+                <div class="impact-mini-badge icon-emerald">
+                  <span class="material-symbols-outlined">verified_user</span>
+                </div>
+                <div class="impact-number-box">
+                  <span class="stat-counter" data-target="100">0</span>
+                  <span class="impact-suffix">%</span>
+                </div>
+              </div>
+              <h3 class="impact-item-title">سيادة وأمان البيانات</h3>
+              <p class="impact-item-desc">سحابة وطنية مشفرة تضمن أعلى معايير الخصوصية.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. The Unified Educational Ecosystem (Clean Interactive Role Switcher) -->
+      <section class="ecosystem-section" id="ecosystem">
+        <div class="container">
+          <div class="section-header fade-up">
+            <span class="badge-sub">منظومة مصممة للجميع</span>
+            <h2 class="section-title">بيئة موحدة تخدم أطراف العملية التعليمية</h2>
+            <p class="section-subtitle">واجهات مخصصة لكل دور تلبي المهام اليومية بأقصى درجات السلاسة والوضوح</p>
+          </div>
+
+          <!-- Clean Role Tabs -->
+          <div class="role-tabs-bar fade-up">
+            <button class="role-tab-btn active" data-role="teacher">
+              <span class="material-symbols-outlined">supervisor_account</span>
+              <span>المعلم الأردني</span>
+            </button>
+            <button class="role-tab-btn" data-role="student">
+              <span class="material-symbols-outlined">menu_book</span>
+              <span>الطالب</span>
+            </button>
+            <button class="role-tab-btn" data-role="parent">
+              <span class="material-symbols-outlined">family_restroom</span>
+              <span>ولي الأمر</span>
+            </button>
+            <button class="role-tab-btn" data-role="leadership">
+              <span class="material-symbols-outlined">analytics</span>
+              <span>الإدارة والإشراف</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Role Spotlight Card -->
+          <div class="role-spotlight-card fade-up" id="roleSpotlight">
+            <div class="spotlight-content">
+              <span class="spotlight-badge" id="spotBadge">بوابة المعلم الأردني</span>
+              <h3 class="spotlight-title" id="spotTitle">تمكين المعلم بأحدث الأدوات البيداغوجية</h3>
+              <p class="spotlight-desc" id="spotDesc">
+                توفر المنظومة للمعلم بيئة متكاملة لإعداد الخطط الدراسية، رصد الحضور بنقرة واحدة، وتطبيق استراتيجيات التعليم المتمايز لمراعاة الفروق الفردية بين الطلبة، مع تقديم تغذية راجعة فورية.
+              </p>
+
+              <div class="spotlight-features" id="spotFeatures">
+                <div class="feat-item">
+                  <span class="material-symbols-outlined feat-icon">check_circle</span>
+                  <div>
+                    <strong>تخطيط دراسي متقدم:</strong>
+                    <span>نماذج خطط يومية وفصلية متوافقة مع معايير وزارة التربية والتعليم.</span>
+                  </div>
+                </div>
+                <div class="feat-item">
+                  <span class="material-symbols-outlined feat-icon">check_circle</span>
+                  <div>
+                    <strong>رصد سريع ومباشر:</strong>
+                    <span>تسجيل الحضور والدرجات والسلوك عبر الهاتف أو الحاسوب دون تعقيد.</span>
+                  </div>
+                </div>
+                <div class="feat-item">
+                  <span class="material-symbols-outlined feat-icon">check_circle</span>
+                  <div>
+                    <strong>تقييم متمايز وتغذية راجعة:</strong>
+                    <span>متابعة تفاعلية للواجبات تسهم في معالجة الفجوات التعليمية مبكراً.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="spotlight-action">
+                <a href="index.html" class="btn-primary" id="spotBtn">
+                  <span>تسجيل الدخول بدور المعلم</span>
+                  <span class="material-symbols-outlined">arrow_back</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="spotlight-visual">
+              <div class="spotlight-preview-box">
+                <div class="preview-header">
+                  <span class="preview-avatar-wrap">
+                    <span class="material-symbols-outlined" id="spotIcon">person</span>
+                  </span>
+                  <div>
+                    <h4 id="spotUserName">الأستاذ أحمد الحنيطي</h4>
+                    <p id="spotUserRole">معلم الرياضيات • مدرسة الملك عبدالله الثاني للتميز</p>
+                  </div>
+                </div>
+                <div class="preview-chips" id="spotChips">
+                  <div class="chip-item">
+                    <span class="chip-val">98%</span>
+                    <span class="chip-lbl">نسبة الالتزام</span>
+                  </div>
+                  <div class="chip-item highlight">
+                    <span class="chip-val">4</span>
+                    <span class="chip-lbl">واجبات نشطة</span>
+                  </div>
+                  <div class="chip-item">
+                    <span class="chip-val">32</span>
+                    <span class="chip-lbl">طالباً متفوقاً</span>
+                  </div>
+                </div>
+                <div class="preview-list" id="spotList">
+                  <div class="preview-row">
+                    <span class="material-symbols-outlined row-ico">task_alt</span>
+                    <div class="row-txt">
+                      <span class="row-title">ورقة عمل: التفاضل والتكامل</span>
+                      <span class="row-sub">تم تسليم الحلول من 32 طالباً</span>
+                    </div>
+                    <span class="badge-status active">نشط</span>
+                  </div>
+                  <div class="preview-row">
+                    <span class="material-symbols-outlined row-ico">verified</span>
+                    <div class="row-txt">
+                      <span class="row-title">الخطة الفصلية المعتمدة</span>
+                      <span class="row-sub">تم تدقيقها من المشرف التربوي</span>
+                    </div>
+                    <span class="badge-status verified">معتمد</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. Signature Bento Grid: Institutional & Pedagogical Excellence -->
+      <section class="excellence-section" id="excellence">
+        <div class="container">
+          <div class="section-header fade-up">
+            <span class="badge-sub">الريادة المؤسسية</span>
+            <h2 class="section-title">معايير التميز في منظومة عون</h2>
+            <p class="section-subtitle">تكامل متين بين أصالة الرسالة التربوية الأردنية وأحدث المعايير التقنية العالمية</p>
+          </div>
+
+          <div class="excellence-bento">
+            
+            <!-- Bento 1: Jordanian Teacher Empowerment (Image Card) -->
+            <div class="bento-card bento-wide fade-up">
+              <div class="bento-image-side">
+                <img src="assets/images/jordanian_teacher_1.jpg" alt="المعلم الأردني داخل الغرفة الصفية" loading="lazy">
+                <div class="bento-img-tag">كفاءات أردنية نفخر بها</div>
+              </div>
+              <div class="bento-text-side">
+                <div class="bento-icon-pill"><span class="material-symbols-outlined">school</span></div>
+                <h3>تمكين المعلم الأردني</h3>
+                <p>توفير أدوات ذكية لإعداد الخطط، وتطبيق استراتيجيات (التعليم المتمايز)، وقياس التحصيل الأكاديمي، بما يختصر الوقت الإداري ويركز الجهد على جودة التدريس وبناء شخصية الطالب.</p>
+                <div class="bento-quote-pill">
+                  <span class="material-symbols-outlined">format_quote</span>
+                  <span>«المعلم هو ركيزة التطوير التربوي وصانع الأجيال»</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bento 2: School & Family Partnership (Image Card) -->
+            <div class="bento-card bento-wide fade-up">
+              <div class="bento-image-side">
+                <img src="assets/images/jordanian_teacher_2.jpg" alt="المعلمة الأردنية في الميدان التربوي" loading="lazy">
+                <div class="bento-img-tag tag-gold">بيئة تربوية محفزة</div>
+              </div>
+              <div class="bento-text-side">
+                <div class="bento-icon-pill icon-gold"><span class="material-symbols-outlined">diversity_3</span></div>
+                <h3>شراكة مجتمعية وأسرية فاعلة</h3>
+                <p>بناء جسور تواصل شفافة بين المدرسة وولي الأمر، تتيح المتابعة اليومية واللحظية لتقدم الأبناء، والاطلاع على سجلات الحضور والسلوك ومواعيد الامتحانات بصورة مستمرة.</p>
+                <div class="bento-tags-row">
+                  <span>إشعارات حضور فورية</span>
+                  <span>تواصل مباشر مع الكادر</span>
+                  <span>دعم وجداني للطالب</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bento 3: Cloud & Cyber Security -->
+            <div class="bento-card bento-third fade-up">
+              <div class="bento-icon-pill icon-emerald"><span class="material-symbols-outlined">security</span></div>
+              <h4>درع سيبراني وسحابة وطنية</h4>
+              <p>تشفير متقدم لبيانات الطلبة والسجلات الأكاديمية محلياً داخل المملكة وفق أعلى معايير أمن المعلومات العالمية.</p>
+              <div class="bento-badge-live">
+                <span class="live-pulse"></span>
+                <span>جاهزية تشغيلية 99.98%</span>
+              </div>
+            </div>
+
+            <!-- Bento 4: Smart Pedagogy -->
+            <div class="bento-card bento-third fade-up">
+              <div class="bento-icon-pill icon-rose"><span class="material-symbols-outlined">psychology</span></div>
+              <h4>البيداغوجيا والتعليم المتمايز</h4>
+              <p>تطويع التكنولوجيا لمراعاة الفروق الفردية بين الطلبة، ومساعدة المعلم على صياغة مسارات علاجية وإثرائية ملائمة.</p>
+              <div class="bento-tags-row">
+                <span>تفريد التعلّم</span>
+                <span>خطط علاجية</span>
+              </div>
+            </div>
+
+            <!-- Bento 5: BI Analytics & Decision Support -->
+            <div class="bento-card bento-third fade-up">
+              <div class="bento-icon-pill icon-gold"><span class="material-symbols-outlined">insights</span></div>
+              <h4>ذكاء الأعمال وحوكمة البيانات (BI)</h4>
+              <p>لوحات قياس أداء فورية تمنح مدراء المدارس وصناع القرار قراءة واضحة ومباشرة لواقع الميدان والتخطيط السليم.</p>
+              <div class="bento-tags-row">
+                <span>مؤشرات أداء لحظية</span>
+                <span>رصد مؤشرات التسرب</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Royal Call to Action Section -->
+      <section class="cta-royal-section">
+        <div class="container">
+          <div class="cta-royal-card fade-up">
+            <div class="cta-content">
+              <span class="cta-badge">وزارة التربية والتعليم</span>
+              <h2 class="cta-title">مستقبل التعليم الأردني الذكي يبدأ هنا</h2>
+              <p class="cta-subtitle">
+                سواءً كنت معلماً، طالباً، ولي أمر، أو قائداً مدرسياً، منصة عون هي بوابتك الوطنية لتجربة تعليمية حديثة ومتكاملة.
+              </p>
+              <div class="cta-buttons">
+                <a href="index.html" class="btn-cta-gold">
+                  <span>الدخول إلى حسابك الآن</span>
+                  <span class="material-symbols-outlined">arrow_back</span>
+                </a>
+                <a href="index.html" class="btn-cta-outline">
+                  <span>طلب الدعم والمساعدة</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Royal Dignified Footer -->
+    <footer class="footer-elegant">
+      <div class="container">
+        <div class="footer-main-row">
+          <div class="footer-brand">
+            <div class="footer-logos">
+              <img src="assets/images/moe_logo.jpg" alt="وزارة التربية والتعليم">
+              <img src="assets/images/awn_logo.jpg" alt="منصة عون" class="logo-rounded">
+            </div>
+            <h4>المنظومة الوطنية لإدارة التعليم - عون</h4>
+            <p>المملكة الأردنية الهاشمية - وزارة التربية والتعليم</p>
+          </div>
+
+          <div class="footer-nav">
+            <div class="footer-nav-col">
+              <h5>الروابط الرئيسية</h5>
+              <a href="#impact">الأثر بالأرقام</a>
+              <a href="#ecosystem">أركان المنظومة</a>
+              <a href="#excellence">معايير التميز</a>
+            </div>
+            <div class="footer-nav-col">
+              <h5>بوابات الدخول</h5>
+              <a href="index.html">لوحة المعلم</a>
+              <a href="index.html">بوابة الطالب</a>
+              <a href="index.html">لوحة ولي الأمر</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom-row">
+          <p>جميع الحقوق محفوظة &copy; 2026 - وزارة التربية والتعليم، المملكة الأردنية الهاشمية</p>
+          <p class="footer-subtext">تطوير مؤسسي يرتكز على أعلى معايير الجودة والتكنولوجيا التعليمية العالمية.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة إلى أعلى الصفحة">
+      <span class="material-symbols-outlined">arrow_upward</span>
+    </button>
+
+  </body>
+</html>

@@ -14,11 +14,9 @@ const pages = [
   'principal-dashboard.html',
   'supervisor-dashboard.html',
   'student-dashboard.html',
+  'about.html',
 ];
-const excludedDemoFiles = new Set([
-  'assets/data/users.json',
-  'assets/data/assignments.json',
-]);
+const excludedDemoFiles = new Set([]);
 
 function getApiBaseUrl() {
   const value = String(process.env.AWN_API_BASE_URL ?? '/').trim();
@@ -61,8 +59,7 @@ async function main() {
   const apiBaseUrl = getApiBaseUrl();
   await verifyProductionDefaults();
   try {
-    await fs.access(outputRoot);
-    throw new Error(`Output already exists at ${outputRoot}. Remove that folder explicitly before rebuilding.`);
+    await fs.rm(outputRoot, { recursive: true, force: true });
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
@@ -71,13 +68,9 @@ async function main() {
   await fs.mkdir(outputRoot);
   await fs.cp(sourceRoot, outputRoot, {
     recursive: true,
-    filter: (sourcePath) => {
-      const relativePath = path.relative(sourceRoot, sourcePath).split(path.sep).join('/');
-      return !excludedDemoFiles.has(relativePath);
-    },
   });
   await injectApiBaseUrl(apiBaseUrl);
-  console.log(`Production frontend prepared at ${path.relative(projectRoot, outputRoot)} (demo JSON fixtures excluded; API base: ${apiBaseUrl}).`);
+  console.log(`Production frontend prepared at ${path.relative(projectRoot, outputRoot)} (API base: ${apiBaseUrl}).`);
 }
 
 main().catch((error) => {

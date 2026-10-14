@@ -1,5 +1,5 @@
 <!doctype html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -24,6 +24,7 @@
     />
 
     <!-- CSS Styles -->
+    <link href="assets/css/variables.css" rel="stylesheet" />
     <link href="assets/css/styles.css" rel="stylesheet" />
 
     <!-- Tailwind & Config -->
@@ -54,14 +55,13 @@
         <div
           class="h-16 px-6 flex items-center gap-3 border-b border-slate-100/80"
         >
-          <div
-            class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 overflow-hidden shrink-0"
-          >
-            <img
-              alt="Awn Logo"
-              class="w-full h-full object-contain"
-              src="assets/images/awn_logo.jpg"
-            />
+          <div class="flex items-center gap-1.5 shrink-0">
+            <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center overflow-hidden shrink-0 border border-slate-100">
+              <img alt="MoE Logo" class="w-full h-full object-cover" src="assets/images/moe_logo.jpg" />
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 overflow-hidden shrink-0 border border-slate-100">
+              <img alt="Awn Logo" class="w-full h-full object-contain" src="assets/images/awn_logo.jpg" />
+            </div>
           </div>
           <div class="flex flex-col">
             <div class="flex items-center gap-1.5">
@@ -123,10 +123,7 @@
               >
               <span class="">الاعتمادات</span>
             </div>
-            <span
-              class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full"
-              >5</span
-            >
+            <span id="leaveRequestBadge" aria-label="طلبات إجازة ومغادرة قيد المراجعة" class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
           </a>
           <a href="#view-school-attendance"
             onclick="switchPrincipalView('view-school-attendance')"
@@ -202,6 +199,13 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- Logout -->
+      <div class="px-4 pb-6 mt-auto">
+        <a href="index.html" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-100 transition-colors border border-red-100" data-logout>
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <span>تسجيل الخروج</span>
+        </a>
       </div>
     </aside>
 
@@ -904,20 +908,16 @@
 
         <!-- ===================================== -->
         <div id="view-approvals" class="principal-view hidden flex flex-col gap-6">
-          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-2">
-            <span class="material-symbols-outlined text-primary text-[28px]">fact_check</span>
-            الاعتمادات
-          </h2>
-          <div class="bg-white rounded-2xl border border-slate-200/80 p-10 text-center shadow-sm">
-            <span class="material-symbols-outlined text-[60px] text-slate-300 mb-4 block">fact_check</span>
-            <h3 class="text-lg font-bold text-slate-700">الاعتمادات</h3>
-            <p class="text-slate-500 mt-2 text-sm max-w-md mx-auto">هنا تظهر الخطط والقرارات التي تحتاج إلى اعتمادك كمدير مدرسة.</p>
-            
-          </div>
+          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-2"><span class="material-symbols-outlined text-primary text-[28px]">fact_check</span>الاعتمادات وطلبات الكادر</h2>
+          <section class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3"><div><h3 class="font-bold text-slate-900">طلبات الإجازة والمغادرة</h3><p class="mt-1 text-xs text-slate-500">راجع طلبات المعلمين واتخذ القرار ليظهر لديهم في سجل الطلبات.</p></div><span class="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">نموذج محلي تجريبي</span></div>
+            <div class="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3"><div class="rounded-lg bg-amber-50 p-3"><span class="text-xs text-amber-800">قيد المراجعة</span><strong id="principalLeavePendingCount" class="mt-1 block text-xl font-black text-amber-900">0</strong></div><div class="rounded-lg bg-emerald-50 p-3"><span class="text-xs text-emerald-800">موافق عليها</span><strong id="principalLeaveApprovedCount" class="mt-1 block text-xl font-black text-emerald-900">0</strong></div><div class="rounded-lg bg-red-50 p-3"><span class="text-xs text-red-800">مرفوضة</span><strong id="principalLeaveRejectedCount" class="mt-1 block text-xl font-black text-red-900">0</strong></div></div>
+            <div class="mb-3 flex flex-wrap items-center justify-between gap-2"><p class="text-xs text-slate-500">الطلبات تظهر هنا عند حفظها من لوحة المعلم على المتصفح نفسه.</p><label class="flex items-center gap-2 text-xs font-bold text-slate-600">عرض<select id="principalLeaveFilter" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs"><option value="all">كل الطلبات</option><option value="pending">قيد المراجعة</option><option value="approved">موافق عليها</option><option value="rejected">مرفوضة</option></select></label></div>
+            <div class="overflow-x-auto"><table class="w-full min-w-[68rem] border-collapse text-right text-xs"><thead><tr class="border-b bg-slate-50 text-slate-600"><th class="p-3">المعلم</th><th class="p-3">نوع الطلب</th><th class="p-3">الفترة</th><th class="p-3">السبب</th><th class="p-3">تاريخ الإرسال</th><th class="p-3">الحالة</th><th class="p-3">المرفق</th><th class="p-3">الإجراء</th></tr></thead><tbody id="principalLeaveRequestRows" class="divide-y divide-slate-100"></tbody></table></div>
+          </section>
+          <p class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-6 text-amber-900">الموافقة هنا تجريبية ومحلية. عند ربط النظام الفعلي ستُستبدل بواجهة اعتماد وصلاحيات وإشعارات رسمية.</p>
         </div>
 
-
-        <!-- ===================================== -->
         <div id="view-school-attendance" class="principal-view hidden flex flex-col gap-6">
           <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-2">
             <span class="material-symbols-outlined text-primary text-[28px]">co_present</span>
@@ -964,33 +964,6 @@
       </main>
     </div>
 
-    <!-- Scripts -->
-    <script>
-      function switchPrincipalView(viewId) {
-        document.querySelectorAll(".principal-view").forEach((view) => {
-          view.classList.add("hidden");
-        });
-        const activeView = document.getElementById(viewId);
-        if (activeView) {
-          activeView.classList.remove("hidden");
-        }
-
-        document.querySelectorAll("#sidebar [data-path]").forEach((link) => {
-          link.className =
-            "flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all";
-          const indicator = link.querySelector(".active-indicator");
-          if (indicator) indicator.remove();
-
-          if (link.getAttribute("data-path") === viewId) {
-            link.className =
-              "relative flex items-center justify-between px-4 py-3 bg-primary-50 text-primary font-bold rounded-xl";
-            link.innerHTML +=
-              '<div class="active-indicator absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-primary rounded-l-full"></div>';
-          }
-        });
-      }
-    </script>
-  
     <!-- Config -->
     <script src="js/config/tailwind.js"></script>
     <script src="js/config/app-config.js"></script>
@@ -1003,9 +976,8 @@
     <script src="js/components/feedback.js"></script>
     <script src="js/components/about.js"></script>
     <!-- Features -->
-    <script src="js/features/student.js"></script>
-    <script src="js/features/parent.js"></script>
-    <script src="js/features/teacher.js"></script>
+    <script src="js/features/principal.js"></script>
+    <script src="js/features/leave-requests.js"></script>
     <!-- Core -->
     <script src="js/core/events.js"></script>
     <script src="js/core/init.js"></script>

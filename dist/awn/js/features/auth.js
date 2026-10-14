@@ -1,4 +1,17 @@
-import { authenticate } from "../services/auth-service.js";
+import { authenticate, DASHBOARDS_BY_ROLE } from "../services/auth-service.js";
+
+// If already authenticated with a valid role, auto-redirect to their role dashboard
+try {
+  const existingSession = JSON.parse(localStorage.getItem("awn_session") || "{}");
+  if (existingSession && existingSession.username && existingSession.role) {
+    const targetDashboard = DASHBOARDS_BY_ROLE[existingSession.role];
+    if (targetDashboard) {
+      window.location.replace(targetDashboard);
+    }
+  }
+} catch {
+  // Continue to login page if session is missing or invalid
+}
 
 const messages = {
   ar: {
@@ -14,6 +27,7 @@ const messages = {
     submit: "تسجيل الدخول",
     loading: "جارٍ التحقق…",
     support: "تحتاج مساعدة؟ تواصل مع مسؤول النظام في مدرستك.",
+    aboutUs: "من نحن",
     copyright: "© وزارة التربية والتعليم — المملكة الأردنية الهاشمية",
     invalidCredentials: "تعذر تسجيل الدخول. تحقق من البيانات وحاول مرة أخرى.",
     serviceUnavailable: "تعذر الاتصال بخدمة الدخول. تحقق من الاتصال أو تواصل مع مسؤول النظام.",
@@ -31,6 +45,7 @@ const messages = {
     submit: "Sign in",
     loading: "Checking…",
     support: "Need help? Contact your school system administrator.",
+    aboutUs: "About Us",
     copyright: "© Ministry of Education — Hashemite Kingdom of Jordan",
     invalidCredentials: "Sign-in failed. Check your details and try again.",
     serviceUnavailable: "The sign-in service is unavailable. Check your connection or contact the system administrator.",
@@ -93,16 +108,17 @@ form.addEventListener("submit", async (event) => {
   setLoading(true);
 
   try {
-    const user = await authenticate(String(values.get("username")).trim(), String(values.get("password")));
-    if (!user) {
+    const authResult = await authenticate(String(values.get("username")).trim(), String(values.get("password")));
+    if (!authResult || !authResult.success || !authResult.data) {
       showError("invalidCredentials");
       return;
     }
+    const user = authResult.data;
     if (!isLocalDashboardPath(user.redirect)) {
       throw new Error("INVALID_DEMO_REDIRECT");
     }
 
-    // Demo only. A production backend should set an HttpOnly, Secure session cookie.
+    // Demo only: Ensure password is never stored
     window.localStorage.setItem("awn_session", JSON.stringify({
       username: user.username,
       role: user.role,

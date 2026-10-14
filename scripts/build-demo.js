@@ -14,6 +14,7 @@ const pages = [
   'principal-dashboard.html',
   'supervisor-dashboard.html',
   'student-dashboard.html',
+  'about.html',
 ];
 
 async function preparePage(page) {
@@ -32,8 +33,7 @@ async function preparePage(page) {
 async function main() {
   for (const page of pages) await preparePage(page);
   try {
-    await fs.access(outputRoot);
-    throw new Error(`Output already exists at ${outputRoot}. Remove that folder explicitly before rebuilding.`);
+    await fs.rm(outputRoot, { recursive: true, force: true });
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }

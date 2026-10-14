@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/variables.css">
     <link rel="stylesheet" href="assets/css/index.css">
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script defer src="js/config/app-config.js"></script>
@@ -18,11 +19,15 @@
   </head>
   <body class="login-page">
     <header class="login-page__header">
-      <a class="brand" href="index.html" aria-label="عون — الصفحة الرئيسية">
+      <a class="brand" href="index.html" aria-label="عون — الصفحة الرئيسية" style="display: flex; align-items: center; gap: 0.75rem;">
+        <img class="brand__logo" src="assets/images/moe_logo.jpg" alt="شعار وزارة التربية والتعليم" style="border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
         <img class="brand__logo" src="assets/images/awn_logo.jpg" alt="شعار منصة عون">
         <span class="brand__name">عون</span>
       </a>
-      <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">English</button>
+      <div style="display: flex; gap: 1.5rem; align-items: center;">
+        <a href="about.html" style="text-decoration: none; font-weight: 600; color: var(--color-brand);" data-i18n="aboutUs">من نحن</a>
+        <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">English</button>
+      </div>
     </header>
 
     <main class="login-page__main">

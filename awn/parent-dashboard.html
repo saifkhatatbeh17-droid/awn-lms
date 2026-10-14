@@ -1,5 +1,5 @@
 <!doctype html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -24,6 +24,7 @@
     />
 
     <!-- CSS Styles -->
+    <link href="assets/css/variables.css" rel="stylesheet" />
     <link href="assets/css/styles.css" rel="stylesheet" />
 
     <!-- Tailwind & Config -->
@@ -54,14 +55,13 @@
         <div
           class="h-16 px-6 flex items-center gap-3 border-b border-slate-100/80"
         >
-          <div
-            class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 overflow-hidden shrink-0"
-          >
-            <img
-              alt="Awn Logo"
-              class="w-full h-full object-contain"
-              src="assets/images/awn_logo.jpg"
-            />
+          <div class="flex items-center gap-1.5 shrink-0">
+            <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center overflow-hidden shrink-0 border border-slate-100">
+              <img alt="MoE Logo" class="w-full h-full object-cover" src="assets/images/moe_logo.jpg" />
+            </div>
+            <div class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 overflow-hidden shrink-0 border border-slate-100">
+              <img alt="Awn Logo" class="w-full h-full object-contain" src="assets/images/awn_logo.jpg" />
+            </div>
           </div>
           <div class="flex flex-col">
             <div class="flex items-center gap-1.5">
@@ -208,6 +208,13 @@
             </div>
           </div>
         </div>
+      </div>
+      <!-- Logout -->
+      <div class="px-4 pb-6 mt-auto">
+        <a href="index.html" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-100 transition-colors border border-red-100" data-logout>
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <span>تسجيل الخروج</span>
+        </a>
       </div>
     </aside>
 

@@ -1,5 +1,5 @@
 <!doctype html>
-<html dir="rtl" lang="ar" data-theme="light">
+<html lang="ar" dir="rtl" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -25,7 +25,7 @@
     />
 
     <!-- CSS Styles -->
-    <link href="css/variables.css" rel="stylesheet" />
+    <link href="assets/css/variables.css" rel="stylesheet" />
     <link href="assets/css/styles.css" rel="stylesheet" />
 
     <!-- Tailwind & Config -->
@@ -176,6 +176,22 @@
             <span class="">سجل الطلاب</span>
           </a>
 
+          <a href="#view-teacher-profile"
+            onclick="switchView('view-teacher-profile')"
+            data-path="view-teacher-profile"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer mt-2 text-sm font-medium"
+          >
+            <span class="material-symbols-outlined text-[20px]">workspace_premium</span>
+            <span>ملفي المهني</span>
+          </a>
+          <a href="#view-leave-requests"
+            onclick="switchView('view-leave-requests')"
+            data-path="view-leave-requests"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer mt-2 text-sm font-medium"
+          >
+            <span class="material-symbols-outlined text-[20px]">event_available</span>
+            <span>طلب إجازة / مغادرة</span>
+          </a>
           <!-- Support Links -->
           <div
             class="mt-4 mb-2 px-4 text-[11px] font-bold text-slate-500 tracking-wider"
@@ -210,14 +226,20 @@
             >
             <div class="flex flex-col">
               <span class="text-[11px] font-bold text-slate-800"
-                >بوابة المعلم المعتمدة</span
+                >بوابة المعلم — نموذج تجريبي</span
               >
-              <span class="text-[10px] text-slate-500"
-                >وزارة التربية والتعليم</span
+              <span class="text-[10px] text-slate-500">نموذج محلي غير رسمي</span
               >
             </div>
           </div>
         </div>
+      </div>
+      <!-- Logout -->
+      <div class="px-4 pb-6 mt-auto">
+        <a href="index.html" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-100 transition-colors border border-red-100" data-logout>
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <span>تسجيل الخروج</span>
+        </a>
       </div>
     </aside>
 
@@ -268,13 +290,13 @@
                 <span
                   class="w-2 h-2 rounded-full bg-secondary animate-pulse"
                 ></span>
-                <span class="">OpenEMIS متزامن</span>
+                <span class="">نموذج تجريبي محلي</span>
               </div>
               <div
                 class="flex items-center gap-1 text-[11px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200"
               >
                 <span class="material-symbols-outlined text-[14px]">sync</span>
-                <span>آخر مزامنة: قبل ١٠ دقائق</span>
+                <span>لا يوجد اتصال بخادم</span>
               </div>
             </div>
             <button type="button"
@@ -292,7 +314,7 @@
               <div class="flex flex-col text-left">
                 <span
                   class="text-base font-bold font-cairo text-slate-900 leading-tight"
-                  >أ. سيف خطاطبة</span
+                   data-teacher-name>معلم</span
                 >
                 <span class="text-[11px] text-secondary font-semibold"
                   >معلم لغة عربية</span
@@ -321,10 +343,10 @@
           >
             <div class="flex flex-col z-10 relative">
               <span class="text-sm font-bold text-primary mb-1"
-                >الفصل الدراسي الثاني 2025/2026</span
+                ><span data-academic-term></span> <span data-academic-year></span><span class="text-xs text-slate-400"> — تقدير تقويمي قابل للتعديل</span></span
               >
               <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-                مرحباً بك مجدداً، أ. سيف 👋
+                مرحباً بك مجدداً، <span data-teacher-name>معلم</span> 👋
               </h1>
               <p class="text-slate-500">
                 منصة عون تتمنى لك يوماً دراسياً موفقاً وحافلاً بالإنجازات.
@@ -440,7 +462,7 @@
                     <span class="material-symbols-outlined text-primary"
                       >insights</span
                     >
-                    التحليل الذكي للأداء
+                    مؤشرات متابعة الصف — بيانات تجريبية
                   </h3>
                   <select
                     class="bg-white border border-slate-200 text-xs font-semibold text-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-primary"
@@ -823,7 +845,7 @@
                   <span
                     class="w-2 h-2 rounded-full bg-secondary animate-pulse"
                   ></span>
-                  <span class="">جاهزة للاعتماد الأكاديمي</span>
+                  <span class="">مسودة محلية</span>
                 </div>
               </div>
             </div>
@@ -850,12 +872,12 @@
                     </h1>
                     <span
                       class="bg-primary-50 text-primary text-xs font-bold font-cairo px-2.5 py-0.5 rounded-full font-bold border border-primary/20"
-                      >معتمد وزارياً</span
+                      >نموذج تخطيطي قابل للتخصيص</span
                     >
                   </div>
                   <p class="text-sm font-cairo text-slate-500 mt-0.5">
-                    وزارة التربية والتعليم — إدارة المناهج والكتب المدرسية
-                    والإشراف التربوي
+                    نموذج تخطيطي تجريبي محلي
+                    وقابل للتعديل حسب مرجع مدرستك
                   </p>
                 </div>
               </div>
@@ -948,7 +970,7 @@
                 نموذج رقم (QF71-47rev.a)
               </p>
               <div class="text-sm font-bold font-cairo mt-1 font-bold text-black" style="font-family: 'Cairo', sans-serif">
-                العام الدراسي: 2025 / 2026 م
+                العام الدراسي: <span data-academic-year></span> (تقديري)
               </div>
             </div>
 
@@ -977,12 +999,14 @@
                   <span class="whitespace-nowrap font-extrabold text-black">عدد الدروس:</span>
                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="number" value="5" />
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="min-w-0 flex flex-col gap-1.5">
                   <span class="whitespace-nowrap font-extrabold text-black">الفترة الزمنية:</span>
-                  <span class="text-sm font-bold text-black">من</span>
-                  <input class="bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-01-19" />
-                  <span class="text-sm font-bold text-black">إلى</span>
-                  <input class="bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-02-13" />
+                  <div class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-2 gap-y-1 min-w-0">
+                    <span class="text-sm font-bold text-black">من</span>
+                    <input class="w-full min-w-0 max-w-full bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-01-19" />
+                    <span class="text-sm font-bold text-black">إلى</span>
+                    <input class="w-full min-w-0 max-w-full bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5 text-sm outline-none font-bold text-black" type="date" value="2026-02-13" />
+                  </div>
                 </div>
                 <div class="flex items-center gap-1.5">
                   <span class="whitespace-nowrap font-extrabold text-black">عدد الحصص:</span>
@@ -1191,12 +1215,12 @@
                   </h2>
                   <span
                     class="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono border border-slate-200 font-semibold"
-                    >معتمد وزارياً</span
+                    >نموذج تخطيطي قابل للتخصيص</span
                   >
                 </div>
                 <p class="text-xs text-slate-500 mt-0.5">
-                  مبني وفق استراتيجية التدريس التفاعلي الخماسي (5Es) المعتمدة
-                  لدى وزارة التربية والتعليم الأردنية
+                  مبني وفق استراتيجية التدريس التفاعلي الخماسي (5Es)
+                  وطابق الاستراتيجية مع مرجع مدرستك
                 </p>
               </div>
             </div>
@@ -1362,159 +1386,43 @@
                 class="w-full min-w-[800px] border-2 border-black text-right border-collapse table-fixed text-black"
               >
                 <thead>
-                  <tr
-                    class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-base   "
-                  >
-                    <th class="w-16 py-2 px-1 text-center font-black border border-black">الزمن</th>
-                    <th class="w-[43%] py-2 px-3 text-center font-black border border-black">
-                      دور المتعلّم
-                    </th>
-                    <th class="w-[43%] py-2 px-3 text-center font-black border border-black">
-                      دور المعلّم
-                    </th>
-                    <th class="w-24 py-2 px-1 text-center font-black border border-black">
-                      المراحل
-                    </th>
+                  <tr class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-base">
+                    <th scope="col" class="w-24 py-2 px-1 text-center font-black border border-black">المراحل</th>
+                    <th scope="col" class="w-[43%] py-2 px-3 text-center font-black border border-black">دور المعلّم</th>
+                    <th scope="col" class="w-[43%] py-2 px-3 text-center font-black border border-black">دور المتعلّم</th>
+                    <th scope="col" class="w-16 py-2 px-1 text-center font-black border border-black">الزمن</th>
                   </tr>
                 </thead>
                 <tbody class="text-sm">
-                  <!-- STAGE 1 -->
-                  <tr
-                    class="align-top"
-                  >
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
-                    >
-                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
-                        type="text"
-                        value=""
-                        placeholder="..."
-                      />
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="4"
-                        placeholder="دور المتعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="4"
-                        placeholder="دور المعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
-                    >
-                      <div class="font-extrabold text-black">
-                        1- التهيئة والاندماج
-                      </div>
-                    </td>
+                  <tr class="align-top">
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"><div class="font-extrabold text-black">1- التهيئة والاندماج</div></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="4" placeholder="دور المعلّم..."></textarea></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="4" placeholder="دور المتعلّم..."></textarea></td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"><input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0" type="text" value="" placeholder="..." /></td>
                   </tr>
-                  <!-- STAGE 2 -->
-                  <tr
-                    class="align-top"
-                  >
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
-                    >
-                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
-                        type="text"
-                        value=""
-                        placeholder="..."
-                      />
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="5"
-                        placeholder="دور المتعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="5"
-                        placeholder="دور المعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
-                    >
-                      <div class="font-extrabold text-black">
-                        2- الشرح والتفسير
-                      </div>
-                    </td>
+                  <tr class="align-top">
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"><div class="font-extrabold text-black">2- الشرح والتفسير</div></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="5" placeholder="دور المعلّم..."></textarea></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="5" placeholder="دور المتعلّم..."></textarea></td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"><input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0" type="text" value="" placeholder="..." /></td>
                   </tr>
-                  <!-- STAGE 3 -->
-                  <tr
-                    class="align-top"
-                  >
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
-                    >
-                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
-                        type="text"
-                        value=""
-                        placeholder="..."
-                      />
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="4"
-                        placeholder="دور المتعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="4"
-                        placeholder="دور المعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
-                    >
-                      <div class="font-extrabold text-black">
-                        3- التوسع ودعم التميز
-                      </div>
-                    </td>
+                  <tr class="align-top">
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"><div class="font-extrabold text-black">3- التوسع ودعم التميز</div></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="4" placeholder="دور المعلّم..."></textarea></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="4" placeholder="دور المتعلّم..."></textarea></td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"><input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0" type="text" value="" placeholder="..." /></td>
                   </tr>
-                  <!-- STAGE 4 -->
-                  <tr
-                    class="align-top"
-                  >
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"
-                    >
-                      <input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0"
-                        type="text"
-                        value=""
-                        placeholder="..."
-                      />
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="3"
-                        placeholder="دور المتعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 border border-black">
-                      <textarea
-                        class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none"
-                        rows="3"
-                        placeholder="دور المعلّم..."
-                      ></textarea>
-                    </td>
-                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"
-                    >
-                      <div class="font-extrabold text-black">
-                        4- تأكيد التعلم
-                      </div>
-                    </td>
+                  <tr class="align-top">
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50 text-xs md:text-sm leading-snug border border-black"><div class="font-extrabold text-black">4- تأكيد التعلم</div></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="3" placeholder="دور المعلّم..."></textarea></td>
+                    <td class="p-2 border border-black"><textarea class="w-full text-xs md:text-sm leading-relaxed border-0 bg-transparent p-1 focus:ring-1 focus:ring-black resize-y outline-none" rows="3" placeholder="دور المتعلّم..."></textarea></td>
+                    <td class="p-2 text-center align-middle font-bold bg-slate-50/50 border border-black"><input class="w-full min-w-[50px] text-center font-bold border-0 bg-transparent p-0 focus:ring-0" type="text" value="" placeholder="..." /></td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <!-- Lower Grid Section -->
+<!-- Lower Grid Section -->
             <div
               class="mt-3 border-2 border-black grid grid-cols-1 md:grid-cols-12 text-black font-[Cairo]"
               style="font-family: &quot;Cairo&quot;, sans-serif"
@@ -1691,10 +1599,10 @@
                 <div
                   class="h-8 border-b border-dashed border-gray-400 flex items-center justify-between text-xs text-slate-900 font-bold"
                 >
-                  <span class="">أ. سيف خطاطبة</span>
+                  <span class="" data-teacher-name>معلم</span>
                   <span
                     class="text-[10px] bg-secondary/10 text-secondary px-1.5 py-0.5 rounded font-mono"
-                    >معتمد ✓</span
+                    >نموذج تجريبي</span
                   >
                 </div>
               </div>
@@ -1784,16 +1692,16 @@
                   </h2>
                   <span
                     class="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-mono border border-primary/20 font-semibold"
-                    >تزامن تلقائي</span
+                    >حفظ محلي تجريبي</span
                   >
                 </div>
                 <p
                   class="text-xs text-slate-500 mt-0.5 flex items-center gap-2"
                 >
-                  <span class="">الأحد، 16 شباط 2025</span>
+                  <span class=""><span id="attendanceDateLabel"></span></span>
                   <span class="">•</span>
                   <span class="text-primary font-semibold"
-                    >الفصل الدراسي الثاني</span
+                    ><span id="attendanceTermLabel"></span></span
                   >
                 </p>
               </div>
@@ -1804,8 +1712,9 @@
                 class="hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm"
               >
                 <i class="fa-solid fa-shield-check text-emerald-600"></i>
-                <span class="">متصل بنظام الوزارة</span>
+                <span class="">لا يوجد اتصال بخادم</span>
               </div>
+              <button type="button" data-teacher-action="quick-absence" title="إضافة غياب سريع" aria-label="إضافة غياب سريع" class="inline-flex h-9 w-9 shrink-0 items-center justify-center gap-1 rounded-lg border border-primary/30 bg-white text-primary shadow-sm transition-colors hover:bg-primary/10 sm:h-auto sm:w-auto sm:px-3 sm:py-1.5"><span class="material-symbols-outlined text-[18px]">person_off</span><span class="hidden sm:inline">إضافة غياب سريع</span></button>
               <button type="button"
                 class="px-3 py-1.5 text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-300 transition-colors flex items-center gap-1.5 shadow-sm"
                 onclick="window.print()"
@@ -1818,7 +1727,7 @@
                 type="button"
               >
                 <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
-                <span class="">ترحيل السجل</span>
+                <span class="">تصدير CSV</span>
               </button>
             </div>
           </div>
@@ -2259,7 +2168,7 @@
                   >
                 </div>
                 <p class="text-xs text-slate-500 mt-1 flex items-center gap-2">
-                  <span class="">الفصل الدراسي الثاني 2024/2025</span>
+                  <span data-academic-term></span> <span data-academic-year></span> — توزيع تجريبي للمبحث
                 </p>
               </div>
             </div>
@@ -2276,7 +2185,7 @@
                 type="button"
               >
                 <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span class="">حفظ وإرسال للوزارة</span>
+                <span class="">حفظ العلامات محليًا</span>
               </button>
             </div>
           </div>
@@ -2447,6 +2356,103 @@
         <!-- Old TIMETABLE view removed by user request -->
 
         <!-- ===================================== -->
+        <!-- VIEW: TEACHER PROFESSIONAL PROFILE -->
+        <div id="view-teacher-profile" class="app-view hidden flex flex-col gap-6 w-full">
+          <section class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-center gap-3">
+              <span class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/10 bg-primary/5 text-primary"><span class="material-symbols-outlined">workspace_premium</span></span>
+              <div>
+                <h2 class="text-lg font-bold text-slate-900">الملف الوظيفي والتطوير المهني</h2>
+                <p class="mt-1 text-xs text-slate-500">ملخص موحد لبيانات المعلم الوظيفية والتدريبية</p>
+              </div>
+            </div>
+            <span class="rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-bold text-blue-800">نموذج تكامل تجريبي</span>
+          </section>
+
+          <div class="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
+            <span class="material-symbols-outlined mt-0.5 text-amber-700">info</span>
+            <p><strong>معاينة توضيحية:</strong> الأرقام والسجلات أدناه نموذج لشكل البيانات التي ستُجمع من منصات وزارة التربية والتعليم. لا يوجد اتصال حي أو مزامنة فعلية حالياً، ولا تمثل هذه البيانات سجلاً رسمياً.</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
+            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">الدرجة الوظيفية الحالية</p><span class="material-symbols-outlined text-primary">badge</span></div><p id="careerGradeSummary" class="mt-3 truncate text-lg font-black text-primary">—</p><p class="mt-1 text-[11px] text-slate-500">مصدرها المتوقع: منصة الموظفين</p></article>
+            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">سنوات الخدمة</p><span class="material-symbols-outlined text-blue-700">work_history</span></div><p id="careerServiceSummary" class="mt-3 text-lg font-black text-slate-900">—</p><p class="mt-1 text-[11px] text-slate-500">بحسب بيانات الخدمة الوظيفية</p></article>
+            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">الترفيعات المسجلة</p><span class="material-symbols-outlined text-emerald-700">trending_up</span></div><p id="careerPromotionSummary" class="mt-3 text-lg font-black text-slate-900">—</p><p class="mt-1 text-[11px] text-slate-500">سجل مجمع من منصة الموظفين</p></article>
+            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">الدورات المهنية</p><span class="material-symbols-outlined text-violet-700">school</span></div><p class="mt-3"><strong id="careerCourseSummary" class="text-lg font-black text-slate-900">—</strong> <span class="text-xs text-slate-500">دورة</span></p><p id="careerCourseHours" class="mt-1 text-[11px] text-slate-500">— ساعة تدريبية</p></article>
+          </div>
+
+          <div class="grid grid-cols-1 gap-5 2xl:grid-cols-2">
+            <section class="min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div class="mb-4 flex flex-wrap items-start justify-between gap-2"><div><h3 class="font-bold text-slate-900">المسار الوظيفي والترفيعات</h3><p class="mt-1 text-xs text-slate-500">أحدث المحطات الوظيفية كما يُتوقع ظهورها في الملف الموحد.</p></div><span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">منصة الموظفين</span></div>
+              <div class="overflow-x-auto"><table class="w-full min-w-[30rem] border-collapse text-right text-xs"><thead><tr class="border-b bg-slate-50 text-slate-600"><th class="p-3">المحطة</th><th class="p-3">السنة</th><th class="p-3">الدرجة / الحالة</th><th class="p-3">مصدر البيانات</th></tr></thead><tbody id="teacherPromotionRows" class="divide-y divide-slate-100"></tbody></table></div>
+            </section>
+
+            <section class="min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div class="mb-4 flex flex-wrap items-start justify-between gap-2"><div><h3 class="font-bold text-slate-900">التدريب والتطوير المهني</h3><p id="teacherCourseListCaption" class="mt-1 text-xs text-slate-500">الدورات المسجلة وساعات التدريب.</p></div><span class="rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700">منصة تدريب المعلمين</span></div>
+              <div class="overflow-x-auto"><table class="w-full min-w-[34rem] border-collapse text-right text-xs"><thead><tr class="border-b bg-slate-50 text-slate-600"><th class="p-3">الدورة</th><th class="p-3">المجال</th><th class="p-3">السنة</th><th class="p-3">الساعات</th></tr></thead><tbody id="teacherCourseRows" class="divide-y divide-slate-100"></tbody></table></div>
+            </section>
+          </div>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="mb-4 flex flex-wrap items-start justify-between gap-2"><div><h3 class="font-bold text-slate-900">النشاط التدريبي حسب السنة</h3><p class="mt-1 text-xs text-slate-500">توزيع الساعات التدريبية المسجلة في منصة تدريب المعلمين.</p></div><span class="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-700">مؤشر توضيحي</span></div>
+            <div id="teacherTrainingYearChart" class="space-y-4" aria-label="مخطط الساعات التدريبية حسب السنة"></div>
+          </section>
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-2"><div><h3 class="font-bold text-slate-900">مصادر البيانات وحالة التكامل</h3><p class="mt-1 text-xs text-slate-500">تجميع الخدمات في لوحة واحدة لتقليل انتقال المعلم بين المنصات.</p></div><span id="teacherProfessionalSyncStatus" role="status" class="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">لا توجد مزامنة فعلية</span></div>
+            <div id="teacherProfessionalSources" class="grid grid-cols-1 gap-3 md:grid-cols-2"></div>
+          </section>
+
+          <script type="application/json" id="teacherProfessionalSampleData">
+          {
+            "isSample": true,
+            "summary": { "grade": "درجة وظيفية (نموذج)", "serviceYears": 12, "promotionCount": 2, "courseCount": 8, "trainingHours": 96 },
+            "promotions": [
+              { "event": "بداية الخدمة التعليمية", "year": "2014", "grade": "بيانات وظيفية نموذجية", "source": "منصة الموظفين" },
+              { "event": "ترفيع وظيفي (نموذج)", "year": "2019", "grade": "بيانات وظيفية نموذجية", "source": "منصة الموظفين" },
+              { "event": "ترفيع وظيفي (نموذج)", "year": "2024", "grade": "درجة نموذجية", "source": "منصة الموظفين" }
+            ],
+            "courses": [
+              { "title": "التعلم الرقمي في التعليم (نموذج)", "area": "التعلم الرقمي", "year": "2025", "hours": 20 },
+              { "title": "استراتيجيات التدريس الحديثة (نموذج)", "area": "استراتيجيات التدريس", "year": "2024", "hours": 16 },
+              { "title": "التقويم من أجل التعلم (نموذج)", "area": "التقويم", "year": "2023", "hours": 12 },
+              { "title": "التعليم الدامج (نموذج)", "area": "التعليم الدامج", "year": "2022", "hours": 12 }
+            ],
+            "trainingByYear": [
+              { "year": "2022", "hours": 12 },
+              { "year": "2023", "hours": 20 },
+              { "year": "2024", "hours": 28 },
+              { "year": "2025", "hours": 36 }
+            ],
+            "sources": [
+              { "name": "منصة الموظفين", "fields": "الدرجة الوظيفية، سنوات الخدمة، سجل الترفيعات", "status": "مصدر متوقع — غير مربوط حالياً", "icon": "badge" },
+              { "name": "منصة تدريب المعلمين", "fields": "الدورات، مجالات التدريب، الساعات والشهادات", "status": "مصدر متوقع — غير مربوط حالياً", "icon": "school" }
+            ]
+          }
+          </script>
+        </div>
+        <!-- VIEW: TEACHER LEAVE AND DEPARTURE REQUESTS -->
+        <div id="view-leave-requests" class="app-view hidden flex flex-col gap-6 w-full">
+          <section class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-center gap-3"><span class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/5 text-primary"><span class="material-symbols-outlined">event_available</span></span><div><h2 class="text-lg font-bold text-slate-900">طلبات الإجازة والمغادرة</h2><p class="mt-1 text-xs text-slate-500">إرسال الطلب إلى مدير المدرسة ومتابعة القرار من مكان واحد.</p></div></div>
+            <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-800">نموذج تجريبي محلي</span>
+          </section>
+          <div class="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-950"><span class="material-symbols-outlined mt-0.5">info</span><p>في هذا النموذج، يظهر الطلب في صندوق اعتمادات المدير على المتصفح نفسه. لا يُرسل إلى الوزارة أو المدرسة ولا يُعد طلباً رسمياً.</p></div>
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="mb-4"><h3 class="font-bold text-slate-900">إنشاء طلب جديد</h3><p class="mt-1 text-xs text-slate-500">سيظهر اسم حسابك لدى مدير المدرسة عند إرسال الطلب.</p></div>
+            <form id="teacherLeaveRequestForm" class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <label class="grid gap-1.5 text-xs font-bold text-slate-700">نوع الطلب<select id="teacherLeaveType" name="type" required class="rounded-lg border border-slate-300 bg-white p-2.5 text-sm"><option value="medical">إجازة مرضية</option><option value="contingent">إجازة عرضية</option><option value="leave">إجازة أخرى</option><option value="departure">مغادرة مبكرة</option></select></label>
+              <label class="grid gap-1.5 text-xs font-bold text-slate-700">التاريخ / من<input id="teacherLeaveStart" name="startDate" type="date" required class="rounded-lg border border-slate-300 bg-white p-2.5 text-sm" /></label>
+              <label id="teacherLeaveEndField" class="grid gap-1.5 text-xs font-bold text-slate-700">إلى<input id="teacherLeaveEnd" name="endDate" type="date" required class="rounded-lg border border-slate-300 bg-white p-2.5 text-sm" /></label>
+              <label id="teacherDepartureTimeField" class="hidden gap-1.5 text-xs font-bold text-slate-700">وقت المغادرة<input id="teacherDepartureTime" name="departureTime" type="time" class="rounded-lg border border-slate-300 bg-white p-2.5 text-sm" /></label>
+              <label class="grid gap-1.5 text-xs font-bold text-slate-700 md:col-span-2 xl:col-span-3">سبب الطلب / ملاحظات للمدير<textarea name="reason" required maxlength="600" rows="3" class="rounded-lg border border-slate-300 bg-white p-2.5 text-sm" placeholder="اكتب سبب الطلب باختصار..."></textarea></label><div id="teacherLeaveAttachmentField" class="hidden md:col-span-2 xl:col-span-3"><label for="teacherLeaveAttachment" class="grid gap-1.5 text-xs font-bold text-slate-700">التقرير أو المستند المؤيد (PDF)<input id="teacherLeaveAttachment" name="attachment" type="file" accept="application/pdf,.pdf" class="rounded-lg border border-slate-300 bg-white p-2.5 text-sm file:ml-3 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:font-bold file:text-blue-800" /></label><p class="mt-1.5 text-xs leading-5 text-slate-500">المرفق الطبي PDF إلزامي. وفق المادة 57: حتى 7 أيام مجتمعة أو متفرقة خلال السنة يكون التقرير من طبيب وزارة الصحة أو أحد المستشفيات؛ وإذا زادت المدة على 7 أيام متصلة فيلزم تقرير اللجنة الطبية المختصة. مرفق العرضية اختياري وتبقى خاضعة للتحقق. PDF فقط حتى 10 ميغابايت. النموذج محلي؛ لا ترفع تقارير صحية حقيقية.</p></div>
+              <div class="flex flex-wrap items-center gap-3 md:col-span-2 xl:col-span-3"><button type="submit" class="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-hover">إرسال إلى المدير</button><span class="text-xs text-slate-500">سيبقى الطلب «قيد المراجعة» حتى يبتّ فيه المدير.</span></div>
+            </form>
+          </section>
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-2"><div><h3 class="font-bold text-slate-900">طلباتي السابقة</h3><p class="mt-1 text-xs text-slate-500">تتحدث الحالة بعد مراجعة المدير للطلب.</p></div><span id="teacherLeaveRequestCount" class="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-700">0 طلب</span></div>
+            <div class="overflow-x-auto"><table class="w-full min-w-[58rem] border-collapse text-right text-xs"><thead><tr class="border-b bg-slate-50 text-slate-600"><th class="p-3">نوع الطلب</th><th class="p-3">الفترة</th><th class="p-3">السبب</th><th class="p-3">تاريخ الإرسال</th><th class="p-3">المرفق</th><th class="p-3">قرار المدير</th><th class="p-3">الحالة</th></tr></thead><tbody id="teacherLeaveRequestRows" class="divide-y divide-slate-100"></tbody></table></div>
+          </section>
+        </div>
         <!-- VIEW 7: STUDENT RECORDS (سجل الطلاب)    -->
         <!-- ===================================== -->
         <div
@@ -2516,7 +2522,7 @@
                 >
                 <input
                   type="text"
-                  placeholder="أدخل اسم الطالب أو الرقم الوطني..."
+                  placeholder="ابحث باسم الطالب (بيانات تجريبية)"
                   class="w-full bg-white border border-slate-200 text-slate-800 text-sm font-semibold rounded-lg p-2.5 pr-10 focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm"
                 />
               </div>
@@ -2543,7 +2549,7 @@
                     أحمد إبراهيم العبادي
                   </h3>
                   <p class="text-xs text-slate-500 mt-0.5">
-                    الرقم الوطني: 2011004561
+                    معرّف تجريبي: T-01
                   </p>
 
                   <div class="mt-3 flex flex-wrap gap-1.5">
@@ -2599,7 +2605,7 @@
                     عمر خالد بني صخر
                   </h3>
                   <p class="text-xs text-slate-500 mt-0.5">
-                    الرقم الوطني: 2011009872
+                    معرّف تجريبي: T-02
                   </p>
 
                   <div class="mt-3 flex flex-wrap gap-1.5">
@@ -2653,7 +2659,7 @@
                     ليث محمد الزعبي
                   </h3>
                   <p class="text-xs text-slate-500 mt-0.5">
-                    الرقم الوطني: 2011003322
+                    معرّف تجريبي: T-03
                   </p>
 
                   <div class="mt-3 flex flex-wrap gap-1.5">
@@ -2798,7 +2804,7 @@
 
         <!-- Floating Action Button (Quick Actions) -->
         <div
-          class="fixed bottom-6 left-6 z-50 group no-print flex flex-col items-start"
+          id="teacherQuickActions" class="fixed bottom-5 right-5 z-40 group no-print flex flex-col items-start"
         >
           <div
             class="flex flex-col items-start gap-2 mb-3 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all translate-y-2 group-hover:translate-y-0 origin-bottom"
@@ -2826,7 +2832,7 @@
               >
             </button>
           </div>
-          <button type="button"
+          <button type="button" aria-label="فتح الإجراءات السريعة" aria-expanded="false"
             class="w-14 h-14 bg-primary text-white rounded-full shadow-[0_4px_20px_rgba(138,21,56,0.3)] hover:shadow-[0_4px_25px_rgba(138,21,56,0.5)] transition-all flex items-center justify-center relative"
           >
             <span
@@ -2856,6 +2862,8 @@
     <script src="js/features/student.js"></script>
     <script src="js/features/parent.js"></script>
     <script src="js/features/teacher.js"></script>
+    <script src="js/features/teacher-enhancements.js"></script>
+    <script src="js/features/leave-requests.js"></script>
     <!-- Core -->
     <script src="js/core/events.js"></script>
     <script src="js/core/init.js"></script>

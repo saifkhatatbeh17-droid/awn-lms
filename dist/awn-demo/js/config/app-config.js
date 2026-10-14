@@ -19,6 +19,27 @@
     }
   }
 
+  function getDataUrl(fileName) {
+    if (apiBaseUrl) {
+      return `${apiBaseUrl}/api/${fileName.replace(/\.json$/, '')}`;
+    }
+    const cleanName = String(fileName || '').replace(/^(\.\/|\/)?(assets\/data\/)?/, '');
+    try {
+      return new URL('assets/data/' + cleanName, window.location.href).href;
+    } catch {
+      return './assets/data/' + cleanName;
+    }
+  }
+
+  function resolveAssetUrl(relativePath) {
+    const cleanPath = String(relativePath || '').replace(/^(\.\/|\/)?/, '');
+    try {
+      return new URL(cleanPath, window.location.href).href;
+    } catch {
+      return './' + cleanPath;
+    }
+  }
+
   // Any configured API wins. Invalid or absent settings never enable demo data implicitly.
   const demoMode = demoRequested && !rawApiBaseUrl;
   window.AWN_CONFIG = Object.freeze({
@@ -26,5 +47,7 @@
     demoMode,
     apiConfigured: Boolean(rawApiBaseUrl) && !invalidApiBaseUrl,
     configurationError: invalidApiBaseUrl ? 'INVALID_API_BASE_URL' : null,
+    getDataUrl,
+    resolveAssetUrl,
   });
 })();

@@ -1,43 +1,55 @@
- // Initializes the views present on the current role dashboard.
+// Initializes the views present on the current role dashboard.
 if (!requireDashboardRole()) {
-  window.location.replace("index.html");
+  // Navigation already initiated by requireDashboardRole()
 } else {
   document.addEventListener("DOMContentLoaded", async () => {
-    ensureFeedbackView();
-    ensureAboutView();
+    if (typeof ensureFeedbackView === "function") ensureFeedbackView();
+    if (typeof ensureAboutView === "function") ensureAboutView();
 
     try {
-      await renderStudentAssignments();
+      if (typeof renderStudentAssignments === "function") {
+        await renderStudentAssignments();
+      }
     } catch (error) {
       console.error("Could not initialize assignments", error);
     }
 
-    for (const [label, render] of [
-      ["parent notifications", renderParentNotifications],
-      ["feedback", renderFeedback],
-      ["about", renderAbout],
-      ["attendance", renderAttendance],
-    ]) {
-      try {
-        render();
-      } catch (error) {
-        console.error("Could not initialize " + label, error);
+    const initializers = [
+      ["parent notifications", typeof renderParentNotifications === "function" ? renderParentNotifications : null],
+      ["feedback", typeof renderFeedback === "function" ? renderFeedback : null],
+      ["about", typeof renderAbout === "function" ? renderAbout : null],
+      ["attendance", typeof renderAttendance === "function" ? renderAttendance : null],
+    ];
+
+    for (const [label, render] of initializers) {
+      if (typeof render === "function") {
+        try {
+          await render();
+        } catch (error) {
+          console.error("Could not initialize " + label, error);
+        }
       }
     }
 
-    ensureAccessibleNames(document);
-    disableDemoOnlyControls();
+    if (typeof ensureAccessibleNames === "function") ensureAccessibleNames(document);
+    if (typeof disableDemoOnlyControls === "function") disableDemoOnlyControls();
 
     try {
-      const plan = ApiService.getDailyPlan();
-      if (plan && document.getElementById("subjectField")) fillDailyPlan(plan);
-      const quarterly = ApiService.getQuarterlyPlan();
-      if (quarterly) fillQuarterlyPlan(quarterly);
+      if (typeof ApiService?.getDailyPlan === "function" && document.getElementById("subjectField")) {
+        const planRes = await ApiService.getDailyPlan();
+        const plan = planRes?.success ? planRes.data : planRes;
+        if (plan && typeof fillDailyPlan === "function") fillDailyPlan(plan);
+      }
+      if (typeof ApiService?.getQuarterlyPlan === "function" && document.getElementById("plan-tbody")) {
+        const qRes = await ApiService.getQuarterlyPlan();
+        const quarterly = qRes?.success ? qRes.data : qRes;
+        if (quarterly && typeof fillQuarterlyPlan === "function") fillQuarterlyPlan(quarterly);
+      }
     } catch (error) {
       console.error("Could not restore saved plans", error);
     }
 
     const hash = location.hash.slice(1);
-    if (hash) navigateTo(hash);
+    if (hash && typeof navigateTo === "function") navigateTo(hash);
   });
 }

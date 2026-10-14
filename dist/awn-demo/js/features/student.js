@@ -6,7 +6,8 @@ async function renderStudentAssignments() {
   if (!containers.length) return;
 
   try {
-    const items = await AssignmentService.list();
+    const res = await AssignmentService.list();
+    const items = res?.success ? res.data : (Array.isArray(res) ? res : []);
     const markup = items.length
       ? items.map((assignment) => {
           const done = assignment.status === "completed";
