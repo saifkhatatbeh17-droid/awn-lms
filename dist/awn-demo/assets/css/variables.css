@@ -1,0 +1,75 @@
+:root {
+  color-scheme: light;
+
+  /* Typography */
+  --font-family-base: "Alexandria", system-ui, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+
+  /* Brand and status colors */
+  --color-brand: #7d2442;
+  --color-brand-hover: #641c35;
+  --color-accent: #d4a900;
+  --color-success: #16794b;
+  --color-danger: #b42332;
+  --color-warning: #946200;
+  --color-info: #245ea8;
+
+  /* Light theme */
+  --color-background: #faf7f1;
+  --color-surface: #fffdf9;
+  --color-surface-muted: #f0ebe3;
+  --color-brand-soft: #eee3e6;
+  --color-text: #30262a;
+  --color-text-muted: #71666a;
+  --color-border: #e2d9d0;
+  --color-focus-ring: #245ea8;
+
+  /* Shape and elevation */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --shadow-sm: 0 1px 3px rgb(16 24 40 / 8%);
+  --shadow-md: 0 8px 24px rgb(16 24 40 / 10%);
+
+  /* Layout */
+  --sidebar-width: 288px;
+  --topbar-height: 64px;
+  --content-max-width: 90rem;
+  --page-gutter: 1rem;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --easing-standard: ease;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-background: #15181d;
+  --color-surface: #20242b;
+  --color-surface-muted: #292e37;
+  --color-text: #f3f4f6;
+  --color-text-muted: #b1b8c3;
+  --color-border: #383f4a;
+  --color-focus-ring: #8dbbff;
+
+  --color-brand: #e48aa5;
+  --color-brand-hover: #f0a6bc;
+  --color-accent: #f2cf57;
+  --color-success: #55c78a;
+  --color-danger: #ff7b83;
+  --color-warning: #f2c45e;
+  --color-info: #8dbbff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+  }
+}

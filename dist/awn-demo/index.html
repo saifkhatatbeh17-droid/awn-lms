@@ -3,72 +3,90 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#8a1538">
-    <meta name="description" content="بوابة الدخول إلى منظومة عون التعليمية.">
+    <meta name="theme-color" content="#f6f2eb">
+    <meta name="description" content="سجّل الدخول إلى عون، مساحة تجمع إدارة مدرستك والتعلّم والتواصل.">
     <meta name="awn-api-base-url" content="">
     <meta name="awn-demo-mode" content="true">
-    <title data-i18n="pageTitle">بوابة عون التعليمية</title>
+    <title data-i18n="pageTitle">تسجيل الدخول | عون</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/variables.css">
-    <link rel="stylesheet" href="assets/css/index.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script defer src="js/config/app-config.js"></script>
-    <script type="module" src="js/features/auth.js"></script>
+    <link rel="stylesheet" href="assets/css/index.css?v=5">
+    <link rel="stylesheet" href="assets/css/brand.css?v=1">
+    <script type="module" src="js/features/auth.js?v=3"></script>
+    <script defer src="js/features/entry-effects.js?v=1"></script>
+  <link rel="stylesheet" href="assets/css/components.css?v=1">
+
+    <script src="js/config/app-config.js"></script>
+    <script src="js/config/roles.js"></script>
+    <script src="js/utils/shared.js"></script>
+    <script src="js/services/http-client.js"></script>
+    <script src="js/services/demo-store.js"></script>
+    <script src="js/services/session.js"></script>
+    <script src="js/components/ui.js"></script>
+    <script src="js/components/brand.js"></script>
   </head>
   <body class="login-page">
+    <a class="entry-skip" href="#login-title" data-i18n="skipToLogin">انتقل إلى تسجيل الدخول</a>
     <header class="login-page__header">
-      <a class="brand" href="index.html" aria-label="عون — الصفحة الرئيسية" style="display: flex; align-items: center; gap: 0.75rem;">
-        <img class="brand__logo" src="assets/images/moe_logo.jpg" alt="شعار وزارة التربية والتعليم" style="border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-        <img class="brand__logo" src="assets/images/awn_logo.jpg" alt="شعار منصة عون">
-        <span class="brand__name">عون</span>
-      </a>
-      <div style="display: flex; gap: 1.5rem; align-items: center;">
-        <a href="about.html" style="text-decoration: none; font-weight: 600; color: var(--color-brand);" data-i18n="aboutUs">من نحن</a>
+      <span data-awn-brand data-brand-href="index.html"></span>
+      <div class="login-page__nav">
+        <a href="about.html" data-i18n="aboutUs">من نحن</a>
         <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">English</button>
       </div>
     </header>
 
     <main class="login-page__main">
-      <section class="login-card" aria-labelledby="login-title">
+      <div class="entry-landscape" aria-hidden="true"><svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="entry-line" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b97c62" stop-opacity="0"/><stop offset=".5" stop-color="#9a5f73" stop-opacity=".22"/><stop offset="1" stop-color="#b97c62" stop-opacity="0"/></linearGradient></defs><ellipse cx="600" cy="360" rx="510" ry="205" transform="rotate(-18 600 360)"/><ellipse cx="600" cy="360" rx="570" ry="245" transform="rotate(-18 600 360)"/><path d="M-100 535Q360-30 1300 185"/><path class="entry-flow" d="M-100 535Q360-30 1300 185"/><circle cx="109" cy="412" r="4"/><circle cx="1032" cy="171" r="4"/></svg></div>
+      <aside class="entry-intro" aria-labelledby="entry-intro-title">
+        <p class="entry-kicker"><span aria-hidden="true"></span><span data-i18n="entryKicker">كلّ الأدوار. بداية واحدة.</span></p>
+        <h2 id="entry-intro-title"><span data-i18n="entryLineOne">هنا،</span><span data-i18n="entryLineTwo">يبدأ يومك.</span><em data-i18n="entryLineThree">ويكبر أثرك.</em></h2>
+        <p class="entry-intro__note" data-i18n="entryNote">مساحة تجمع مدرستك، وتترك لك مساحة لتصنع الفرق.</p>
+        <div class="entry-intro__signature"><span aria-hidden="true"></span><p data-i18n="entrySignature">معك. في كلّ خطوة.</p></div>
+      </aside>
+      <div class="entry-pass"><section class="login-card" aria-labelledby="login-title">
+        <div class="entry-pass__top"><span class="entry-pass__label" data-i18n="passLabel">بطاقة دخولك إلى عون</span><span class="entry-pass__serial" lang="en" aria-hidden="true">AWN / 01</span></div>
         <div class="login-card__heading">
-          <p class="login-card__eyebrow" data-i18n="portalLabel">وزارة التربية والتعليم</p>
-          <h1 class="login-card__title" id="login-title" data-i18n="heading">المنظومة الوطنية لإدارة التعليم</h1>
-          <p class="login-card__description" data-i18n="description">سجّل الدخول للمتابعة إلى بوابة عون التعليمية.</p>
+          <h1 class="login-card__title" id="login-title" tabindex="-1" data-i18n="heading">أهلًا بعودتك.</h1>
+          <p class="login-card__description" data-i18n="description">سجّل الدخول لمتابعة يومك المدرسي.</p>
         </div>
 
-        <div class="form-alert" data-error role="alert" aria-live="assertive" hidden></div>
-        <p class="form-status" data-status role="status" aria-live="polite"></p>
+        <div class="form-alert" data-error="" role="alert" aria-live="assertive" hidden=""></div>
+        <p class="form-status" data-status="" role="status" aria-live="polite"></p>
 
-        <form class="login-form" data-auth-form novalidate>
+        <form class="login-form" data-auth-form="" novalidate="">
           <div class="form-field">
-            <label class="form-field__label" for="national-id" data-i18n="usernameLabel">الرقم الوطني / اسم المستخدم</label>
-            <input class="form-field__input" id="national-id" name="username" type="text" autocomplete="username" inputmode="text" required aria-describedby="username-help">
-            <p class="form-field__hint" id="username-help" data-i18n="usernameHint">أدخل بيانات الدخول المعتمدة لك.</p>
+            <label class="form-field__label" for="username" data-i18n="usernameLabel">اسم المستخدم</label>
+            <input class="form-field__input" id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required="" aria-describedby="username-help">
           </div>
 
           <div class="form-field">
             <label class="form-field__label" for="password" data-i18n="passwordLabel">كلمة المرور</label>
             <div class="password-field">
-              <input class="form-field__input password-field__input" id="password" name="password" type="password" autocomplete="current-password" required>
-              <button class="password-field__toggle" type="button" data-password-toggle aria-pressed="false" data-i18n-aria="showPassword" aria-label="إظهار كلمة المرور">
-                <span data-password-icon aria-hidden="true">◉</span>
+              <input class="form-field__input password-field__input" id="password" name="password" type="password" autocomplete="current-password" required="">
+              <button class="password-field__toggle" type="button" data-password-toggle="" aria-pressed="false" data-i18n-aria="showPassword" aria-label="إظهار كلمة المرور">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
             </div>
           </div>
 
-          <button class="login-form__submit" type="submit" data-submit>
-            <span data-submit-label data-i18n="submit">تسجيل الدخول</span>
-            <span class="login-form__spinner" data-spinner aria-hidden="true" hidden></span>
+          <button class="login-form__submit" type="submit" data-submit="">
+            <span data-submit-label="" data-i18n="submit">تسجيل الدخول</span>
+            <svg class="entry-submit-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6"/></svg><span class="login-form__spinner" data-spinner="" aria-hidden="true" hidden=""></span>
           </button>
-          <p class="login-form__support" data-i18n="support">تحتاج مساعدة؟ تواصل مع مسؤول النظام في مدرستك.</p>
-        </form>
-      </section>
+        </form><div class="entry-pass__footer"><span class="entry-pass__seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="m8 12 3 3 5-6"/></svg></span><div><p id="username-help" data-i18n="usernameHint">استخدم الحساب الذي زوّدتك به مدرستك.</p><p class="login-form__support" data-i18n="support">للمساعدة في الدخول، تواصل مع مسؤول مدرستك.</p></div></div>
+      </section></div>
+      <div class="entry-art" aria-hidden="true">
+        <div class="entry-art__caption"><span lang="en">A SPACE TO GROW</span><i></i><p data-i18n="artCaption">كلّ فكرة،<br>تفتح أفقًا.</p></div>
+        <svg class="entry-paper" viewBox="0 0 300 360" fill="none"><defs><linearGradient id="paper-front" x1="60" y1="0" x2="240" y2="360" gradientUnits="userSpaceOnUse"><stop stop-color="#d7a9b7"/><stop offset=".55" stop-color="#a75c7a"/><stop offset="1" stop-color="#713148"/></linearGradient><linearGradient id="paper-back" x1="0" y1="40" x2="280" y2="310" gradientUnits="userSpaceOnUse"><stop stop-color="#b993a0"/><stop offset="1" stop-color="#5c2940"/></linearGradient><linearGradient id="paper-edge" x1="100" y1="40" x2="160" y2="350" gradientUnits="userSpaceOnUse"><stop stop-color="#f4d8c6"/><stop offset="1" stop-color="#9f6270"/></linearGradient></defs><path d="M55 72 164 26 258 254 148 310 55 72Z" fill="url(#paper-back)" stroke="#d5a17d" stroke-opacity=".45"/><path d="m43 87 112-49 91 230-115 55L43 87Z" fill="#dbc3c4"/><path d="M31 102 144 51l91 230-116 56L31 102Z" fill="#bf8e9e"/><path d="M21 119 132 65c-34 71-10 142 85 231l-112 54C13 260-12 190 21 119Z" fill="url(#paper-front)"/><path d="M132 65c-34 71-10 142 85 231l-12 6C117 218 90 143 124 69l8-4Z" fill="url(#paper-edge)"/><path d="M40 139c-15 55 8 116 65 176M54 132c-15 55 8 116 65 176M68 125c-15 55 8 116 65 176" stroke="#fff3dd" stroke-opacity=".32"/><path d="M23 119 132 65M105 350l112-54" stroke="#fff4e0" stroke-opacity=".5"/></svg>
+        <div class="entry-art__index"><span>01 /</span><span data-i18n="artIndex">مساحة للتعلّم.<br>ومساحة لك.</span></div>
+      </div>
     </main>
 
-    <footer class="login-page__footer">
-      <p data-i18n="copyright">© وزارة التربية والتعليم — المملكة الأردنية الهاشمية</p>
+    <footer class="login-page__footer"><span class="entry-footer__note" data-i18n="footerNote">التعلّم يبدأ بالإنسان.</span>
+      <button class="entry-motion" type="button" data-entry-motion aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10m6-10v10"/></svg><span data-motion-label>إيقاف الحركة</span></button>
+      <p data-i18n="copyright">© عون — مساحة تجمع مدرستك</p>
     </footer>
   </body>
 </html>

@@ -2,7 +2,7 @@
   color-scheme: light;
 
   /* Typography */
-  --font-family-base: "Cairo", system-ui, sans-serif;
+  --font-family-base: "Alexandria", system-ui, sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
@@ -10,8 +10,8 @@
   --font-size-xl: 1.75rem;
 
   /* Brand and status colors */
-  --color-brand: #8a1538;
-  --color-brand-hover: #70112e;
+  --color-brand: #7d2442;
+  --color-brand-hover: #641c35;
   --color-accent: #d4a900;
   --color-success: #16794b;
   --color-danger: #b42332;
@@ -19,12 +19,13 @@
   --color-info: #245ea8;
 
   /* Light theme */
-  --color-background: #f5f6f8;
-  --color-surface: #ffffff;
-  --color-surface-muted: #eef0f3;
-  --color-text: #20242b;
-  --color-text-muted: #626b78;
-  --color-border: #dfe3e8;
+  --color-background: #faf7f1;
+  --color-surface: #fffdf9;
+  --color-surface-muted: #f0ebe3;
+  --color-brand-soft: #eee3e6;
+  --color-text: #30262a;
+  --color-text-muted: #71666a;
+  --color-border: #e2d9d0;
   --color-focus-ring: #245ea8;
 
   /* Shape and elevation */
@@ -35,8 +36,8 @@
   --shadow-md: 0 8px 24px rgb(16 24 40 / 10%);
 
   /* Layout */
-  --sidebar-width: 17rem;
-  --topbar-height: 4.5rem;
+  --sidebar-width: 288px;
+  --topbar-height: 64px;
   --content-max-width: 90rem;
   --page-gutter: 1rem;
 

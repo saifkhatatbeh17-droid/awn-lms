@@ -1,0 +1,68 @@
+/* Shared Awn navigation across the six role dashboards. */
+:root { --awn-nav-paper:var(--color-background); --awn-nav-ink:var(--color-text); --awn-nav-muted:var(--color-text-muted); --awn-nav-wine:var(--color-brand); --awn-nav-soft:var(--color-brand-soft); --awn-nav-line:var(--color-border); }
+aside.awn-sidebar {
+  width:288px; height:100dvh; max-height:100dvh; padding:0;
+  display:flex; flex-direction:column; justify-content:flex-start;
+  background:var(--awn-nav-paper)!important; color:var(--awn-nav-ink)!important;
+  border-inline-end:1px solid var(--awn-nav-line)!important;
+  box-shadow:none!important; overflow:hidden;
+  font-family:"Alexandria",sans-serif; line-height:1.7;
+}
+.awn-sidebar .awn-sidebar__brand-row { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:22px 23px 19px; flex:none; background:transparent!important; border-bottom:1px solid var(--awn-nav-line); }
+.awn-sidebar .brand-lockup { gap:12px; padding:0; }
+.awn-sidebar .brand-symbol { width:47px; height:47px; }
+.awn-sidebar .brand-type { padding-inline-start:12px; gap:5px; }
+.awn-sidebar .brand-name { font-size:29px; gap:10px; }
+.awn-sidebar .brand-tagline { font-size:8px; }
+.awn-sidebar .brand-latin { font-size:9px; }
+.awn-sidebar .awn-sidebar__identity { display:flex; align-items:center; gap:11px; padding:18px 23px; flex:none; }
+.awn-sidebar .awn-sidebar__avatar { width:37px; height:37px; flex:none; border-radius:12px; background:#eadbcf; color:#754339; display:grid; place-items:center; font-size:13px; font-weight:600; }
+.awn-sidebar__identity>div { min-width:0; }
+.awn-sidebar__identity strong { display:block; font-size:12px; font-weight:500; overflow-wrap:anywhere; }
+.awn-sidebar__identity [data-user-role] { display:block; margin-top:2px; font-size:10px; color:var(--awn-nav-muted); }
+.awn-sidebar nav.awn-sidebar__nav { display:flex; flex-direction:column; gap:4px; margin:0; padding:5px 14px 22px; flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:#c9b8b5 transparent; }
+.awn-sidebar nav [data-path], .awn-sidebar .admin-nav__item {
+  position:relative; display:flex; align-items:center; flex-shrink:0; gap:12px;
+  width:100%; min-height:46px; padding:11px 14px!important; margin-block:0!important;
+  border:0!important; border-radius:9px!important; background:transparent!important;
+  color:#65515b!important; box-shadow:none!important; font-family:inherit;
+  font-size:12px!important; font-weight:500!important; text-align:start;
+  text-decoration:none; cursor:pointer; transition:background-color .16s,color .16s;
+}
+.awn-sidebar nav [data-path]>div { gap:12px; }
+.awn-sidebar nav [data-path] .material-symbols-outlined { font-size:20px!important; color:inherit!important; font-weight:400; }
+.awn-sidebar nav [data-path]:hover, .awn-sidebar .admin-nav__item:hover { color:var(--awn-nav-wine)!important; background:#f1eae4!important; }
+.awn-sidebar nav [data-path][aria-current="page"], .awn-sidebar .admin-nav__item[aria-current="page"] { background:var(--awn-nav-soft)!important; color:var(--awn-nav-wine)!important; font-weight:600!important; }
+.awn-sidebar nav [aria-current="page"]::before { content:""; position:absolute; inset-inline-start:0; top:14px; bottom:14px; width:3px; border-radius:4px; background:var(--awn-nav-wine); }
+.awn-sidebar .active-indicator { display:none; }
+.awn-sidebar .admin-nav__item>span { width:20px; height:20px; }
+.awn-sidebar__icon { display:block; width:20px; height:20px; }
+.awn-sidebar nav>div:not(:has([data-path])) { color:var(--awn-nav-muted)!important; font-size:9px!important; font-weight:500!important; letter-spacing:0!important; margin:17px 0 4px!important; padding:0 14px!important; }
+.awn-sidebar nav>div:has([data-path]) { margin-top:6px; }
+.awn-sidebar nav>div:has([data-path])>div:first-child { background:transparent!important; color:var(--awn-nav-muted)!important; font-size:10px; font-weight:500; padding-inline:14px; }
+.awn-sidebar nav>div:has([data-path])>div:first-child .material-symbols-outlined { color:var(--awn-nav-muted)!important; }
+.awn-sidebar .awn-sidebar__footer { flex:none; padding:14px 18px 18px; border-top:1px solid var(--awn-nav-line); background:var(--awn-nav-paper); }
+.awn-sidebar__mode { display:flex; align-items:center; justify-content:center; gap:7px; font-size:9px; color:var(--awn-nav-muted); margin-bottom:10px; }
+.awn-sidebar__mode>span:first-child { width:5px; height:5px; border-radius:50%; background:#a87953; }
+.awn-sidebar .awn-sidebar__footer>a { display:flex; align-items:center; justify-content:center; gap:9px; min-height:44px; border:1px solid #d9c7c8; border-radius:8px; color:var(--awn-nav-wine); text-decoration:none; font-size:11px; font-weight:500; }
+.awn-sidebar .awn-sidebar__footer>a:hover { background:var(--awn-nav-soft); }
+.awn-sidebar a:focus-visible, .awn-sidebar button:focus-visible { outline:3px solid #9c6848!important; outline-offset:2px; }
+.awn-sidebar__close { display:none; place-items:center; width:40px; height:40px; flex:none; border:1px solid var(--awn-nav-line); border-radius:8px; background:transparent; color:var(--awn-nav-wine); cursor:pointer; }
+.admin-workspace { margin-inline-start:288px; }
+[data-awn-sidebar-toggle] { min-width:44px; min-height:44px; }
+.awn-sidebar-skip { position:fixed; top:-100px; right:16px; z-index:100; padding:12px 18px; border-radius:8px; background:#32131e; color:#faf7f1; }
+.awn-sidebar-skip:focus { top:12px; }
+@media(max-width:1023px) {
+  aside.awn-sidebar { width:min(288px,calc(100vw - 40px)); z-index:60; transform:translateX(105%); transition:transform .2s ease; }
+  aside.awn-sidebar.is-open, aside.awn-sidebar:not(.translate-x-full):not(.admin-sidebar) { transform:translateX(0); }
+  .awn-sidebar .awn-sidebar__brand-row { padding:17px 15px; gap:6px; }
+  .awn-sidebar .brand-lockup { gap:9px; }.awn-sidebar .brand-symbol { width:40px; height:40px; }
+  .awn-sidebar .brand-type { padding-inline-start:9px; }.awn-sidebar .brand-name { font-size:26px; gap:9px; }
+  .awn-sidebar__close { display:grid; }
+  .admin-workspace { margin-inline-start:0; }.admin-menu-toggle { display:grid; }
+  .admin-backdrop:not([hidden]) { display:block; position:fixed; z-index:55; inset:0; background:#24151b66; }
+  #sidebar-overlay:not(.hidden) { z-index:55; }
+}
+@media(min-width:1024px) { aside.awn-sidebar { transform:none!important; } }
+@media(prefers-reduced-motion:reduce) { aside.awn-sidebar, .awn-sidebar nav [data-path], .awn-sidebar .admin-nav__item { transition:none!important; } }
+@media print { aside.awn-sidebar, .awn-sidebar-skip { display:none!important; } }

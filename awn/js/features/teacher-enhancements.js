@@ -5,13 +5,13 @@ const GRADE_COMPONENTS = [
   { label: "المشاركة" }, { label: "النهائي" },
 ];
 function teacherRead(key, fallback) {
-  try { const value = JSON.parse(localStorage.getItem(TEACHER_STORE_PREFIX + key)); return value == null ? fallback : value; }
+  try { const value = AwnUtils.storage.read(TEACHER_STORE_PREFIX + key); return value == null ? fallback : value; }
   catch { return fallback; }
 }
 function teacherWrite(key, value) {
   if (!requireDemoMode()) return false;
-  try { localStorage.setItem(TEACHER_STORE_PREFIX + key, JSON.stringify(value)); return true; }
-  catch (error) { console.error(error); window.Swal?.fire({ icon: "error", title: "تعذر الحفظ في هذا المتصفح." }); return false; }
+  try { AwnDemo.write(TEACHER_STORE_PREFIX + key, value); return true; }
+  catch (error) { console.error(error); window.AwnUI.dialog({ icon: "error", title: "تعذر الحفظ في هذا المتصفح." }); return false; }
 }
 function academicInfo() {
   const date = todayISO("Asia/Amman"), year = Number(date.slice(0, 4)), month = Number(date.slice(5, 7));
@@ -54,99 +54,41 @@ function attendanceScope() {
 function updateAttendanceSummary() {
   const rows = [...document.querySelectorAll("#studentAttendanceList .student-item")], counts = { present: 0, absent: 0, late: 0 };
   rows.forEach((row) => { counts[row.dataset.status || "present"]++; });
-  const total = document.querySelector("#view-attendance .text-3xl.font-black");
-  if (total) total.innerHTML = counts.present + '<span class="text-sm font-medium text-white/80">/' + rows.length + "</span>";
-  const detail = document.querySelector("#view-attendance .text-xs.bg-white\\/20");
-  if (detail) detail.textContent = counts.absent + " غياب • " + counts.late + " تأخر";
+  const card = document.querySelector('.awn-attendance-summary');
+  if (card) {
+    card.querySelector('[data-attendance-in-room]').textContent = counts.present + counts.late;
+    card.querySelector('[data-attendance-total]').textContent = rows.length;
+    Object.entries(counts).forEach(([status, count]) => {
+      card.querySelector('[data-attendance-count="' + status + '"]').textContent = count;
+      card.querySelector('[data-attendance-segment="' + status + '"]').style.width = (rows.length ? count / rows.length * 100 : 0) + '%';
+    });
+    card.querySelector('[data-attendance-meter]').setAttribute('aria-label', counts.present + ' حاضر في الموعد، ' + counts.late + ' متأخر، ' + counts.absent + ' غائب، من أصل ' + rows.length);
+    card.querySelector('[data-attendance-note]').textContent = rows.length ? 'يشمل عدد الحضور الطلبة المتأخرين.' : 'لا يوجد طلبة في كشف هذه الشعبة.';
+  }
   return counts;
 }
-async function renderAttendance() {
-  const rows = [...document.querySelectorAll("#studentAttendanceList .student-item")];
-  if (!rows.length) return;
-  const scope = attendanceScope();
-  const res = typeof ApiService?.getAttendance === "function" ? await ApiService.getAttendance(scope.date, { className: scope.className, period: scope.period }) : null;
-  const saved = res?.success ? res.data : res;
-  rows.forEach((row) => {
-    const name = row.querySelector(".text-sm.font-bold")?.textContent.trim() || "";
-    const rec = saved?.records?.find((item) => item.name === name);
-    setRowStatus(row, rec?.status || "present");
-  });
-  updateAttendanceSummary();
-}
-async function saveAttendanceUI() {
-  if (!requireDemoMode()) return;
-  const scope = attendanceScope();
-  const records = [...document.querySelectorAll("#studentAttendanceList .student-item")].map((row) => ({
-    name: row.querySelector(".text-sm.font-bold")?.textContent.trim() || "",
-    status: row.dataset.status || "present",
-  }));
-  try {
-    await ApiService.saveAttendance(scope.date, records, { className: scope.className, period: scope.period });
-    window.Swal?.fire({ icon: "success", title: "حُفظ الحضور محليًا لهذا الصف والحصة", timer: 1500, showConfirmButton: false });
-  } catch (error) { console.error(error); window.Swal?.fire({ icon: "error", title: "تعذر حفظ سجل الحضور محليًا." }); }
-}
+
+
 function markAllAttendance(status) {
   document.querySelectorAll("#studentAttendanceList .student-item").forEach((row) => setRowStatus(row, status));
   updateAttendanceSummary();
 }
-function downloadTeacherCsv(filename, rows) {
-  const csv = "\uFEFF" + rows.map((row) => row.map((cell) => '"' + String(cell ?? "").replace(/"/g, '""') + '"').join(",")).join("\r\n");
-  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-  const link = document.createElement("a"); link.href = url; link.download = filename; link.click(); URL.revokeObjectURL(url);
-}
+function downloadTeacherCsv(filename, rows) { return AwnUtils.downloadCsv(filename, rows); }
 function exportAttendance() {
   const scope = attendanceScope(), rows = [...document.querySelectorAll("#studentAttendanceList .student-item")], labels = { present: "حاضر", absent: "غائب", late: "متأخر" };
   downloadTeacherCsv("attendance-" + scope.date + ".csv", [["التاريخ", scope.date], ["الشعبة", scope.className], ["الحصة", scope.period], [], ["رمز تجريبي", "اسم الطالب", "الحالة"], ...rows.map((row) => [row.querySelector("span")?.textContent.trim(), row.querySelector(".text-sm.font-bold")?.textContent.trim(), labels[row.dataset.status] || "حاضر"])]);
 }
 
 function planControlState(field) { return { type: field.type || "", value: field.value, checked: field.type === "checkbox" ? field.checked : undefined }; }
-function collectQuarterlyPlan() {
-  const view = document.getElementById("view-lesson-plans");
-  const metadata = [...view.querySelectorAll("input,textarea,select")].filter((field) => !field.closest("#plan-tbody")).map(planControlState);
-  const rows = [...document.querySelectorAll("#plan-tbody tr")].map((row) => [...row.querySelectorAll("textarea,input,select")].map(planControlState));
-  return { version: 2, metadata, rows, updated: new Date().toISOString() };
-}
+
 function restorePlanControl(field, state) {
   if (!state) return;
   if (field.type === "checkbox") field.checked = Boolean(state.checked ?? state.value === "on");
   else field.value = String(state.value ?? "");
 }
-function fillQuarterlyPlan(plan) {
-  const tbody = document.getElementById("plan-tbody"), template = tbody?.querySelector("tr")?.cloneNode(true);
-  if (!tbody || !template || !plan) return;
-  isFillingQuarterlyPlan = true;
-  try {
-    const meta = [...document.querySelectorAll("#view-lesson-plans input,#view-lesson-plans textarea,#view-lesson-plans select")].filter((field) => !field.closest("#plan-tbody"));
-    if (plan.version === 2) (plan.metadata || []).forEach((state, index) => restorePlanControl(meta[index], state));
-    const rows = Array.isArray(plan) ? plan : (plan.rows || []);
-    tbody.replaceChildren();
-    if (!rows.length) tbody.appendChild(template);
-    rows.forEach((states) => {
-      const row = template.cloneNode(true), fields = [...row.querySelectorAll("textarea,input,select")];
-      fields.forEach((field) => { if (field.type !== "checkbox") field.value = ""; });
-      states.forEach((state, index) => {
-        const field = fields[index]; if (!field) return;
-        if (typeof state === "object" && state !== null) restorePlanControl(field, state);
-        else if (field.type === "checkbox") field.checked = state === "on" || state === true;
-        else field.value = String(state ?? "");
-      });
-      tbody.appendChild(row);
-    });
-  } finally { isFillingQuarterlyPlan = false; renumberRows(); }
-}
-function addNewRow() {
-  const tbody = document.getElementById("plan-tbody"), template = tbody?.querySelector("tr");
-  if (!tbody || !template) return;
-  const row = template.cloneNode(true);
-  row.querySelectorAll("textarea").forEach((field) => { field.value = ""; });
-  row.querySelectorAll('input:not([type="checkbox"]),select').forEach((field) => { field.value = ""; });
-  row.cells[0].textContent = String(tbody.rows.length + 1); tbody.appendChild(row); renumberRows(); autosaveQuarterly();
-}
-function deleteRow(button) {
-  const tbody = document.getElementById("plan-tbody");
-  if (!tbody || tbody.rows.length <= 1) return window.Swal?.fire({ icon: "warning", title: "يجب أن تحتوي الخطة على نتاج واحد على الأقل." });
-  button.closest("tr")?.remove(); renumberRows(); autosaveQuarterly();
-}function gradeKey() {
+
+
+function gradeKey() {
   const selects = document.querySelectorAll("#view-grades select");
   return [selects[0]?.value || "", selects[1]?.value || ""].join("|");
 }
@@ -229,7 +171,7 @@ function saveGrades() {
     const scores = inputs.map((field) => field.value);
     return [name, { scores, total: inputs.reduce((sum, field) => sum + (Number(field.value) || 0), 0), maximum: maxima.reduce((a, b) => a + b, 0), updated: new Date().toISOString() }];
   }));
-  if (teacherWrite("grades", all)) window.Swal?.fire({ icon: "success", title: "حُفظت العلامات محليًا في هذا المتصفح", timer: 1600, showConfirmButton: false });
+  if (teacherWrite("grades", all)) window.AwnUI.dialog({ icon: "success", title: "حُفظت العلامات محليًا في هذا المتصفح", timer: 1600, showConfirmButton: false });
 }
 function exportGrades() {
   const maxima = gradeMaxima();
@@ -258,7 +200,7 @@ function filterStudentCards() {
 function showStudentNotes(name) {
   const notes = notesFor(name);
   const html = notes.length ? "<ul>" + notes.map((note) => "<li>" + esc(note.text) + " — " + esc(note.date) + "</li>").join("") + "</ul>" : "<p>لا توجد ملاحظات محلية محفوظة.</p>";
-  window.Swal?.fire({ title: "ملاحظات " + name, html, input: "textarea", inputLabel: "إضافة ملاحظة", inputPlaceholder: "اكتب ملاحظة متابعة...", showCancelButton: true, confirmButtonText: "حفظ محليًا", cancelButtonText: "إلغاء" }).then((result) => {
+  window.AwnUI.dialog({ title: "ملاحظات " + name, html, input: "textarea", inputLabel: "إضافة ملاحظة", inputPlaceholder: "اكتب ملاحظة متابعة...", showCancelButton: true, confirmButtonText: "حفظ محليًا", cancelButtonText: "إلغاء" }).then((result) => {
     if (!result.isConfirmed || !result.value?.trim()) return;
     const all = teacherRead("student-notes", {}); all[name] = Array.isArray(all[name]) ? all[name] : [];
     all[name].unshift({ text: result.value.trim(), date: todayISO("Asia/Amman") });
@@ -271,7 +213,7 @@ async function showStudentRecord(name) {
   const allAtt = res?.success ? res.data : (Array.isArray(res) ? res : []);
   const history = allAtt.filter((item) => item.records?.some((record) => record.name === name));
   const absence = history.reduce((sum, item) => sum + item.records.filter((record) => record.name === name && record.status === "absent").length, 0);
-  window.Swal?.fire({ title: "سجل " + name, html: '<div class="text-right leading-8"><p>العلامة: ' + (grade ? esc(grade.total + " / " + grade.maximum) : "لا توجد علامة محفوظة") + '</p><p>سجلات الحضور المحلية: ' + history.length + ' • غياب: ' + absence + '</p><p>ملاحظات محلية: ' + notesFor(name).length + '</p><small>مؤشرات متابعة تجريبية وليست قرارًا تربويًا.</small></div>', confirmButtonText: "إغلاق" });
+  window.AwnUI.dialog({ title: "سجل " + name, html: '<div class="text-right leading-8"><p>العلامة: ' + (grade ? esc(grade.total + " / " + grade.maximum) : "لا توجد علامة محفوظة") + '</p><p>سجلات الحضور المحلية: ' + history.length + ' • غياب: ' + absence + '</p><p>ملاحظات محلية: ' + notesFor(name).length + '</p><small>مؤشرات متابعة تجريبية وليست قرارًا تربويًا.</small></div>', confirmButtonText: "إغلاق" });
 }
 function createOutcomeTracker() {
   const view = document.getElementById("view-students");
@@ -337,17 +279,17 @@ function renderCalendarEvents() {
 }
 function showParentMessage(student) {
   const names = studentCards().map((card) => card.dataset.studentName).filter(Boolean);
-  window.Swal?.fire({ title: "مسودة رسالة لولي الأمر", input: "textarea", inputPlaceholder: "اكتب رسالة متابعة أو إشادة...", html: '<label class="block pb-2 text-right text-sm">الطالب</label><select id="parentMessageStudent" class="swal2-select">' + names.map((name) => '<option value="' + esc(name) + '"' + (name === student ? " selected" : "") + ">" + esc(name) + "</option>").join("") + "</select>", showCancelButton: true, confirmButtonText: "حفظ كمسودة محلية", cancelButtonText: "إلغاء", preConfirm: (message) => ({ message, student: document.getElementById("parentMessageStudent")?.value || "" }) }).then((result) => {
+  window.AwnUI.dialog({ title: "مسودة رسالة لولي الأمر", input: "textarea", inputPlaceholder: "اكتب رسالة متابعة أو إشادة...", html: '<label class="block pb-2 text-right text-sm">الطالب</label><select id="parentMessageStudent" class="swal2-select">' + names.map((name) => '<option value="' + esc(name) + '"' + (name === student ? " selected" : "") + ">" + esc(name) + "</option>").join("") + "</select>", showCancelButton: true, confirmButtonText: "حفظ كمسودة محلية", cancelButtonText: "إلغاء", preConfirm: (message) => ({ message, student: document.getElementById("parentMessageStudent")?.value || "" }) }).then((result) => {
     if (!result.isConfirmed || !result.value?.message?.trim() || !requireDemoMode()) return;
     const drafts = teacherRead("parent-message-drafts", []);
     drafts.unshift({ student: result.value.student, message: result.value.message.trim(), date: todayISO("Asia/Amman"), status: "مسودة غير مرسلة" });
-    if (teacherWrite("parent-message-drafts", drafts)) window.Swal?.fire({ icon: "success", title: "حُفظت المسودة ولم تُرسل", timer: 1500, showConfirmButton: false });
+    if (teacherWrite("parent-message-drafts", drafts)) window.AwnUI.dialog({ icon: "success", title: "حُفظت المسودة ولم تُرسل", timer: 1500, showConfirmButton: false });
   });
 }
 function quickAbsence() {
   const rows = [...document.querySelectorAll("#studentAttendanceList .student-item")];
   const names = rows.map((row) => row.querySelector(".text-sm.font-bold")?.textContent.trim() || "");
-  window.Swal?.fire({ title: "تسجيل غياب سريع", input: "select", inputOptions: Object.fromEntries(names.map((name) => [name, name])), inputPlaceholder: "اختر الطالب", showCancelButton: true, confirmButtonText: "تسجيل الغياب", cancelButtonText: "إلغاء" }).then((result) => {
+  window.AwnUI.dialog({ title: "تسجيل غياب سريع", input: "select", inputOptions: Object.fromEntries(names.map((name) => [name, name])), inputPlaceholder: "اختر الطالب", showCancelButton: true, confirmButtonText: "تسجيل الغياب", cancelButtonText: "إلغاء" }).then((result) => {
     if (!result.isConfirmed || !result.value || !requireDemoMode()) return;
     const row = rows.find((item) => item.querySelector(".text-sm.font-bold")?.textContent.trim() === result.value);
     if (row) setRowStatus(row, "absent");
@@ -358,7 +300,7 @@ function showTeacherNotifications() {
   const events = teacherRead("calendar-events", []).filter((item) => item.date >= todayISO("Asia/Amman")).slice(0, 4);
   const drafts = teacherRead("parent-message-drafts", []).length;
   const list = events.length ? "<ul>" + events.map((item) => "<li>" + esc(item.date + " — " + item.title) + "</li>").join("") + "</ul>" : "<p>لا توجد مواعيد قادمة محفوظة.</p>";
-  window.Swal?.fire({ title: "تذكيرات المعلم", html: list + '<p class="mt-3 text-xs">مسودات رسائل غير مرسلة: ' + drafts + "</p>", confirmButtonText: "إغلاق" });
+  window.AwnUI.dialog({ title: "تذكيرات المعلم", html: list + '<p class="mt-3 text-xs">مسودات رسائل غير مرسلة: ' + drafts + "</p>", confirmButtonText: "إغلاق" });
 }
 function handleTeacherAction(action, element) {
   if (action === "save-grades") return saveGrades();
@@ -369,9 +311,9 @@ function handleTeacherAction(action, element) {
   if (action === "notifications") return showTeacherNotifications();
   if (action === "student-notes") return showStudentNotes(element.dataset.studentName);
   if (action === "student-record") return showStudentRecord(element.dataset.studentName);
-  if (action === "general-note") return window.Swal?.fire({ title: "اختر طالبًا لإضافة ملاحظة", input: "select", inputOptions: Object.fromEntries(studentCards().map((card) => [card.dataset.studentName, card.dataset.studentName])), inputPlaceholder: "اختر الطالب", showCancelButton: true, confirmButtonText: "متابعة", cancelButtonText: "إلغاء" }).then((result) => { if (result.isConfirmed) showStudentNotes(result.value); });
+  if (action === "general-note") return window.AwnUI.dialog({ title: "اختر طالبًا لإضافة ملاحظة", input: "select", inputOptions: Object.fromEntries(studentCards().map((card) => [card.dataset.studentName, card.dataset.studentName])), inputPlaceholder: "اختر الطالب", showCancelButton: true, confirmButtonText: "متابعة", cancelButtonText: "إلغاء" }).then((result) => { if (result.isConfirmed) showStudentNotes(result.value); });
   if (action === "toggle-quick-actions") { const menu = document.getElementById("quickActionsMenu"); if (menu) { const open = menu.classList.contains("hidden"); menu.classList.toggle("hidden", !open); menu.hidden = !open; element.setAttribute("aria-expanded", String(open)); } return; }
-  if (action === "filter-students") return window.Swal?.fire({ title: "تصفية سجل الطلاب", input: "select", inputOptions: { all: "كل الطلاب", absence: "بحاجة لمتابعة الحضور", notes: "لديهم ملاحظات محفوظة" }, inputValue: "all", showCancelButton: true, confirmButtonText: "تطبيق", cancelButtonText: "إلغاء" }).then((result) => {
+  if (action === "filter-students") return window.AwnUI.dialog({ title: "تصفية سجل الطلاب", input: "select", inputOptions: { all: "كل الطلاب", absence: "بحاجة لمتابعة الحضور", notes: "لديهم ملاحظات محفوظة" }, inputValue: "all", showCancelButton: true, confirmButtonText: "تطبيق", cancelButtonText: "إلغاء" }).then((result) => {
     if (!result.isConfirmed) return;
     studentCards().forEach((card) => { card.hidden = result.value === "absence" ? !card.textContent.includes("كثرة الغياب") : result.value === "notes" ? notesFor(card.dataset.studentName).length === 0 : false; });
   });
@@ -388,42 +330,7 @@ function runTeacherSearch() {
   const search = document.getElementById("studentSearch");
   if (search) { search.value = query; filterStudentCards(); }
 }
-function careerSampleData() {
-  const source = document.getElementById("teacherProfessionalSampleData");
-  try { return JSON.parse(source?.textContent || "{}"); }
-  catch (error) { console.error("Invalid teacher professional sample data", error); return {}; }
-}
-function renderTeacherProfessionalProfile() {
-  const view = document.getElementById("view-teacher-profile");
-  if (!view) return;
-  const data = careerSampleData(), summary = data.summary || {};
-  const setText = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = value == null ? "—" : String(value); };
-  setText("careerGradeSummary", summary.grade || "—");
-  setText("careerServiceSummary", summary.serviceYears == null ? "—" : new Intl.NumberFormat("ar-JO").format(summary.serviceYears) + " سنة");
-  setText("careerPromotionSummary", summary.promotionCount == null ? "—" : new Intl.NumberFormat("ar-JO").format(summary.promotionCount));
-  setText("careerCourseSummary", summary.courseCount == null ? "—" : new Intl.NumberFormat("ar-JO").format(summary.courseCount));
-  setText("careerCourseHours", summary.trainingHours == null ? "— ساعة تدريبية" : new Intl.NumberFormat("ar-JO").format(summary.trainingHours) + " ساعة تدريبية");
-  const promotionRows = document.getElementById("teacherPromotionRows");
-  if (promotionRows) promotionRows.innerHTML = (data.promotions || []).map((item) => '<tr><td class="p-3 font-semibold text-slate-800">' + esc(item.event) + '</td><td class="p-3">' + esc(item.year) + '</td><td class="p-3">' + esc(item.grade) + '</td><td class="p-3 text-slate-500">' + esc(item.source) + '</td></tr>').join("") || '<tr><td colspan="4" class="p-5 text-center text-slate-500">لا توجد بيانات لعرضها.</td></tr>';
-  const courses = document.getElementById("teacherCourseRows");
-  if (courses) courses.innerHTML = (data.courses || []).map((item) => '<tr><td class="p-3 font-semibold text-slate-800">' + esc(item.title) + '</td><td class="p-3">' + esc(item.area) + '</td><td class="p-3">' + esc(item.year) + '</td><td class="p-3">' + esc(item.hours) + '</td></tr>').join("") || '<tr><td colspan="4" class="p-5 text-center text-slate-500">لا توجد بيانات لعرضها.</td></tr>';
-  const caption = document.getElementById("teacherCourseListCaption");
-  if (caption) caption.textContent = "أحدث " + new Intl.NumberFormat("ar-JO").format((data.courses || []).length) + " دورات معروضة من أصل " + new Intl.NumberFormat("ar-JO").format(summary.courseCount || 0) + " دورات نموذجية.";
-  const trainingChart = document.getElementById("teacherTrainingYearChart"), yearlyHours = Array.isArray(data.trainingByYear) ? data.trainingByYear : [];
-  if (trainingChart) {
-    const maxHours = Math.max(1, ...yearlyHours.map((item) => Number(item.hours) || 0));
-    trainingChart.innerHTML = yearlyHours.length ? yearlyHours.map((item) => {
-      const hours = Math.max(0, Number(item.hours) || 0), width = Math.min(100, hours / maxHours * 100);
-      return '<div><div class="mb-1.5 flex justify-between text-xs"><span class="font-bold text-slate-700">' + esc(item.year) + '</span><span class="text-slate-500">' + new Intl.NumberFormat("ar-JO").format(hours) + ' ساعة</span></div><div class="h-3 overflow-hidden rounded-full bg-slate-100" role="meter" aria-label="الساعات التدريبية لعام ' + esc(item.year) + '" aria-valuemin="0" aria-valuemax="' + maxHours + '" aria-valuenow="' + hours + '"><div class="h-full rounded-full bg-primary transition-all" style="width:' + width + '%"></div></div></div>';
-    }).join("") : '<p class="text-xs text-slate-500">لا توجد بيانات تدريبية للعرض.</p>';
-  }  const sources = document.getElementById("teacherProfessionalSources");
-  if (sources) sources.innerHTML = (data.sources || []).map((item) => '<article class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4"><span class="material-symbols-outlined text-primary">' + esc(item.icon) + '</span><div class="min-w-0"><h4 class="text-sm font-bold text-slate-800">' + esc(item.name) + '</h4><p class="mt-1 text-xs leading-5 text-slate-600">' + esc(item.fields) + '</p><span class="mt-2 inline-block text-[11px] font-semibold text-amber-700">' + esc(item.status) + '</span></div></article>').join("");
-  const sync = document.getElementById("teacherProfessionalSyncStatus");
-  if (sync) sync.textContent = data.isSample ? "بيانات نموذجية • غير متزامنة" : "بانتظار مصدر البيانات";
-}
-function setupTeacherProfessionalProfile() {
-  renderTeacherProfessionalProfile();
-}
+function setupTeacherProfessionalProfile() { window.AwnEmploymentProfile?.mount(); }
 function setupTeacherEnhancements() {
   setTeacherLabels();
   setupTeacherProfessionalProfile();
@@ -443,7 +350,7 @@ function setupTeacherEnhancements() {
   const save = document.getElementById("saveAttendanceBtn"); if (save) save.textContent = "حفظ محلي لهذا الصف والحصة";
   setupGrades(); setupStudents();
   const global = document.querySelector('header input[type="search"]');
-  if (global) { global.id = "globalTeacherSearch"; global.setAttribute("aria-label", "ابحث عن طالب أو صفحة"); global.addEventListener("keydown", (event) => { if (event.key === "Enter") runTeacherSearch(); }); }
+  if (global) { global.id = "globalTeacherSearch"; global.setAttribute("aria-label", "ابحث عن طالب أو صفحة"); global.addEventListener("keydown", (event) => { if (event.key === "Enter" && ![...document.querySelectorAll("#sidebar [data-path]")].some((link) => link.textContent.includes(global.value.trim()))) runTeacherSearch(); }); }
   const icon = [...document.querySelectorAll("header .material-symbols-outlined")].find((node) => node.textContent.trim() === "notifications");
   icon?.closest("button")?.setAttribute("data-teacher-action", "notifications");
   const exportButton = [...document.querySelectorAll("#view-attendance button")].find((button) => button.textContent.includes("تصدير CSV"));

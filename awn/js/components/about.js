@@ -1,7 +1,7 @@
 /**
- * Awn LMS - Smart School Operating System & E-Learning Platform
- * Standalone Premium SaaS Product Showcase Controller (Apple/Linear/Stripe Style)
- * 100% Dedicated to Awn Brand for Private Schools & Educational Institutions
+ * Awn LMS - About Page Interactive Showcase Controller
+ * Handles role tab switching,
+ * school brand stationery theme preview, mobile navigation, and demo form.
  */
 
 // ============================================================================
@@ -9,8 +9,8 @@
 // ============================================================================
 const ABOUT_DEFAULTS = {
   schoolName: "منصة عون لإدارة المدارس والتعليم الذكي",
-  contactEmail: "contact@awnlms.com",
-  phone: "+962 7 9000 0000",
+  contactEmail: "",
+  phone: "",
   description: "المنظومة السحابية المتكاملة لإدارة المدارس الحديثة والتعليم الإلكتروني الذكي.",
 };
 
@@ -25,9 +25,9 @@ function ensureAboutView() {
   section.innerHTML = `
     <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
       <div id="about-view" class="flex flex-col gap-3"></div>
-      <button type="button" id="about-edit-btn" class="mt-4 w-max px-5 py-2 rounded-lg border text-sm font-bold hover:bg-slate-50 transition-colors">تعديل البيانات</button>
+      <button type="button" id="about-edit-btn" data-permission="about:write" class="mt-4 w-max px-5 py-2 rounded-lg border text-sm font-bold hover:bg-slate-50 transition-colors">تعديل البيانات</button>
     </div>
-    <form id="about-form" class="hidden bg-white rounded-xl border border-slate-200 p-6 shadow-sm grid grid-cols-1 gap-4">
+    <form id="about-form" data-permission="about:write" class="hidden bg-white rounded-xl border border-slate-200 p-6 shadow-sm grid grid-cols-1 gap-4">
       <input name="schoolName" placeholder="اسم المدرسة" class="p-2.5 border border-slate-200 rounded-lg text-sm" aria-label="اسم المدرسة">
       <input name="contactEmail" type="email" placeholder="البريد الإلكتروني" class="p-2.5 border border-slate-200 rounded-lg text-sm" aria-label="البريد الإلكتروني">
       <input name="phone" placeholder="رقم الهاتف" class="p-2.5 border border-slate-200 rounded-lg text-sm" aria-label="رقم الهاتف">
@@ -58,7 +58,7 @@ async function renderAbout() {
 
   const email = document.createElement("p");
   email.className = "text-xs text-slate-500";
-  email.textContent = "البريد: " + (a.contactEmail || "contact@awnlms.com");
+  email.textContent = "البريد: " + (a.contactEmail || "غير محدد");
 
   const phone = document.createElement("p");
   phone.className = "text-xs text-slate-500";
@@ -88,873 +88,385 @@ async function openAboutForm(show) {
   document.getElementById("about-edit-btn")?.classList.toggle("hidden", show);
 }
 
-
 // ============================================================================
-// 2. ELITE PRODUCT SAAS CONTROLLER (about.html)
+// 2. ABOUT PAGE INTERACTIVE CONTROLLER
 // ============================================================================
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   // --------------------------------------------------------------------------
-  // 1. High-Performance HTML5 Canvas Neural Network & Constellation Hero
+  // A. Mobile Navigation Drawer
   // --------------------------------------------------------------------------
-  function initHeroCanvas() {
-    const canvas = document.getElementById("heroCanvas");
-    if (!canvas) return;
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileNav = document.getElementById("mobile-nav");
 
-    const ctx = canvas.getContext("2d", { alpha: true });
-    if (!ctx) return;
-
-    const hero = canvas.closest(".hero-canvas-section") || canvas.parentElement;
-
-    let width = (canvas.width = hero.clientWidth);
-    let height = (canvas.height = hero.clientHeight);
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    function resizeCanvas() {
-      if (!hero) return;
-      const rect = hero.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resizeCanvas();
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-    }, { passive: true });
-
-    // Neural nodes colors representing Awn ecosystem intelligence
-    const NODE_PALETTES = [
-      { color: "#c6a15b", glow: "rgba(198, 161, 91, 0.8)", label: "ذكاء الإدارة" },
-      { color: "#8a1538", glow: "rgba(138, 21, 56, 0.8)", label: "التعلم الذكي" },
-      { color: "#10b981", glow: "rgba(16, 185, 129, 0.8)", label: "شراكة الأسرة" },
-      { color: "#0284c7", glow: "rgba(2, 132, 199, 0.8)", label: "سحابة فائقة" },
-      { color: "#f59e0b", glow: "rgba(245, 158, 11, 0.8)", label: "تحليلات BI" },
-    ];
-
-    const particleCount = width < 640 ? 32 : width < 1024 ? 50 : 75;
-    const maxLinkDist = width < 640 ? 100 : 140;
-    const mouseRadius = width < 640 ? 120 : 180;
-
-    const particles = [];
-    for (let i = 0; i < particleCount; i++) {
-      const palette = NODE_PALETTES[i % NODE_PALETTES.length];
-      const isHub = i < 6; // Major neural hubs
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * (isHub ? 0.35 : 0.55),
-        vy: (Math.random() - 0.5) * (isHub ? 0.35 : 0.55),
-        baseRadius: isHub ? (width < 640 ? 3.5 : 5) : (width < 640 ? 1.8 : 2.6),
-        radius: isHub ? 5 : 2.6,
-        palette: palette,
-        isHub: isHub,
-        pulseOffset: Math.random() * Math.PI * 2,
-      });
+  if (menuToggle && mobileNav) {
+    function toggleMobileMenu(open) {
+      const isOpen = open !== undefined ? open : mobileNav.hidden;
+      mobileNav.hidden = !isOpen;
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "إغلاق القائمة" : "فتح القائمة");
     }
 
-    // Mouse Tracking
-    const mouse = {
-      x: -9999,
-      y: -9999,
-      isOver: false,
-      rippleRadius: 0,
-      rippleMax: 160,
-      rippleActive: false,
-    };
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
 
-    function updateMouse(clientX, clientY) {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = clientX - rect.left;
-      mouse.y = clientY - rect.top;
-      mouse.isOver = true;
-    }
+    mobileNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => toggleMobileMenu(false));
+    });
 
-    hero.addEventListener("mousemove", (e) => {
-      updateMouse(e.clientX, e.clientY);
-    }, { passive: true });
-
-    hero.addEventListener("mouseleave", () => {
-      mouse.isOver = false;
-      mouse.x = -9999;
-      mouse.y = -9999;
-    }, { passive: true });
-
-    hero.addEventListener("touchmove", (e) => {
-      if (e.touches && e.touches[0]) {
-        updateMouse(e.touches[0].clientX, e.touches[0].clientY);
+    document.addEventListener("click", (e) => {
+      if (!mobileNav.hidden && !mobileNav.contains(e.target) && !menuToggle.contains(e.target)) {
+        toggleMobileMenu(false);
       }
-    }, { passive: true });
+    });
 
-    hero.addEventListener("touchend", () => {
-      mouse.isOver = false;
-      mouse.x = -9999;
-      mouse.y = -9999;
-    }, { passive: true });
-
-    hero.addEventListener("click", (e) => {
-      updateMouse(e.clientX, e.clientY);
-      mouse.rippleRadius = 0;
-      mouse.rippleActive = true;
-    }, { passive: true });
-
-    // Render loop
-    let animationId = null;
-    let isVisible = true;
-    let time = 0;
-
-    function render() {
-      if (!isVisible) return;
-      time += 0.016;
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw click ripple wave
-      if (mouse.rippleActive) {
-        mouse.rippleRadius += 4;
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, mouse.rippleRadius, 0, Math.PI * 2);
-        const alpha = Math.max(0, 1 - mouse.rippleRadius / mouse.rippleMax) * 0.45;
-        ctx.strokeStyle = `rgba(198, 161, 91, ${alpha})`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        if (mouse.rippleRadius >= mouse.rippleMax) {
-          mouse.rippleActive = false;
-        }
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !mobileNav.hidden) {
+        toggleMobileMenu(false);
+        menuToggle.focus();
       }
-
-      // Update and draw particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        if (!prefersReducedMotion) {
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 10) { p.x = 10; p.vx = Math.abs(p.vx); }
-          else if (p.x > width - 10) { p.x = width - 10; p.vx = -Math.abs(p.vx); }
-          if (p.y < 10) { p.y = 10; p.vy = Math.abs(p.vy); }
-          else if (p.y > height - 10) { p.y = height - 10; p.vy = -Math.abs(p.vy); }
-
-          // Magnetic interactive pull & gentle deflection
-          if (mouse.isOver) {
-            const dx = p.x - mouse.x;
-            const dy = p.y - mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < mouseRadius && dist > 1) {
-              const force = (1 - dist / mouseRadius) * 2.5;
-              p.x += (dx / dist) * force;
-              p.y += (dy / dist) * force;
-            }
-          }
-
-          p.radius = p.baseRadius + Math.sin(time * 2 + p.pulseOffset) * (p.isHub ? 1.2 : 0.5);
-        }
-
-        // Draw node aura
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * (p.isHub ? 2.6 : 2), 0, Math.PI * 2);
-        ctx.fillStyle = p.palette.glow.replace("0.8", p.isHub ? "0.25" : "0.12");
-        ctx.fill();
-
-        // Draw node core
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.palette.color;
-        ctx.shadowColor = p.palette.color;
-        ctx.shadowBlur = p.isHub ? 14 : 6;
-        ctx.fill();
-        ctx.restore();
-
-        // Hub tag
-        if (p.isHub && width > 768) {
-          ctx.font = `600 11px Alexandria, system-ui, sans-serif`;
-          ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
-          ctx.textAlign = "center";
-          ctx.fillText(p.palette.label, p.x, p.y + p.radius + 15);
-        }
-      }
-
-      // Draw neural connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const p1 = particles[i];
-          const p2 = particles[j];
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < maxLinkDist) {
-            const alpha = (1 - dist / maxLinkDist) * 0.28;
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(198, 161, 91, ${alpha})`;
-            ctx.lineWidth = p1.isHub || p2.isHub ? 1.2 : 0.8;
-            ctx.stroke();
-          }
-        }
-
-        // Connect cursor to closest nodes
-        if (mouse.isOver) {
-          const p = particles[i];
-          const dx = p.x - mouse.x;
-          const dy = p.y - mouse.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < mouseRadius) {
-            const alpha = (1 - dist / mouseRadius) * 0.45;
-            ctx.beginPath();
-            ctx.moveTo(mouse.x, mouse.y);
-            ctx.lineTo(p.x, p.y);
-            ctx.strokeStyle = `rgba(198, 161, 91, ${alpha})`;
-            ctx.lineWidth = 1.3;
-            ctx.stroke();
-          }
-        }
-      }
-
-      if (mouse.isOver && !prefersReducedMotion) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = "#ffffff";
-        ctx.shadowColor = "#c6a15b";
-        ctx.shadowBlur = 15;
-        ctx.fill();
-        ctx.restore();
-      }
-
-      if (!prefersReducedMotion) {
-        animationId = requestAnimationFrame(render);
-      }
-    }
-
-    // Auto pause when out of viewport for max 60fps performance
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          isVisible = entry.isIntersecting;
-          if (isVisible && !prefersReducedMotion) {
-            cancelAnimationFrame(animationId);
-            animationId = requestAnimationFrame(render);
-          }
-        });
-      }, { threshold: 0.05 });
-      observer.observe(hero);
-    }
-
-    render();
-  }
-
-
-  // --------------------------------------------------------------------------
-  // 2. Apple-Style 3D Perspective Tilt & Mouse Spotlight Engine
-  // --------------------------------------------------------------------------
-  function init3DTiltAndSpotlight() {
-    const cards = document.querySelectorAll("[data-tilt], [data-spotlight], .bento-card, .hero-brand-card, .role-showcase-card, .metric-card");
-
-    cards.forEach((card) => {
-      card.style.setProperty("--mouse-x", `-999px`);
-      card.style.setProperty("--mouse-y", `-999px`);
-
-      let rafId = null;
-
-      card.addEventListener("mousemove", (e) => {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          card.style.setProperty("--mouse-x", `${x}px`);
-          card.style.setProperty("--mouse-y", `${y}px`);
-
-          if (!prefersReducedMotion && (card.hasAttribute("data-tilt") || card.classList.contains("bento-card") || card.classList.contains("hero-brand-card"))) {
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const maxTilt = card.classList.contains("hero-brand-card") ? 5 : 7;
-
-            const rotateX = ((y - centerY) / centerY) * -maxTilt;
-            const rotateY = ((x - centerX) / centerX) * maxTilt;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
-          }
-        });
-      }, { passive: true });
-
-      card.addEventListener("mouseleave", () => {
-        if (rafId) cancelAnimationFrame(rafId);
-        card.style.setProperty("--mouse-x", `-999px`);
-        card.style.setProperty("--mouse-y", `-999px`);
-
-        if (!prefersReducedMotion) {
-          card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
-        }
-      }, { passive: true });
     });
   }
 
-
   // --------------------------------------------------------------------------
-  // 3. Interactive 6-Role Ecosystem Switcher (Live Morphing Preview)
+  // The hero is intentionally static: its content stays readable without motion.
+
+  // C. Interactive Roles Showcase Tabs
   // --------------------------------------------------------------------------
   const ROLES_DATA = {
-    principal: {
-      badge: "لوحة قيادة مدير المدرسة والقائد التربوي",
-      title: "حوكمة مدرسية شاملة وقرارات استراتيجية بلحظة واحدة",
-      desc: "تحكم كامل في الجداول المدرسية، أنصبة المعلمين، مؤشرات انضباط الدوام، وتصدير التقارير الرسمية بضغطة زر دون أي تعقيد أو هدر ورقي.",
-      features: [
-        "مولد جداول خوارزمي يوزع الحصص والأنصبة مع استبعاد أي تعارض",
-        "لوحة متابعة فورية لنسب حضور المعلمين والطلبة ومؤشرات الانضباط",
-        "اعتماد الخطط الدراسية، الإجازات، والمعاملات المدرسية إلكترونياً"
-      ],
-      user: {
-        name: "د. طارق العساف",
-        role: "المدير العام • مدارس الرواد الدولية",
-        icon: "corporate_fare"
-      },
-      chips: [
-        { val: "98.6%", lbl: "انضباط الكادر" },
-        { val: "0", lbl: "تعارضات بالجداول" },
-        { val: "920", lbl: "طالباً مسجلاً" }
-      ],
-      rows: [
-        { title: "اعتماد جداول اختبارات نهاية الفصل", sub: "تم التحقق وتوزيع القاعات آلياً", status: "معتمد", statusClass: "verified" },
-        { title: "تقرير التقييم المؤسسي للأقسام", sub: "أداء ممتاز وتغطية 100% للخطط", status: "مكتمل", statusClass: "active" }
-      ],
-      btnText: "الدخول كمدير مدرسة",
-      btnUrl: "principal-dashboard.html"
-    },
-    supervisor: {
-      badge: "منصة المشرف الأكاديمي وضبط الجودة",
-      title: "توجيه تربوي معياري ورفع كفاءة التدريس الصفي",
-      desc: "أدوات متطورة لتقييم الكفايات التدريسية، متابعة تطبيق استراتيجيات التعليم الحديثة، ورصد الفاقد التعليمي لضمان أعلى معايير الجودة الأكاديمية.",
-      features: [
-        "نماذج زيارات إشرافية رقمية مبنية على معايير الكفايات التربوية",
-        "تحليل مستويات التحصيل الصفي ومعالجة الفجوات الأكاديمية مبكراً",
-        "تنسيق خطط التطوير المهني وورش تدريب المعلمين تخصصياً"
-      ],
-      user: {
-        name: "أ. ريم الشوابكة",
-        role: "المشرفة الأكاديمية للعلوم • مدارس النهضة الحديثة",
-        icon: "fact_check"
-      },
-      chips: [
-        { val: "42", lbl: "زيارة منجزة" },
-        { val: "97%", lbl: "جودة الخطط" },
-        { val: "16", lbl: "ورشة تخصصية" }
-      ],
-      rows: [
-        { title: "تقرير الزيارة الصفية: استراتيجيات التعلّم النشط", sub: "قسم الرياضيات • تقييم متميز", status: "معتمد", statusClass: "verified" },
-        { title: "خطة التدخل العلاجي لمبحث الفيزياء", sub: "جاهزة للتطبيق ومتابعة الأثر", status: "نشط", statusClass: "active" }
-      ],
-      btnText: "الدخول كمشرف أكاديمي",
-      btnUrl: "supervisor-dashboard.html"
-    },
     teacher: {
-      badge: "بيئة المعلم الذكية والتعليم المتمايز",
-      title: "إدارة الصف والواجبات باحترافية تختصر 70% من وقتك",
-      desc: "كل ما يحتاجه المعلم في مكان واحد: إعداد الخطط، رصد الحضور بنقرة، بنك أسئلة معياري، وتصحيح مؤتمت للواجبات مع تقديم تغذية راجعة فورية.",
+      title: "مساحة أوسع للتعليم.",
+      description: "خطّط للدرس، تابع حضور طلبتك، وأعطِ كل تسليم ملاحظته. أدوات يومك قريبة، والسياق واضح من التحضير إلى التقييم.",
       features: [
-        "رصد مباشر وسريع للحضور والغياب والدرجات عبر الجوال أو الحاسوب",
-        "بنك أسئلة واختبارات إلكترونية تدعم التصحيح التلقائي الفوري",
-        "متابعة مسارات التعلّم المتمايز ومراعاة الفروق الفردية بين الطلبة"
+        "خطط دروس محفوظة ومراجعات واضحة",
+        "واجبات وتسليمات في مسار واحد",
+        "علامات وتغذية راجعة لكل طالب",
       ],
-      user: {
-        name: "الأستاذ فراس الكيلاني",
-        role: "معلم الرياضيات والفيزياء • الصفوف المتقدمة",
-        icon: "school"
-      },
-      chips: [
-        { val: "99%", lbl: "نسبة الالتزام" },
-        { val: "3", lbl: "واجبات للتصحيح" },
-        { val: "28", lbl: "طالباً متفوقاً" }
-      ],
+      previewRole: "مساحة المعلم",
+      previewGreeting: "يوم تعلّم جديد.",
+      previewTitle: "من التحضير إلى الأثر",
+      previewFootnote: "السياق حاضر: الشعبة، المبحث، والفصل.",
       rows: [
-        { title: "واجب التفاضل والتطبيقات الحسابية", sub: "تم تسليم الحلول وتصحيح 26 طالباً آلياً", status: "نشط", statusClass: "active" },
-        { title: "الخطة الفصلية لمبحث الرياضيات", sub: "تمت المصادقة من الإشراف الأكاديمي", status: "معتمد", statusClass: "verified" }
+        { icon: "#icon-book", title: "خطة درس: الفكرة الرئيسة", sub: "اللغة العربية · العاشر", status: "مسودة" },
+        { icon: "#icon-check", title: "التسليمات بانتظارك", sub: "قراءة الإجابات وكتابة الملاحظات", status: "للمراجعة" },
+        { icon: "#icon-book", title: "سجل العلامات", sub: "رصد واضح، ثم اعتماد ونشر", status: "متابعة" },
       ],
-      btnText: "الدخول كمعلم",
-      btnUrl: "teacher-dashboard.html"
+    },
+    principal: {
+      title: "الصورة الكاملة لمدرستك.",
+      description: "اطّلع على سير الدوام، اعتمد الخطط والعلامات قبل نشرها، وتابع الزيارات والتعاميم في بيئة مدرسية متماسكة.",
+      features: [
+        "اعتماد ومراجعة سجلات العلامات",
+        "متابعة حضور الكادر وانضباط الشعب",
+        "تعاميم مدرسية وتواصل مؤسسي مباشر",
+      ],
+      previewRole: "لوحة المدير",
+      previewGreeting: "نظرة شاملة على اليوم الدراسي.",
+      previewTitle: "القرارات والاعتمادات",
+      previewFootnote: "حوكمة دقيقة لحركة المدرسة اليومية.",
+      rows: [
+        { icon: "#icon-check", title: "اعتماد نتائج الفصل الأول", sub: "الصف العاشر أ · اللغة العربية", status: "جاهز للنشر" },
+        { icon: "#icon-book", title: "الخطة الأسبوعية المجمعة", sub: "مراجعة خطط الأسبوع القادم", status: "معتمدة" },
+        { icon: "#icon-star", title: "تعميم داخلي للكادر", sub: "الاستعداد للاختبارات الشهرية", status: "تم الإرسال" },
+      ],
     },
     student: {
-      badge: "بوابة الطالب التفاعلية والشغف المعرفي",
-      title: "تعلّم رقمي ممتع ومحفز ينمي مهارات المستقبل",
-      desc: "واجهة عصرية مرنة تتيح للطالب متابعة واجباته، حل الاختبارات التفاعلية، استعراض المواد الإثرائية، ومعرفة درجاته وشارات تفوقه لحظة بلحظة.",
+      title: "تعلّمك ومسارك في مكان واحد.",
+      description: "اعرف واجباتك القادمة، سلّم أعمالك بوضوح، واطّلع على نتائجك وملاحظات معلّميك أولاً بأول.",
       features: [
-        "لوحة إنجاز تعرض المعدل التراكمي، الواجبات القادمة، وشارات التميز",
-        "تسليم رقمي منظم للمهام المدرسية وتلقي الملاحظات فور تصحيحها",
-        "مستودع مصادر ثري بالفيديوهات والملخصات الداعمة للفهم والتعلم الذاتي"
+        "تسليم الواجبات بروابط وملاحظات",
+        "جدول الحصص والدروس اليومية",
+        "سجل العلامات المعتمدة ونتائج التقييم",
       ],
-      user: {
-        name: "سند الحنيطي",
-        role: "الصف الحادي عشر العلمي • القسم المتقدم",
-        icon: "menu_book"
-      },
-      chips: [
-        { val: "96.4%", lbl: "المعدل التراكمي" },
-        { val: "1", lbl: "واجب للتسليم" },
-        { val: "100%", lbl: "نسبة الحضور" }
-      ],
+      previewRole: "مساحة الطالب",
+      previewGreeting: "أهلاً بك، خطوة جديدة اليوم.",
+      previewTitle: "مهامي ومسار تعلّمي",
+      previewFootnote: "كل ما يلزمك لتنظيم يومك الدراسي.",
       rows: [
-        { title: "واجب الكيمياء: الروابط الجزيئية", sub: "الموعد النهائي: غداً الساعة 5 مساءً", status: "قيد الإنجاز", statusClass: "active" },
-        { title: "شارة التفوق في مسابقة القراءة الإبداعية", sub: "تهنئة رسمية من إدارة المدرسة", status: "مكتمل", statusClass: "verified" }
+        { icon: "#icon-book", title: "واجب تحليل نص أدبي", sub: "مطلوب التسليم قبل الأحد", status: "قيد الإنجاز" },
+        { icon: "#icon-check", title: "اختبار قصير: العلوم الحياتية", sub: "تم التصحيح والتقييم 9/10", status: "مكتمل" },
+        { icon: "#icon-star", title: "حصة الرياضيات القادمة", sub: "الحصة الثالثة · القاعة 102", status: "اليوم 10:30" },
       ],
-      btnText: "الدخول كطالب",
-      btnUrl: "student-dashboard.html"
     },
     parent: {
-      badge: "تطبيق ولي الأمر وشراكة النجاح اللحظية",
-      title: "اطمئنان دائم ومتابعة دقيقة لكل تفاصيل مسيرة أبنائك",
-      desc: "إشعارات فورية تصل لهاتفك لحظة دخول وخروج الطالب، تقارير أداء دورية، وقناة تواصل رسمية راقية تضعك في قلب العملية التعليمية بثقة.",
+      title: "شراكة حقيقية مع المدرسة.",
+      description: "تابع تقدم أبنائك، سجّل حضورهم ونتائجهم، وتواصل مع الإدارة والمعلمين بكل سهولة وموثوقية.",
       features: [
-        "إشعارات حضور وغياب فورية ترسل لهاتفك مباشرة عبر التطبيق",
-        "اطلاع لحظي على نتائج الاختبارات والواجبات والملاحظات السلوكية",
-        "حجز مواعيد ومراسلة الكادر الإداري والتعليمي في أوقات الدوام الرسمية"
+        "تبديل فوري بين الأبناء في العائلة",
+        "متابعة الحضور والغياب والإشعارات",
+        "اطلاع مباشر على العلامات المنشورة",
       ],
-      user: {
-        name: "م. إبراهيم الزعبي",
-        role: "ولي أمر: ريان (الصف التاسع) وليان (الصف السادس)",
-        icon: "family_restroom"
-      },
-      chips: [
-        { val: "0", lbl: "غيابات غير مبررة" },
-        { val: "4", lbl: "تقارير أسبوعية" },
-        { val: "100%", lbl: "التواصل المدرسي" }
-      ],
+      previewRole: "بوابة ولي الأمر",
+      previewGreeting: "متابعة مستمرة لرحلة أبنائك.",
+      previewTitle: "ملخص مسار الطالب",
+      previewFootnote: "تواصل راقٍ يضع الأسرة في قلب التجربة.",
       rows: [
-        { title: "إشعار حضور: تم تسجيل الدخول للمدرسة بانتظام", sub: "الحرم المدرسي • 7:45 صباحاً", status: "إشعار رسمي", statusClass: "verified" },
-        { title: "نتيجة اختبار الأحياء الفصلي (ريان)", sub: "العلامة: 20/20 • أداء استثنائي", status: "ممتاز", statusClass: "active" }
+        { icon: "#icon-check", title: "نتيجة تقييم الشهر الأول", sub: "أحمد · الصف الثامن ب", status: "معتمد" },
+        { icon: "#icon-book", title: "سجل الحضور الشهري", sub: "نسبة التزام 98% هذا الفصل", status: "منتظم" },
+        { icon: "#icon-star", title: "رسالة من معلم اللغة العربية", sub: "تطور ملحوظ في القراءة التحليلية", status: "جديد" },
       ],
-      btnText: "الدخول كولي أمر",
-      btnUrl: "parent-dashboard.html"
+    },
+    supervisor: {
+      title: "تطوير نوعي للعملية التعليمية.",
+      description: "راجع الخطط الدراسية وتاريخ إصداراتها، دوّن ملاحظات الزيارات الصفية، وادعم المعلمين نحو الأفضل.",
+      features: [
+        "مراجعة إصدارات الخطط الدراسية وقفلها",
+        "توثيق الزيارات الميدانية الصفية",
+        "تقييم داخلي مبني على معايير دقيقة",
+      ],
+      previewRole: "لوحة المشرف",
+      previewGreeting: "متابعة جودة التعليم.",
+      previewTitle: "الزيارات ومراجعة الخطط",
+      previewFootnote: "أدوات إشرافية تدعم نمو الكادر التدريسي.",
+      rows: [
+        { icon: "#icon-book", title: "خطة الرياضيات التراكمية", sub: "مراجعة أهداف نواتج التعلم", status: "تتطلب تعديل" },
+        { icon: "#icon-star", title: "زيارة صفية للصف التاسع", sub: "المعلم: أحمد خالد · تقييم أداء", status: "مجدولة" },
+        { icon: "#icon-check", title: "اعتماد خطة مبحث الكيمياء", sub: "الفصل الدراسي الأول", status: "معتمد" },
+      ],
     },
     admin: {
-      badge: "مركز القيادة والتحكم والأمن السحابي (Admin Hub)",
-      title: "حوكمة تقنية متكاملة وأمان سحابي على مدار الساعة",
-      desc: "تحكم مطلق في صلاحيات المستخدمين، إدارة البيانات المدرسية، النسخ الاحتياطي التلقائي، والربط البرمجي (API) مع الأنظمة المالية والمحاسبية.",
+      title: "إدارة متقنة لكل مفاصل النظام.",
+      description: "هيئ هوية مدرستك، تحكم بالشعب والمباحث، استورد بيانات الطلبة بنقرة واحدة، وأدر الترحيل السنوي بسلاسة.",
       features: [
-        "إدارة دقيقة لأدوار وصلاحيات الكادر الإداري والتعليمي بنقرة زر",
-        "تشفير سحابي متقدم للبيانات ونسخ احتياطي يومي يحمي أصول المدرسة",
-        "سجلات تدقيق أمني (Audit Logs) ترصد كافة العمليات والأنشطة الرقمية"
+        "استيراد فوري للطلبة والبيانات (CSV)",
+        "ترحيل سنوي مستقل للشعب والصفوف",
+        "تخصيص الهوية البصرية وإعدادات السنة",
       ],
-      user: {
-        name: "م. حسام التميمي",
-        role: "مدير تكنولوجيا المعلومات والأنظمة السحابية",
-        icon: "admin_panel_settings"
-      },
-      chips: [
-        { val: "99.98%", lbl: "التوافر السحابي" },
-        { val: "0", lbl: "ثغرات أمنية" },
-        { val: "100%", lbl: "تشفير البيانات" }
-      ],
+      previewRole: "لوحة المسؤول",
+      previewGreeting: "بنية النظام وجاهزية المدرسة.",
+      previewTitle: "العمليات والإعدادات",
+      previewFootnote: "تحكم شامل وآمن في بيانات المدرسة.",
       rows: [
-        { title: "اكتمال النسخ الاحتياطي السحابي اليومي", sub: "تشفير AES-256 محلي وسحابي", status: "آمن", statusClass: "verified" },
-        { title: "تحديث الصلاحيات السنوية للشعب الدراسية", sub: "مزامنة لحظية لكافة الفروع", status: "محدث", statusClass: "active" }
+        { icon: "#icon-check", title: "استيراد قائمة الطلبة الجدد", sub: "تم التحقق واستيراد 120 سجل", status: "مكتمل" },
+        { icon: "#icon-book", title: "توزيع أنصبة المباحث والشعب", sub: "العام الدراسي 2026/2027", status: "مستقر" },
+        { icon: "#icon-star", title: "إعدادات هوية المدرسة", sub: "الشعار والألوان والتقويم الأكاديمي", status: "محدث" },
       ],
-      btnText: "الدخول كمسؤول نظام",
-      btnUrl: "admin-dashboard.html"
-    }
+    },
   };
 
-  function initRoleShowcase() {
-    const tabBtns = document.querySelectorAll(".role-selector-btn");
-    const showcaseCard = document.getElementById("roleShowcaseCard");
-    if (!tabBtns.length || !showcaseCard) return;
+  const roleTabs = Array.from(document.querySelectorAll(".role-tabs button[role='tab']"));
+  const rolePanel = document.getElementById("role-panel");
+  const roleTitle = document.getElementById("role-title");
+  const roleDesc = document.getElementById("role-description");
+  const roleFeatures = document.getElementById("role-features");
+  const previewRole = document.getElementById("preview-role");
+  const previewGreeting = document.getElementById("preview-greeting");
+  const previewTitle = document.getElementById("preview-title");
+  const previewRows = document.getElementById("preview-rows");
+  const previewFootnote = document.getElementById("preview-footnote");
 
-    function switchRole(key) {
-      const data = ROLES_DATA[key];
-      if (!data) return;
+  function switchRole(roleKey, triggerBtn) {
+    const data = ROLES_DATA[roleKey];
+    if (!data) return;
 
-      if (!prefersReducedMotion) {
-        showcaseCard.classList.add("is-morphing");
-      }
+    // Update Tab state
+    roleTabs.forEach((tab) => {
+      const isSelected = tab === triggerBtn;
+      tab.setAttribute("aria-selected", String(isSelected));
+      tab.setAttribute("tabindex", isSelected ? "0" : "-1");
+    });
 
-      setTimeout(() => {
-        const badge = showcaseCard.querySelector(".showcase-badge");
-        const title = showcaseCard.querySelector(".showcase-title");
-        const desc = showcaseCard.querySelector(".showcase-desc");
-        const features = showcaseCard.querySelector(".showcase-features");
-        const btn = showcaseCard.querySelector(".showcase-cta-btn");
-        const userName = showcaseCard.querySelector(".preview-user-name");
-        const userRole = showcaseCard.querySelector(".preview-user-role");
-        const userIcon = showcaseCard.querySelector(".preview-user-icon");
-        const chips = showcaseCard.querySelector(".preview-chips-row");
-        const rows = showcaseCard.querySelector(".preview-rows-list");
-
-        if (badge) badge.textContent = data.badge;
-        if (title) title.textContent = data.title;
-        if (desc) desc.textContent = data.desc;
-
-        if (btn) {
-          btn.href = data.btnUrl || "index.html";
-          btn.innerHTML = `<span>${data.btnText}</span><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>`;
-        }
-
-        if (features) {
-          features.innerHTML = data.features.map(f => `
-            <div class="showcase-feat-item">
-              <span class="material-symbols-outlined feat-check" aria-hidden="true">verified</span>
-              <span>${f}</span>
-            </div>
-          `).join("");
-        }
-
-        if (userName) userName.textContent = data.user.name;
-        if (userRole) userRole.textContent = data.user.role;
-        if (userIcon) userIcon.textContent = data.user.icon;
-
-        if (chips) {
-          chips.innerHTML = data.chips.map(c => `
-            <div class="preview-chip">
-              <span class="chip-num">${c.val}</span>
-              <span class="chip-text">${c.lbl}</span>
-            </div>
-          `).join("");
-        }
-
-        if (rows) {
-          rows.innerHTML = data.rows.map(r => `
-            <div class="preview-mini-row">
-              <span class="material-symbols-outlined row-bullet" aria-hidden="true">task_alt</span>
-              <div class="mini-row-info">
-                <span class="mini-row-title">${r.title}</span>
-                <span class="mini-row-sub">${r.sub}</span>
-              </div>
-              <span class="mini-status-badge ${r.statusClass}">${r.status}</span>
-            </div>
-          `).join("");
-        }
-
-        if (!prefersReducedMotion) {
-          showcaseCard.classList.remove("is-morphing");
-        }
-      }, prefersReducedMotion ? 0 : 180);
+    if (triggerBtn && rolePanel) {
+      rolePanel.setAttribute("aria-labelledby", triggerBtn.id);
     }
 
-    tabBtns.forEach(btn => {
+    // Smooth subtle fade update
+    if (rolePanel) {
+      rolePanel.style.opacity = "0.75";
+      rolePanel.style.transition = "opacity 0.2s ease";
+    }
+
+    setTimeout(() => {
+      if (roleTitle) roleTitle.textContent = data.title;
+      if (roleDesc) roleDesc.textContent = data.description;
+
+      if (roleFeatures) {
+        roleFeatures.innerHTML = data.features
+          .map((feat) => `<li>${feat}</li>`)
+          .join("");
+      }
+
+      if (previewRole) previewRole.textContent = data.previewRole;
+      if (previewGreeting) previewGreeting.textContent = data.previewGreeting;
+      if (previewTitle) previewTitle.textContent = data.previewTitle;
+      if (previewFootnote) previewFootnote.textContent = data.previewFootnote;
+
+      if (previewRows) {
+        previewRows.innerHTML = data.rows
+          .map(
+            (row) => `
+          <div class="preview-row">
+            <svg class="icon" aria-hidden="true"><use href="${row.icon}"/></svg>
+            <div><strong>${row.title}</strong><small>${row.sub}</small></div>
+            <span class="preview-status">${row.status}</span>
+          </div>`
+          )
+          .join("");
+      }
+
+      if (rolePanel) {
+        rolePanel.style.opacity = "1";
+      }
+    }, 100);
+  }
+
+  if (roleTabs.length > 0) {
+    roleTabs.forEach((btn, index) => {
+      const roleKey = btn.dataset.role;
+
       btn.addEventListener("click", () => {
-        tabBtns.forEach(b => {
-          b.classList.remove("active");
-          b.setAttribute("aria-selected", "false");
-        });
-        btn.classList.add("active");
-        btn.setAttribute("aria-selected", "true");
-        switchRole(btn.dataset.role);
+        switchRole(roleKey, btn);
+      });
+
+      // Keyboard arrow navigation
+      btn.addEventListener("keydown", (e) => {
+        let nextIndex = null;
+        if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+          nextIndex = (index + 1) % roleTabs.length;
+        } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+          nextIndex = (index - 1 + roleTabs.length) % roleTabs.length;
+        }
+
+        if (nextIndex !== null) {
+          e.preventDefault();
+          const targetTab = roleTabs[nextIndex];
+          targetTab.focus();
+          switchRole(targetTab.dataset.role, targetTab);
+        }
       });
     });
   }
 
-
   // --------------------------------------------------------------------------
-  // 4. Scroll-Driven Glowing Transformation Timeline
+  // D. School Identity Brand Theme Preview
   // --------------------------------------------------------------------------
-  function initTransformationTimeline() {
-    const timeline = document.getElementById("transformationTimeline");
-    const beam = document.getElementById("timelineBeam");
-    const beamHead = document.getElementById("timelineBeamHead");
-    const milestones = document.querySelectorAll(".timeline-step-item");
+  const themeButtons = Array.from(document.querySelectorAll(".theme-option"));
+  const stationery = document.querySelector(".school-stationery");
+  const themeLabel = document.getElementById("theme-label");
 
-    if (!timeline || !beam || !milestones.length) return;
+  const THEME_LABELS = {
+    burgundy: "عنّابي عون",
+    forest: "أخضر زمردي",
+    blue: "أزرق ملكي",
+  };
 
-    let isUpdating = false;
+  if (themeButtons.length > 0 && stationery) {
+    themeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const theme = btn.dataset.theme;
+        stationery.setAttribute("data-theme", theme);
 
-    function onScrollTimeline() {
-      const rect = timeline.getBoundingClientRect();
-      const winH = window.innerHeight;
+        themeButtons.forEach((b) => {
+          const isPressed = b === btn;
+          b.setAttribute("aria-pressed", String(isPressed));
+        });
 
-      const triggerStart = winH * 0.75;
-      const scrollPassed = triggerStart - rect.top;
-      const totalHeight = rect.height;
-
-      let progress = Math.min(Math.max(scrollPassed / (totalHeight + winH * 0.2), 0), 1);
-      const pct = (progress * 100).toFixed(1);
-
-      beam.style.height = `${pct}%`;
-      if (beamHead) {
-        beamHead.style.top = `${pct}%`;
-        beamHead.style.opacity = progress > 0.02 ? "1" : "0";
-      }
-
-      milestones.forEach(step => {
-        const sRect = step.getBoundingClientRect();
-        if (sRect.top <= winH * 0.68) {
-          step.classList.add("is-active", "is-visible");
-        } else {
-          step.classList.remove("is-active");
+        if (themeLabel && THEME_LABELS[theme]) {
+          themeLabel.textContent = THEME_LABELS[theme];
         }
       });
-
-      isUpdating = false;
-    }
-
-    window.addEventListener("scroll", () => {
-      if (!isUpdating) {
-        requestAnimationFrame(onScrollTimeline);
-        isUpdating = true;
-      }
-    }, { passive: true });
-
-    onScrollTimeline();
+    });
   }
 
-
   // --------------------------------------------------------------------------
-  // 5. Animated ROI & Impact Metrics (IntersectionObserver)
+  // E. 3D Tilt Effect on Product Preview Card
   // --------------------------------------------------------------------------
-  function initImpactCounters() {
-    const counters = document.querySelectorAll(".metric-num-counter");
-    if (!counters.length) return;
+  const productPreview = document.querySelector(".product-preview");
+  if (productPreview && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let tiltAnim = null;
 
-    function countUp(el) {
-      const target = parseFloat(el.getAttribute("data-target")) || 0;
-      const duration = 2000;
-      const start = performance.now();
+    productPreview.addEventListener("mousemove", (e) => {
+      const rect = productPreview.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
 
-      function update(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        // Ease out cubic
-        const ease = 1 - Math.pow(1 - progress, 3);
-        const current = target * ease;
+      const rotateX = ((centerY - y) / centerY) * 6;
+      const rotateY = ((x - centerX) / centerX) * 8;
 
-        if (target <= 100) {
-          el.textContent = Math.round(current);
-        } else {
-          el.textContent = Math.round(current).toLocaleString("en-US");
-        }
+      cancelAnimationFrame(tiltAnim);
+      tiltAnim = requestAnimationFrame(() => {
+        productPreview.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+      });
+    });
 
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          el.textContent = target.toLocaleString("en-US");
-        }
-      }
-
-      requestAnimationFrame(update);
-    }
-
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            countUp(entry.target);
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.25 });
-
-      counters.forEach(c => observer.observe(c));
-    } else {
-      counters.forEach(c => countUp(c));
-    }
+    productPreview.addEventListener("mouseleave", () => {
+      cancelAnimationFrame(tiltAnim);
+      productPreview.style.transform = "";
+    });
   }
 
-
   // --------------------------------------------------------------------------
-  // 6. High-Conversion School Demo Request Lead Form
+  // F. Demo Request Form Handler
   // --------------------------------------------------------------------------
-  function initDemoForm() {
-    const form = document.getElementById("schoolDemoForm");
-    const successBox = document.getElementById("demoSuccessBox");
-    const resetBtn = document.getElementById("resetDemoFormBtn");
+  const demoForm = document.getElementById("demo-form");
+  const formStatus = document.getElementById("form-status");
 
-    if (!form) return;
-
-    form.addEventListener("submit", (e) => {
+  if (demoForm) {
+    demoForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const submitBtn = form.querySelector("button[type='submit']");
+
+      const submitBtn = demoForm.querySelector("button[type='submit']");
       const originalText = submitBtn ? submitBtn.innerHTML : "";
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span class="material-symbols-outlined spin-icon" aria-hidden="true">sync</span><span>جاري تأكيد حجز العرض...</span>`;
+        submitBtn.textContent = "جارٍ حفظ الطلب التجريبي...";
       }
 
-      const formData = new FormData(form);
+      const formData = new FormData(demoForm);
       const lead = {
-        schoolName: formData.get("schoolName") || "مدرسة نموذجية",
-        contactPerson: formData.get("contactPerson") || "مدير المدرسة",
-        phone: formData.get("phone") || "",
-        email: formData.get("email") || "",
-        studentCount: formData.get("studentCount") || "غير محدد",
-        timestamp: new Date().toISOString()
+        schoolName: String(formData.get("schoolName") || "").trim(),
+        contactName: String(formData.get("contactName") || "").trim(),
+        email: String(formData.get("email") || "").trim(),
+        studentCount: String(formData.get("studentCount") || "").trim(),
+        priority: String(formData.get("priority") || "").trim(),
+        timestamp: new Date().toISOString(),
       };
 
       try {
-        const leads = JSON.parse(localStorage.getItem("awn_school_leads") || "[]");
-        leads.push(lead);
-        localStorage.setItem("awn_school_leads", JSON.stringify(leads));
-      } catch (err) {
-        console.warn("Could not save to localStorage:", err);
-      }
+        const existing = JSON.parse(localStorage.getItem("awn_school_leads") || "[]");
+        existing.push(lead);
+        localStorage.setItem("awn_school_leads", JSON.stringify(existing));
 
-      setTimeout(() => {
+        // Sync with Awn runtime if active
+        if (typeof Awn !== "undefined" && typeof Awn.write === "function") {
+          try { Awn.write("school-leads", existing); } catch { /* ignore in demo */ }
+        }
+
+        setTimeout(() => {
+          if (formStatus) {
+            formStatus.removeAttribute("data-error");
+            formStatus.textContent = `تم تسجيل طلب العرض لمدرسة «${lead.schoolName}» بنجاح في متصفحك.`;
+          }
+          demoForm.reset();
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          }
+        }, 500);
+      } catch (err) {
+        if (formStatus) {
+          formStatus.setAttribute("data-error", "true");
+          formStatus.textContent = "تعذر حفظ الطلب في المتصفح. أعد المحاولة.";
+        }
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;
         }
-
-        form.reset();
-        form.classList.add("hidden");
-
-        if (successBox) {
-          successBox.classList.remove("hidden");
-          const schoolTitle = successBox.querySelector(".confirmed-school-name");
-          if (schoolTitle) schoolTitle.textContent = lead.schoolName;
-        }
-      }, 700);
+      }
     });
-
-    if (resetBtn && form && successBox) {
-      resetBtn.addEventListener("click", () => {
-        successBox.classList.add("hidden");
-        form.classList.remove("hidden");
-      });
-    }
   }
 
-
   // --------------------------------------------------------------------------
-  // 7. Staggered Scroll Reveal Elements
+  // G. Dynamic Copyright Year
   // --------------------------------------------------------------------------
-  function initReveals() {
-    const items = document.querySelectorAll(".fade-reveal-up, .bento-card, .metric-card");
-    if (!items.length) return;
-
-    if (!("IntersectionObserver" in window)) {
-      items.forEach(i => i.classList.add("is-inview"));
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-inview");
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-
-    items.forEach(i => observer.observe(i));
+  const yearElem = document.getElementById("copyright-year");
+  if (yearElem) {
+    yearElem.textContent = String(new Date().getFullYear());
   }
-
-
-  // --------------------------------------------------------------------------
-  // 8. Sticky Navbar & Mobile Drawer Controls
-  // --------------------------------------------------------------------------
-  function initNavigation() {
-    const navbar = document.getElementById("main-nav");
-    const scrollProgressBar = document.getElementById("scrollProgressBar");
-    const backToTopBtn = document.getElementById("backToTop");
-    const mobileToggle = document.getElementById("mobileToggle");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    let lastScrollY = window.scrollY || document.documentElement.scrollTop;
-    const hideDelta = 8;
-
-    window.addEventListener("scroll", () => {
-      const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrollPercent = docHeight > 0 ? currentScrollY / docHeight : 0;
-
-      if (scrollProgressBar) {
-        scrollProgressBar.style.width = `${scrollPercent * 100}%`;
-      }
-
-      if (backToTopBtn) {
-        if (currentScrollY > 350) backToTopBtn.classList.add("visible");
-        else backToTopBtn.classList.remove("visible");
-      }
-
-      if (navbar) {
-        if (currentScrollY > 40) navbar.classList.add("scrolled");
-        else navbar.classList.remove("scrolled");
-
-        if (currentScrollY > 120) {
-          if (currentScrollY > lastScrollY && currentScrollY - lastScrollY > hideDelta) {
-            navbar.classList.add("nav-hidden");
-            if (mobileMenu && mobileMenu.classList.contains("is-open")) {
-              closeMobileMenu();
-            }
-          } else if (lastScrollY > currentScrollY && lastScrollY - currentScrollY > hideDelta) {
-            navbar.classList.remove("nav-hidden");
-          }
-        } else {
-          navbar.classList.remove("nav-hidden");
-        }
-      }
-
-      lastScrollY = Math.max(0, currentScrollY);
-    }, { passive: true });
-
-    if (backToTopBtn) {
-      backToTopBtn.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    }
-
-    function closeMobileMenu() {
-      if (!mobileMenu || !mobileToggle) return;
-      mobileToggle.setAttribute("aria-expanded", "false");
-      mobileMenu.classList.remove("is-open");
-      mobileMenu.hidden = true;
-      const icon = mobileToggle.querySelector(".material-symbols-outlined");
-      if (icon) icon.textContent = "menu";
-    }
-
-    function openMobileMenu() {
-      if (!mobileMenu || !mobileToggle) return;
-      mobileToggle.setAttribute("aria-expanded", "true");
-      mobileMenu.classList.add("is-open");
-      mobileMenu.hidden = false;
-      const icon = mobileToggle.querySelector(".material-symbols-outlined");
-      if (icon) icon.textContent = "close";
-    }
-
-    if (mobileToggle && mobileMenu) {
-      closeMobileMenu();
-
-      mobileToggle.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (mobileMenu.classList.contains("is-open")) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      });
-
-      mobileMenu.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => closeMobileMenu());
-      });
-
-      document.addEventListener("click", (e) => {
-        if (mobileMenu.classList.contains("is-open") && !mobileMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
-          closeMobileMenu();
-        }
-      });
-    }
-  }
-
-
-  // --------------------------------------------------------------------------
-  // INITIALIZE ALL
-  // --------------------------------------------------------------------------
-  initHeroCanvas();
-  init3DTiltAndSpotlight();
-  initRoleShowcase();
-  initTransformationTimeline();
-  initImpactCounters();
-  initDemoForm();
-  initReveals();
-  initNavigation();
 });

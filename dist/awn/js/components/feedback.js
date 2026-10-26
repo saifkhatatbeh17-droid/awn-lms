@@ -11,6 +11,10 @@ const CATEGORY_LABELS = {
 
 // Creates the feedback view inside <main> if the page doesn't already have it.
 function ensureFeedbackView() {
+  if (window.AwnRoles?.pageRole() === 'teacher' && window.AwnCommunication) {
+    window.AwnCommunication.mount();
+    return;
+  }
   if (document.getElementById("view-feedback")) return;
   const main = document.querySelector("main");
   if (!main) return;
@@ -51,10 +55,7 @@ async function renderFeedback() {
   list.innerHTML = "";
 
   if (!items.length) {
-    const empty = document.createElement("p");
-    empty.className = "p-4 text-sm text-slate-500";
-    empty.textContent = "لا توجد ملاحظات بعد.";
-    list.appendChild(empty);
+    AwnUI.empty(list, "لا توجد ملاحظات بعد.");
     return;
   }
 
@@ -108,6 +109,7 @@ async function renderFeedback() {
     if (!isClosed) {
       const replyBtn = document.createElement("button");
       replyBtn.type = "button";
+      replyBtn.hidden = !AwnRoles.can("feedback:manage");
       replyBtn.dataset.action = "reply-feedback";
       replyBtn.className = "text-xs px-3 py-1 rounded border hover:bg-slate-50 transition-colors";
       replyBtn.textContent = "رد";
@@ -116,6 +118,7 @@ async function renderFeedback() {
 
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
+    deleteBtn.hidden = !AwnRoles.can("feedback:manage");
     deleteBtn.dataset.action = "delete-feedback";
     deleteBtn.className = "text-xs px-3 py-1 rounded border text-red-600 hover:bg-red-50 transition-colors";
     deleteBtn.textContent = "حذف";

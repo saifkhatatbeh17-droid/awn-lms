@@ -1,0 +1,48 @@
+.plan-mode-bar{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 22px;background:#f0e7e9;border:1px solid #e1d0d7;border-radius:16px;color:#5d253a}.plan-mode-bar p{margin:6px 0 0;font-size:12px}.plan-mode-bar button{background:#fffdf9;border:1px solid #ac7d90;border-radius:10px;padding:12px 18px;font:inherit;font-size:12px;cursor:pointer;flex-shrink:0}.plan-mode-bar button:focus-visible,#quarterly-paper :is(input,textarea,button):focus-visible{outline:3px solid #994761;outline-offset:3px}.plan-print-value{display:none}
+@media screen{
+#quarterly-paper:not(.plan-paper-preview){border:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;font-family:Alexandria,sans-serif!important;color:#382c32}
+#quarterly-paper:not(.plan-paper-preview)>div:first-child{background:#fffdf9;border:1px solid #e5dcd5;border-radius:16px 16px 0 0;padding:24px!important;margin:0!important}
+#quarterly-paper:not(.plan-paper-preview)>div:nth-child(2),#quarterly-paper:not(.plan-paper-preview)>div:nth-child(3){background:#fffdf9;padding:20px!important;margin:0!important;border:1px solid #e5dcd5;border-top:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+#quarterly-paper:not(.plan-paper-preview)>div:nth-child(3){border-radius:0 0 16px 16px;margin-bottom:24px!important}
+#quarterly-paper:not(.plan-paper-preview)>div:nth-child(2)>div,#quarterly-paper:not(.plan-paper-preview)>div:nth-child(3)>div{display:flex;flex-direction:column;align-items:stretch;gap:8px;font-size:12px}
+#quarterly-paper:not(.plan-paper-preview) :is(input:not([type=checkbox]),textarea){width:100%;max-width:100%;min-width:0;background:#fff!important;border:1px solid #d8ccc9!important;border-radius:9px!important;padding:11px!important;font:inherit!important;font-size:13px!important;line-height:1.9!important;color:#382c32!important;box-sizing:border-box}
+#quarterly-paper:not(.plan-paper-preview) input:not([type=checkbox]){min-height:44px}
+#quarterly-paper:not(.plan-paper-preview) textarea{min-height:130px;height:180px;resize:vertical}
+#quarterly-paper:not(.plan-paper-preview) #plan-table{display:block;min-width:0!important;border:0!important;width:100%;background:transparent!important}
+#quarterly-paper:not(.plan-paper-preview) #plan-table thead{display:none}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody{display:grid;gap:24px}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #e1d5d4;border-radius:18px;background:#fffdf9;overflow:hidden}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td{display:block;border:0!important;padding:20px!important;min-width:0;text-align:right}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td::before{content:attr(data-section);display:block;font-size:13px;font-weight:700;color:#74324b;margin-bottom:14px}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td:first-child{grid-column:1/-1;background:#eee3e7;font-size:16px;font-weight:700;padding:14px 20px!important;display:flex;gap:10px}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td:first-child::before{margin:0;font-size:16px}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td:last-child{grid-column:1/-1;border-top:1px solid #eee3e7!important;padding:10px 20px!important;display:flex;align-items:center;gap:12px}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td:last-child::before{margin:0}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody td:last-child button{opacity:1!important;margin:0;min-width:44px;min-height:44px;color:#9b2947;background:#f7eaee}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody label:has(input[type=checkbox]){display:flex;align-items:center;min-height:42px;padding:7px 10px;border:1px solid #e5dcd5;border-radius:8px;background:#fff;font-size:12px;gap:10px;cursor:pointer;transition:background .15s,border-color .15s}
+#quarterly-paper:not(.plan-paper-preview) #plan-tbody label:has(input:checked){background:#f4eaf0;border-color:#bc8c9e;color:#61283e}
+#quarterly-paper input[type=checkbox]{accent-color:#7d2442;flex-shrink:0;width:17px;height:17px}
+#quarterly-paper:not(.plan-paper-preview)>div:last-child{padding:24px!important;background:#fffdf9;border:1px solid #e5dcd5;border-radius:16px;gap:20px;font-size:12px}
+#quarterly-paper:not(.plan-paper-preview)>div:last-child>div{flex:1;min-width:180px;flex-direction:column;align-items:stretch}
+.plan-paper-preview{overflow:auto}.plan-paper-preview #plan-table{min-width:1300px}.plan-paper-preview :is(textarea,input:not([type=checkbox])){display:none!important}.plan-paper-preview .plan-print-value{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;min-height:1.5em}
+@media(max-width:650px){.plan-mode-bar{align-items:stretch;flex-direction:column}#quarterly-paper:not(.plan-paper-preview) #plan-tbody tr,#quarterly-paper:not(.plan-paper-preview)>div:nth-child(2),#quarterly-paper:not(.plan-paper-preview)>div:nth-child(3){grid-template-columns:1fr}#quarterly-paper:not(.plan-paper-preview)>div:first-child>div:first-child{flex-wrap:wrap;gap:12px}#quarterly-paper:not(.plan-paper-preview)>div:first-child input{width:100%!important}}
+}
+@media print{
+@page{size:A4 landscape;margin:8mm}
+body:has(#view-lesson-plans:not(.hidden)) .awn-workspace{margin:0!important;padding:0!important}
+body:has(#view-lesson-plans:not(.hidden)) main.awn-content{padding:0!important;margin:0!important}
+#quarterly-paper{overflow:visible!important;border:0!important;font-size:9pt!important}
+#quarterly-paper>div{overflow:visible!important}
+#quarterly-paper #plan-table{min-width:0!important;width:100%!important;table-layout:fixed!important;font-size:8pt!important}
+#quarterly-paper #plan-table th,#quarterly-paper #plan-table td{width:auto!important;padding:4px!important;font-size:8pt!important;vertical-align:top}
+#quarterly-paper #plan-table th:first-child{width:5mm!important}
+#quarterly-paper :is(textarea,input:not([type=checkbox])){display:none!important}
+#quarterly-paper .plan-print-value{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font-size:inherit;line-height:1.5;min-height:1em}
+#quarterly-paper thead{display:table-header-group}#quarterly-paper tr{break-inside:auto}
+#quarterly-paper>div:nth-child(2){display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#quarterly-paper>div:nth-child(3){display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#quarterly-paper label{break-inside:avoid}#quarterly-paper>div:last-child{break-inside:avoid}
+}
+@media screen{#quarterly-paper:not(.plan-paper-preview) .plan-options summary{cursor:pointer;padding:14px;background:#f4edf0;border:1px solid #d8bac6;border-radius:10px;font-size:12px;line-height:1.9;color:#6b2943}#quarterly-paper:not(.plan-paper-preview) .plan-options[open] summary{margin-bottom:14px}#quarterly-paper:not(.plan-paper-preview) #plan-tbody td{align-self:start}.plan-paper-preview .plan-options>summary{display:none}.plan-paper-preview .plan-options::details-content{content-visibility:visible!important;display:block!important}}
+@media print{.plan-options>summary{display:none!important}.plan-options::details-content{content-visibility:visible!important;display:block!important}}
+@media screen and (min-width:651px){#quarterly-paper:not(.plan-paper-preview)>div:first-child>div:first-child{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:18px;align-items:center}#quarterly-paper:not(.plan-paper-preview)>div:first-child>div:first-child input{width:100%!important;font-size:11px!important}}

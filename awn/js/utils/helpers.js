@@ -1,48 +1,15 @@
 
 // Returns the logged-in user saved by the login page.
-function currentUser() {
-  try {
-    const user = JSON.parse(localStorage.getItem("awn_session")) || {};
-    return user && typeof user === "object" && !Array.isArray(user) ? user : {};
-  } catch {
-    return {};
-  }
-}
+function currentUser() { return AwnSession.current() || {}; }
 
 // Escapes text before inserting it into HTML, so typed text can't break the markup.
-function esc(text) {
-  const d = document.createElement("div");
-  d.textContent = text == null ? "" : String(text);
-  return d.innerHTML;
-}
+function esc(text) { return AwnUtils.escapeHtml(text); }
 
 // Returns the local date as YYYY-MM-DD. Avoids the UTC day shift near midnight in Amman.
-function todayISO(timeZone = "Asia/Amman") {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
-  return values.year + "-" + values.month + "-" + values.day;
-}
+function todayISO(timeZone = "Asia/Amman") { return AwnUtils.today(timeZone); }
 
 
-function requireDashboardRole() {
-  const pageName = window.location.pathname.split("/").pop()?.toLowerCase();
-  const rolesByPage = {
-    "teacher-dashboard.html": "teacher",
-    "principal-dashboard.html": "principal",
-    "supervisor-dashboard.html": "supervisor",
-    "student-dashboard.html": "student",
-    "parent-dashboard.html": "parent",
-  };
-  const expectedRole = rolesByPage[pageName];
-  if (!expectedRole) return true;
-  const user = currentUser();
-  return Boolean(user.username && user.role === expectedRole);
-}
+function requireDashboardRole() { return AwnSession.requireRole(); }
 // Supplies meaningful accessible names for legacy controls that predate labeled markup.
 function ensureAccessibleNames(root = document) {
   const controls = root.querySelectorAll('input:not([type="hidden"]), select, textarea');

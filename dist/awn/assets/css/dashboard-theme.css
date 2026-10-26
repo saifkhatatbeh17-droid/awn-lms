@@ -2,18 +2,18 @@
 
 :root {
   --brand-black: #171717;
-  --brand-primary: #8a1538;
-  --brand-primary-soft: #fdf4f6;
+  --brand-primary:var(--color-brand);
+  --brand-primary-soft:var(--color-brand-soft);
   --brand-white: #ffffff;
   --brand-gold: #745719;
   --brand-gold-surface: #f3ead4;
   --brand-gold-soft: #f3ead4;
   --brand-green-status: #006b36;
   --brand-red-alert: #8a1538;
-  --surface-page: #f5f4f0;
-  --surface-card: #ffffff;
-  --border-subtle: #dedbd3;
-  --text-muted: #5f5d58;
+  --surface-page:var(--color-background);
+  --surface-card:var(--color-surface);
+  --border-subtle:var(--color-border);
+  --text-muted:var(--color-text-muted);
   --shadow-card: 0 0.35rem 1.25rem rgb(23 23 23 / 6%);
   --radius-card: 1rem;
 }
@@ -22,7 +22,7 @@ body.dashboard-shell {
   min-height: 100vh;
   background: var(--surface-page) !important;
   color: var(--brand-black) !important;
-  font-family: "Cairo", Tahoma, sans-serif;
+  font-family: var(--font-family-base);
 }
 
 .dashboard-shell__sidebar {

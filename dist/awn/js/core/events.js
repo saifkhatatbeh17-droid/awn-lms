@@ -4,15 +4,7 @@ document.addEventListener("click", async (e) => {
   const t = e.target;
   if (!t || t.closest(".swal2-container")) return;
 
-  const logoutLink = t.closest("[data-logout]");
-  if (logoutLink) {
-    try {
-      localStorage.removeItem("awn_session");
-    } catch (error) {
-      console.warn("Could not clear the local session.", error);
-    }
-    return;
-  }
+  if (t.closest("[data-logout], [data-admin-logout]")) return;
 
   // Sidebar navigation (every role)
   const link = t.closest("[data-path]");
@@ -33,7 +25,7 @@ document.addEventListener("click", async (e) => {
     text.includes("تعميم داخلي")
   ) {
     if (window.Swal?.fire) {
-      window.Swal.fire({
+      window.AwnUI.dialog({
         icon: "info",
         title: "وظيفة تجريبية",
         text: "هذا الإجراء غير مرتبط بخادم ولا يتم تسجيله فعليًا حتى الآن.",
@@ -52,7 +44,7 @@ document.addEventListener("click", async (e) => {
     if (!id) return;
     if (action.dataset.action === "delete-feedback") {
       if (window.Swal?.fire) {
-        return window.Swal.fire({
+        return window.AwnUI.dialog({
           title: "حذف هذه الملاحظة؟",
           icon: "warning",
           showCancelButton: true,
@@ -60,7 +52,7 @@ document.addEventListener("click", async (e) => {
           cancelButtonText: "إلغاء",
         }).then(async (r) => {
           if (r.isConfirmed) {
-            await ApiService.deleteFeedback(id);
+            AwnUtils.unwrap(await ApiService.deleteFeedback(id));
             if (typeof renderFeedback === "function") await renderFeedback();
           }
         });
@@ -68,7 +60,7 @@ document.addEventListener("click", async (e) => {
     }
     if (action.dataset.action === "reply-feedback") {
       if (window.Swal?.fire) {
-        return window.Swal.fire({
+        return window.AwnUI.dialog({
           title: "الرد على الملاحظة",
           input: "textarea",
           showCancelButton: true,
@@ -76,7 +68,7 @@ document.addEventListener("click", async (e) => {
           cancelButtonText: "إلغاء",
         }).then(async (r) => {
           if (r.isConfirmed && r.value) {
-            await ApiService.updateFeedback(id, { reply: r.value, status: "closed" });
+            AwnUtils.unwrap(await ApiService.updateFeedback(id, { reply: r.value, status: "closed" }));
             if (typeof renderFeedback === "function") await renderFeedback();
           }
         });
@@ -131,7 +123,7 @@ document.addEventListener("click", async (e) => {
         points > 0 ? "مشاركة إيجابية" : "ملاحظة سلوكية",
       );
       if (window.Swal?.fire) {
-        window.Swal.fire({
+        window.AwnUI.dialog({
           toast: true,
           position: "bottom-end",
           showConfirmButton: false,
@@ -190,7 +182,7 @@ document.addEventListener("click", async (e) => {
     ? "هذا الإجراء غير متصل بالخادم، ولم يتم حفظ أي بيانات."
     : "هذا الإجراء غير مفعّل في النموذج التجريبي، ولا تُحفظ أي بيانات منه.";
   if (window.Swal?.fire) {
-    window.Swal.fire({ icon: "info", title: "إجراء غير متاح", text: notice });
+    window.AwnUI.dialog({ icon: "info", title: "إجراء غير متاح", text: notice });
   } else {
     window.alert(notice);
   }
@@ -200,17 +192,18 @@ document.addEventListener("click", async (e) => {
 document.addEventListener("change", async (e) => {
   if (!e.target || !e.target.matches('input[type="checkbox"][data-assignment-id]')) return;
   try {
-    await AssignmentService.setStatus(
+    const result = await AssignmentService.setStatus(
       e.target.dataset.assignmentId,
       e.target.checked ? "completed" : "pending",
     );
+    if (result?.success === false) throw new Error(result.message);
     if (typeof renderStudentAssignments === "function") {
       await renderStudentAssignments();
     }
   } catch (error) {
     console.error("Could not update assignment status", error);
     if (window.Swal?.fire) {
-      window.Swal.fire({ icon: "error", title: "تعذر تحديث حالة الواجب." });
+      window.AwnUI.dialog({ icon: "error", title: "تعذر تحديث حالة الواجب." });
     }
     if (typeof renderStudentAssignments === "function") {
       await renderStudentAssignments();
@@ -238,7 +231,7 @@ document.addEventListener("submit", async (e) => {
       form.reset();
       const demoSave = !window.AWN_CONFIG?.apiBaseUrl;
       if (window.Swal?.fire) {
-        window.Swal.fire({
+        window.AwnUI.dialog({
           icon: "success",
           title: demoSave ? "تم حفظ الواجب في النموذج التجريبي" : "تم حفظ الواجب",
           text: demoSave ? "حُفظ في التخزين التجريبي لهذا المتصفح." : "حُفظ عبر خدمة المنظومة.",
@@ -249,7 +242,7 @@ document.addEventListener("submit", async (e) => {
     } catch (error) {
       console.error("Could not create assignment", error);
       if (window.Swal?.fire) {
-        window.Swal.fire({
+        window.AwnUI.dialog({
           icon: "error",
           title: window.AWN_CONFIG?.demoMode === true
             ? "تعذر حفظ الواجب في النموذج التجريبي."
@@ -278,7 +271,7 @@ document.addEventListener("submit", async (e) => {
         alertBox.textContent = "يرجى كتابة عنوان للملاحظة لا يقل عن 3 أحرف.";
         alertBox.classList.remove("hidden");
       } else if (window.Swal?.fire) {
-        window.Swal.fire({ icon: "warning", title: "تنبيه", text: "يرجى كتابة عنوان للملاحظة لا يقل عن 3 أحرف." });
+        window.AwnUI.dialog({ icon: "warning", title: "تنبيه", text: "يرجى كتابة عنوان للملاحظة لا يقل عن 3 أحرف." });
       }
       return;
     }
@@ -288,19 +281,20 @@ document.addEventListener("submit", async (e) => {
         alertBox.textContent = "يرجى كتابة تفاصيل الملاحظة (5 أحرف على الأقل).";
         alertBox.classList.remove("hidden");
       } else if (window.Swal?.fire) {
-        window.Swal.fire({ icon: "warning", title: "تنبيه", text: "يرجى كتابة تفاصيل الملاحظة (5 أحرف على الأقل)." });
+        window.AwnUI.dialog({ icon: "warning", title: "تنبيه", text: "يرجى كتابة تفاصيل الملاحظة (5 أحرف على الأقل)." });
       }
       return;
     }
 
     const author = typeof currentUser === "function" ? (currentUser().username || "unknown") : "unknown";
     const res = await ApiService.addFeedback(author, category, subject, message);
+    if (!res.success) { AwnUI.message(alertBox, res.message, "error"); return; }
 
     form.reset();
     if (typeof renderFeedback === "function") await renderFeedback();
 
     if (window.Swal?.fire) {
-      window.Swal.fire({
+      window.AwnUI.dialog({
         icon: "success",
         title: "تم إرسال الملاحظة بنجاح",
         text: res?.message || "تم تسجيل الملاحظة في السجل التجريبي.",
@@ -325,7 +319,7 @@ document.addEventListener("submit", async (e) => {
     if (typeof openAboutForm === "function") await openAboutForm(false);
 
     if (window.Swal?.fire) {
-      window.Swal.fire({
+      window.AwnUI.dialog({
         icon: "success",
         title: "تم حفظ بيانات المؤسسة بنجاح",
         timer: 1500,
@@ -356,7 +350,7 @@ function schedulePlanAutosave(key, save) {
     } catch (error) {
       console.error("Could not autosave " + key + " plan", error);
       if (window.Swal?.fire) {
-        window.Swal.fire({ icon: "error", title: "تعذر حفظ التغييرات محليًا." });
+        window.AwnUI.dialog({ icon: "error", title: "تعذر حفظ التغييرات محليًا." });
       }
     }
   }, PLAN_AUTOSAVE_DELAY);

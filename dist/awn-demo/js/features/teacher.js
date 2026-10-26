@@ -22,37 +22,32 @@ function setRowStatus(row, status) {
 
 // Restores today's saved attendance, or marks everyone present by default.
 async function renderAttendance() {
-  const rows = document.querySelectorAll(".student-item");
+  const rows = [...document.querySelectorAll("#studentAttendanceList .student-item")];
   if (!rows.length) return;
-  const res = typeof ApiService?.getAttendance === "function" ? await ApiService.getAttendance(todayISO()) : null;
+  const scope = attendanceScope();
+  const res = typeof ApiService?.getAttendance === "function" ? await ApiService.getAttendance(scope.date, { className: scope.className, period: scope.period }) : null;
   const saved = res?.success ? res.data : res;
   rows.forEach((row) => {
-    const nameEl = row.querySelector(".text-sm.font-bold");
-    if (!nameEl) return;
-    const name = nameEl.textContent.trim();
-    const rec = saved && saved.records && saved.records.find((r) => r.name === name);
-    setRowStatus(row, rec ? rec.status : "present");
+    const name = row.querySelector(".text-sm.font-bold")?.textContent.trim() || "";
+    const rec = saved?.records?.find((item) => item.name === name);
+    setRowStatus(row, rec?.status || "present");
   });
+  updateAttendanceSummary();
 }
 
 // Reads every row and saves today's attendance through ApiService.
 async function saveAttendanceUI() {
   if (!requireDemoMode()) return;
-  const records = [...document.querySelectorAll(".student-item")].map((row) => ({
-    name: row.querySelector(".text-sm.font-bold")?.textContent?.trim() || "",
+  const scope = attendanceScope();
+  const records = [...document.querySelectorAll("#studentAttendanceList .student-item")].map((row) => ({
+    name: row.querySelector(".text-sm.font-bold")?.textContent.trim() || "",
     status: row.dataset.status || "present",
   }));
-  const res = await ApiService.saveAttendance(todayISO(), records);
-  if (res && res.success === false) {
-    window.Swal?.fire({ icon: "error", title: "تعذر حفظ الحضور" });
-    return;
-  }
-  window.Swal?.fire({
-    icon: "success",
-    title: "تم حفظ سجل الحضور",
-    timer: 1500,
-    showConfirmButton: false,
-  });
+  try {
+    const result = await AttendanceService.save(scope.date, records, { className: scope.className, period: scope.period });
+    if (!result.success) throw new Error(result.message);
+    window.AwnUI.dialog({ icon: "success", title: "حُفظ الحضور محليًا لهذا الصف والحصة", timer: 1500, showConfirmButton: false });
+  } catch (error) { console.error(error); window.AwnUI.dialog({ icon: "error", title: "تعذر حفظ سجل الحضور محليًا." }); }
 }
 
 // ---------- 8. TEACHER: DAILY PLAN ----------
@@ -80,12 +75,12 @@ const SAMPLE_PLAN = {
 
 // Reads the header fields and the stage rows into one object.
 function collectDailyPlan(status) {
-  const plan = { status, updated: new Date().toISOString(), stages: [] };
+  const plan = { version: 2, status, updated: new Date().toISOString(), stages: [] };
   DAILY_FIELDS.forEach((id) => {
     const el = document.getElementById(id);
     if (el) plan[id] = el.value;
   });
-  document.querySelectorAll("#view-daily-plans tbody tr").forEach((tr) => {
+  document.querySelectorAll("#daily-stages tbody tr").forEach((tr) => {
     const f = tr.querySelectorAll("input, textarea"); // order: teacher, learner, time
     if (f.length >= 3) {
       plan.stages.push({
@@ -95,6 +90,7 @@ function collectDailyPlan(status) {
       });
     }
   });
+  plan.sessionFields = [...document.querySelectorAll('#daily-paper input')].filter(field => !field.id && !field.closest('#daily-stages')).map(field => field.value);
   return plan;
 }
 
@@ -104,7 +100,7 @@ function fillDailyPlan(plan) {
     const el = document.getElementById(id);
     if (el) el.value = plan[id] || "";
   });
-  document.querySelectorAll("#view-daily-plans tbody tr").forEach((tr, i) => {
+  document.querySelectorAll("#daily-stages tbody tr").forEach((tr, i) => {
     const s = (plan.stages && plan.stages[i]) || {
       time: "",
       learner: "",
@@ -117,16 +113,19 @@ function fillDailyPlan(plan) {
       f[2].value = s.time;
     }
   });
+  const sessionFields = [...document.querySelectorAll('#daily-paper input')].filter(field => !field.id && !field.closest('#daily-stages'));
+  const values = plan.sessionFields || (plan.stages || []).slice(4).flatMap(stage => [stage.teacher, stage.learner, stage.time]);
+  sessionFields.forEach((field, index) => { field.value = values[index] || ''; });
 }
 
-function savePlanSafely(save, context) {
+async function savePlanSafely(save, context) {
   try {
-    save();
+    AwnUtils.unwrap(await save());
     return true;
   } catch (error) {
     console.error("Could not save " + context, error);
     if (window.Swal?.fire) {
-      window.Swal.fire({ icon: "error", title: "تعذر حفظ التغييرات محليًا." });
+      window.AwnUI.dialog({ icon: "error", title: "تعذر حفظ التغييرات محليًا." });
     } else {
       window.alert("تعذر حفظ التغييرات محليًا.");
     }
@@ -146,37 +145,36 @@ function autosaveDaily() {
 // ---------- 9. TEACHER: QUARTERLY PLAN ----------
 
 function collectQuarterlyPlan() {
-  const plan = [];
-  document.querySelectorAll("#plan-tbody tr").forEach((tr) => {
-    const fields = tr.querySelectorAll("textarea, input");
-    if (fields.length) {
-      plan.push(Array.from(fields).map((f) => f.value));
-    }
-  });
-  return plan;
+  const view = document.getElementById("view-lesson-plans");
+  const metadata = [...view.querySelectorAll("input,textarea,select")].filter((field) => !field.closest("#plan-tbody")).map(planControlState);
+  const rows = [...document.querySelectorAll("#plan-tbody tr")].map((row) => [...row.querySelectorAll("textarea,input,select")].map(planControlState));
+  return { version: 2, metadata, rows, updated: new Date().toISOString() };
 }
 
 let isFillingQuarterlyPlan = false;
 
 function fillQuarterlyPlan(plan) {
-  if (!Array.isArray(plan) || !plan.length) return;
-  const tbody = document.getElementById("plan-tbody");
-  if (!tbody) return;
-
+  const tbody = document.getElementById("plan-tbody"), template = tbody?.querySelector("tr")?.cloneNode(true);
+  if (!tbody || !template || !plan) return;
   isFillingQuarterlyPlan = true;
   try {
+    const meta = [...document.querySelectorAll("#view-lesson-plans input,#view-lesson-plans textarea,#view-lesson-plans select")].filter((field) => !field.closest("#plan-tbody"));
+    if (plan.version === 2) (plan.metadata || []).forEach((state, index) => restorePlanControl(meta[index], state));
+    const rows = Array.isArray(plan) ? plan : (plan.rows || []);
     tbody.replaceChildren();
-    for (const rowValues of plan) {
-      addNewRow();
-      const fields = tbody.lastElementChild.querySelectorAll("textarea, input");
-      (Array.isArray(rowValues) ? rowValues : []).forEach((value, index) => {
-        if (fields[index]) fields[index].value = String(value ?? "");
+    if (!rows.length) tbody.appendChild(template);
+    rows.forEach((states) => {
+      const row = template.cloneNode(true), fields = [...row.querySelectorAll("textarea,input,select")];
+      fields.forEach((field) => { if (field.type !== "checkbox") field.value = ""; });
+      states.forEach((state, index) => {
+        const field = fields[index]; if (!field) return;
+        if (typeof state === "object" && state !== null) restorePlanControl(field, state);
+        else if (field.type === "checkbox") field.checked = state === "on" || state === true;
+        else field.value = String(state ?? "");
       });
-    }
-  } finally {
-    isFillingQuarterlyPlan = false;
-    renumberRows();
-  }
+      tbody.appendChild(row);
+    });
+  } finally { isFillingQuarterlyPlan = false; renumberRows(); }
 }
 
 function autosaveQuarterly() {
@@ -195,44 +193,24 @@ function renumberRows() {
   });
 }
 
-function deleteRow(btn) {
+function deleteRow(button) {
   const tbody = document.getElementById("plan-tbody");
-  if (!tbody) return;
-  if (tbody.rows.length > 1) {
-    btn.closest("tr")?.remove();
-    autosaveQuarterly();
-    renumberRows();
-  } else if (window.Swal?.fire) {
-    window.Swal.fire({
-      icon: "warning",
-      title: "يجب أن تحتوي الخطة على نتاج واحد على الأقل.",
-    });
-  }
+  if (!tbody || tbody.rows.length <= 1) return window.AwnUI.dialog({ icon: "warning", title: "يجب أن تحتوي الخطة على نتاج واحد على الأقل." });
+  button.closest("tr")?.remove(); renumberRows(); autosaveQuarterly();
 }
 
 function addNewRow() {
-  const tbody = document.getElementById("plan-tbody");
-  if (!tbody) return;
-  const tr = document.createElement("tr");
-  tr.className = "hover:bg-slate-50 align-top";
-  const area = (p) =>
-    `<textarea class="w-full bg-slate-50 p-2 rounded outline-none" rows="4" placeholder="${p}"></textarea>`;
-  tr.innerHTML = `
-    <td class="p-3 text-center font-bold text-primary bg-slate-50/50"></td>
-    <td class="p-3">${area("النتاجات الخاصة...")}</td>
-    <td class="p-3">${area("مصادر التعلم...")}</td>
-    <td class="p-3">${area("الاستراتيجيات...")}</td>
-    <td class="p-3">${area("التقويم...")}</td>
-    <td class="p-3">${area("الأنشطة...")}</td>
-    <td class="p-3">${area("التأمل الذاتي...")}</td>
-    <td class="p-3 text-center no-print"><button type="button" aria-label="حذف النتاج" class="p-1 rounded text-red-500 hover:bg-red-50" onclick="deleteRow(this)"><span class="material-symbols-outlined text-[18px]">delete</span></button></td>`;
-  tbody.appendChild(tr);
-  renumberRows();
+  const tbody = document.getElementById("plan-tbody"), template = tbody?.querySelector("tr");
+  if (!tbody || !template) return;
+  const row = template.cloneNode(true);
+  row.querySelectorAll("textarea").forEach((field) => { field.value = ""; });
+  row.querySelectorAll('input:not([type="checkbox"]),select').forEach((field) => { field.value = ""; });
+  row.cells[0].textContent = String(tbody.rows.length + 1); tbody.appendChild(row); renumberRows(); autosaveQuarterly();
 }
 
-function saveDraftNotification() {
-  if (!requireDemoMode() || !autosaveQuarterly()) return;
-  window.Swal?.fire({
+async function saveDraftNotification() {
+  if (!requireDemoMode() || !(await autosaveQuarterly())) return;
+  window.AwnUI.dialog({
     icon: "success",
     title: "تم حفظ مسودة الخطة الفصلية",
     timer: 1500,
@@ -241,19 +219,19 @@ function saveDraftNotification() {
 }
 
 // Used by both plan views. In the daily view it saves the plan. In the quarterly view it only confirms.
-function submitForReview() {
+async function submitForReview() {
   cancelPendingPlanAutosave("daily");
   cancelPendingPlanAutosave("quarterly");
   if (!requireDemoMode()) return;
 
   const daily = document.getElementById("view-daily-plans");
   if (daily && !daily.classList.contains("hidden")) {
-    const saved = savePlanSafely(
+    const saved = await savePlanSafely(
       () => ApiService.saveDailyPlan(collectDailyPlan("submitted")),
       "daily plan",
     );
     if (!saved) return;
-    window.Swal?.fire({
+    window.AwnUI.dialog({
       icon: "success",
       title: "حُفظت الخطة محليًا؛ الإرسال للاعتماد يحتاج ربط الخادم",
       timer: 2000,
@@ -262,12 +240,12 @@ function submitForReview() {
     return;
   }
 
-  const saved = savePlanSafely(
+  const saved = await savePlanSafely(
     () => ApiService.saveQuarterlyPlan(collectQuarterlyPlan()),
     "quarterly plan",
   );
   if (!saved) return;
-  window.Swal?.fire({
+  window.AwnUI.dialog({
     icon: "success",
     title: "تم حفظ الخطة الفصلية محليًا؛ الإرسال للاعتماد يحتاج ربط الخادم",
     timer: 2000,

@@ -32,271 +32,42 @@
     <link href="assets/css/dashboard-theme.css" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="assets/css/brand.css?v=1">
+    <link rel="stylesheet" href="assets/css/sidebar.css?v=1">
+    <script defer src="js/components/sidebar.js?v=1"></script>
+  <link rel="stylesheet" href="assets/css/components.css?v=1">
+    <link rel="stylesheet" href="assets/css/app-shell.css?v=1">
+    <script src="js/config/app-config.js"></script>
+    <script src="js/config/roles.js"></script>
+    <script src="js/utils/shared.js"></script>
+    <script src="js/services/http-client.js"></script>
+    <script src="js/services/demo-store.js"></script>
+    <script src="js/services/session.js"></script>
+    <script src="js/components/ui.js"></script>
+    <script src="js/components/brand.js"></script>
+    <script src="js/components/app-shell.js"></script>
   </head>
 
   <body class="bg-background text-base font-cairo text-slate-800 min-h-screen dashboard-shell">
+    <a class="awn-sidebar-skip" href="#dashboard-main">انتقل إلى المحتوى</a>
     <!-- Sidebar Overlay for Mobile -->
-    <div
-      id="sidebar-overlay"
-      onclick="
-        document.getElementById('sidebar').classList.add('translate-x-full');
-        this.classList.add('hidden');
-      "
-      class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"
-    ></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity" data-awn-sidebar-backdrop=""></div>
 
     <!-- SIDEBAR (Principal Style - Dark Theme) -->
     <aside
       id="sidebar"
-      class="fixed right-0 top-0 h-full w-72 bg-white transform translate-x-full lg:translate-x-0 transition-transform duration-300 z-50 border-l border-slate-200/80 flex flex-col justify-between overflow-y-auto shadow-[0_0_15px_rgba(0,0,0,0.03)] no-print dashboard-shell__sidebar"
-    >
-      <div class="flex flex-col">
-        <!-- Sidebar Brand -->
-        <div
-          class="h-16 px-6 flex items-center gap-3 border-b border-slate-100/80"
-        >
-          <div class="flex items-center gap-1.5 shrink-0">
-            <div class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center overflow-hidden shrink-0 border border-slate-100">
-              <img alt="MoE Logo" class="w-full h-full object-cover" src="assets/images/moe_logo.jpg" />
-            </div>
-            <div class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 overflow-hidden shrink-0 border border-slate-100">
-              <img alt="Awn Logo" class="w-full h-full object-contain" src="assets/images/awn_logo.jpg" />
-            </div>
-          </div>
-          <div class="flex flex-col">
-            <div class="flex items-center gap-1.5">
-              <span
-                class="font-black text-lg text-primary leading-none tracking-tight"
-                >عـــــــون</span
-              >
-              <span
-                class="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-bold border border-slate-200/50"
-                >الإدارة</span
-              >
-            </div>
-            <span class="text-[10px] text-slate-500 font-bold"
-              >المنظومة الوطنية لإدارة التعليم</span
-            >
-          </div>
-        </div>
-
-        <nav class="flex flex-col px-3 gap-1 mt-6">
-          <!-- Dashboard Link -->
-          <a href="#view-dashboard"
-            onclick="switchPrincipalView('view-dashboard')"
-            data-path="view-dashboard"
-            class="relative flex items-center justify-between px-4 py-3 bg-primary-50 text-primary font-bold rounded-xl cursor-pointer"
-          >
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[22px]"
-                >space_dashboard</span
-              >
-              <span class="">نظرة عامة</span>
-            </div>
-            <div
-              class="active-indicator absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-primary rounded-l-full"
-            ></div>
-          </a>
-
-          <div
-            class="mt-4 mb-2 px-4 text-[11px] font-bold text-slate-500 tracking-wider"
-          >
-            الإدارة المدرسية
-          </div>
-
-          <a href="#view-teachers"
-            onclick="switchPrincipalView('view-teachers')"
-            data-path="view-teachers"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all"
-          >
-            <span class="material-symbols-outlined text-[20px]">badge</span>
-            <span class="">الكادر التعليمي</span>
-          </a>
-          <a href="#view-approvals"
-            onclick="switchPrincipalView('view-approvals')"
-            data-path="view-approvals"
-            class="flex items-center justify-between px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all"
-          >
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[20px]"
-                >fact_check</span
-              >
-              <span class="">الاعتمادات</span>
-            </div>
-            <span id="leaveRequestBadge" aria-label="طلبات إجازة ومغادرة قيد المراجعة" class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-          </a>
-          <a href="#view-school-attendance"
-            onclick="switchPrincipalView('view-school-attendance')"
-            data-path="view-school-attendance"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all"
-          >
-            <span class="material-symbols-outlined text-[20px]">groups</span>
-            <span class="">دوام الطلبة والموظفين</span>
-          </a>
-
-          <div
-            class="mt-4 mb-2 px-4 text-[11px] font-bold text-slate-500 tracking-wider"
-          >
-            الوزارة والتقارير
-          </div>
-
-          <a href="#view-circulars"
-            onclick="switchPrincipalView('view-circulars')"
-            data-path="view-circulars"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all"
-          >
-            <span class="material-symbols-outlined text-[20px]">campaign</span>
-            <span class="">التعاميم الوزارية</span>
-          </a>
-          <a href="#view-reports"
-            onclick="switchPrincipalView('view-reports')"
-            data-path="view-reports"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all"
-          >
-            <span class="material-symbols-outlined text-[20px]">analytics</span>
-            <span class="">التقارير الشاملة</span>
-          </a>
-
-          <!-- Support Links -->
-          <div
-            class="mt-4 mb-2 px-4 text-[11px] font-bold text-slate-500 tracking-wider"
-          >
-            الدعم والمعلومات
-          </div>
-          <a href="#view-feedback"
-            data-path="view-feedback"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
-          >
-            <span class="material-symbols-outlined text-[20px]">feedback</span>
-            <span>الملاحظات والشكاوى</span>
-          </a>
-          <a href="#view-about"
-            data-path="view-about"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
-          >
-            <span class="material-symbols-outlined text-[20px]">info</span>
-            <span>عن النظام</span>
-          </a>
-        </nav>
-      </div>
-
-      <!-- Bottom Institutional Badge -->
-      <div class="px-4 pb-6 flex flex-col gap-2">
-        <div
-          class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 flex items-center justify-between"
-        >
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-[24px]"
-              >verified</span
-            >
-            <div class="flex flex-col">
-              <span class="text-[11px] font-bold text-slate-800"
-                >بوابة الإدارة المدرسية</span
-              >
-              <span class="text-[10px] text-slate-500"
-                >وزارة التربية والتعليم</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Logout -->
-      <div class="px-4 pb-6 mt-auto">
-        <a href="index.html" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-100 transition-colors border border-red-100" data-logout>
-          <span class="material-symbols-outlined text-[18px]">logout</span>
-          <span>تسجيل الخروج</span>
-        </a>
-      </div>
-    </aside>
+      class="fixed right-0 top-0 h-full w-72 bg-white transform translate-x-full lg:translate-x-0 transition-transform duration-300 z-50 border-l border-slate-200/80 flex flex-col justify-between overflow-y-auto shadow-[0_0_15px_rgba(0,0,0,0.03)] no-print dashboard-shell__sidebar awn-sidebar"
+     data-app-sidebar></aside>
 
     <!-- MAIN CONTENT AREA -->
     <div class="lg:pr-72 w-full transition-all duration-300">
       <!-- TOP HEADER -->
       <header
         class="fixed top-0 right-0 lg:right-72 left-0 h-16 bg-white/95 backdrop-blur-xl z-40 border-b border-slate-200/80 shadow-[0_1px_8px_rgba(0,0,0,0.03)] no-print dashboard-shell__header"
-      >
-        <div
-          class="h-16 px-4 lg:px-8 flex items-center justify-between gap-3 lg:gap-5"
-        >
-          <!-- Mobile Menu Toggle -->
-          <button type="button"
-            class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-            onclick="
-              document
-                .getElementById('sidebar')
-                .classList.remove('translate-x-full');
-              document
-                .getElementById('sidebar-overlay')
-                .classList.remove('hidden');
-            "
-          >
-            <span class="material-symbols-outlined text-[24px]">menu</span>
-          </button>
-          <!-- Search -->
-          <div class="flex-1 max-w-lg">
-            <div class="relative flex items-center w-full">
-              <span
-                class="material-symbols-outlined absolute right-3 text-slate-400 text-[20px] pointer-events-none"
-                >search</span
-              >
-              <input
-                type="search"
-                placeholder="ابحث عن معلم، طالب، أو تعميم..."
-                class="w-full h-10 pr-10 pl-5 bg-slate-50 border border-slate-200 text-[#111827] rounded-lg focus:outline-none focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-slate-400 transition-colors text-sm font-semibold"
-              />
-            </div>
-          </div>
+       data-app-header></header>
 
-          <!-- Profile & Actions -->
-          <div class="flex items-center gap-5">
-            <div class="hidden md:flex items-center gap-3">
-              <div
-                class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 font-bold text-[12px] text-secondary"
-              >
-                <span
-                  class="w-2 h-2 rounded-full bg-secondary animate-pulse"
-                ></span>
-                <span class="">مديرية تربية الزرقاء</span>
-              </div>
-              <div
-                class="flex items-center gap-1 text-[11px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200"
-              >
-                <span class="material-symbols-outlined text-[14px]">sync</span>
-                <span>مُحدث</span>
-              </div>
-            </div>
-            <button type="button"
-              class="relative p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
-            >
-              <span class="material-symbols-outlined text-[22px]"
-                >notifications</span
-              >
-              <span
-                class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"
-              ></span>
-            </button>
-            <div class="h-6 w-px bg-slate-200"></div>
-            <div class="flex items-center gap-3">
-              <div class="flex flex-col text-left">
-                <span
-                  class="text-sm font-bold font-cairo text-slate-900 leading-tight"
-                  >د. محمد القضاة</span
-                >
-                <span class="text-[11px] text-primary font-bold"
-                  >مدير مدرسة</span
-                >
-              </div>
-              <div
-                class="w-9 h-9 rounded-full bg-slate-200 border-2 border-primary/30 flex items-center justify-center text-slate-600 font-bold overflow-hidden"
-              >
-                م.ق
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main class="w-full pt-20 px-4 md:px-6 lg:px-8 pb-6 md:pb-8 min-h-screen dashboard-shell__main">
+      <main id="dashboard-main" tabindex="-1" class="w-full pt-20 px-4 md:px-6 lg:px-8 pb-6 md:pb-8 min-h-screen dashboard-shell__main">
         <!-- ===================================== -->
         <!-- VIEW 1: PRINCIPAL DASHBOARD HOME      -->
         <!-- ===================================== -->
@@ -965,18 +736,21 @@
     </div>
 
     <!-- Config -->
+    <script src="js/core/bootstrap.js"></script>
     <script src="js/config/tailwind.js"></script>
-    <script src="js/config/app-config.js"></script>
     <!-- Services (Future Backend Integration) -->
+    <script src="js/services/school-service.js"></script>
+    <script src="js/services/attendance-service.js"></script>
     <script src="js/services/apiService.js"></script>
     <!-- Utils -->
     <script src="js/utils/helpers.js"></script>
     <!-- Components -->
-    <script src="js/components/navigation.js"></script>
+    <script src="js/components/navigation.js?v=2"></script>
     <script src="js/components/feedback.js"></script>
     <script src="js/components/about.js"></script>
     <!-- Features -->
     <script src="js/features/principal.js"></script>
+    <script src="js/services/leave-service.js"></script>
     <script src="js/features/leave-requests.js"></script>
     <!-- Core -->
     <script src="js/core/events.js"></script>

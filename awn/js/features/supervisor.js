@@ -38,7 +38,7 @@ window.switchSupervisorView = switchSupervisorView;
  */
 function handleScheduleVisit() {
   if (window.Swal?.fire) {
-    window.Swal.fire({
+    window.AwnUI.dialog({
       title: "جدولة زيارة إشرافية جديدة",
       html: `
         <div class="flex flex-col gap-3 text-right" dir="rtl">
@@ -88,7 +88,7 @@ function handleScheduleVisit() {
           `;
           visitsGrid.prepend(card);
         }
-        window.Swal.fire({
+        window.AwnUI.dialog({
           icon: "success",
           title: "تمت جدولة الزيارة بنجاح",
           timer: 1800,

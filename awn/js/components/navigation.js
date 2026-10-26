@@ -4,14 +4,7 @@
  * mobile drawer management, and universal logout across all dashboards.
  */
 
-const ROLE_DISPLAY_NAMES = {
-  admin: "مسؤول المنظومة",
-  principal: "مدير مدرسة",
-  supervisor: "مشرف تربوي",
-  teacher: "معلم",
-  student: "طالب",
-  parent: "ولي أمر",
-};
+const ROLE_DISPLAY_NAMES = Object.fromEntries(Object.entries(AwnRoles.definitions).map(([key, role]) => [key, role.label]));
 
 /**
  * Shows one view and hides all others. Highlights the matching sidebar link.
@@ -36,6 +29,8 @@ function navigateTo(viewId) {
     link.classList.toggle("text-primary", active);
     link.classList.toggle("font-bold", active);
     link.classList.toggle("text-slate-500", !active);
+    if (active) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
 
     const indicator = link.querySelector(".active-indicator");
     if (indicator) indicator.remove();
@@ -74,6 +69,7 @@ function navigateTo(viewId) {
 }
 
 function closeMobileSidebar() {
+  if (window.AwnSidebar) return window.AwnSidebar.close();
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebar-overlay");
   if (sidebar && window.matchMedia("(max-width: 1023px)").matches) {
@@ -83,6 +79,7 @@ function closeMobileSidebar() {
 }
 
 function openMobileSidebar() {
+  if (window.AwnSidebar) return window.AwnSidebar.open();
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebar-overlay");
   if (sidebar) {
@@ -122,15 +119,7 @@ function renderUserProfile() {
 /**
  * Global logout handler
  */
-function handleLogout(e) {
-  e?.preventDefault();
-  try {
-    localStorage.removeItem("awn_session");
-  } catch (error) {
-    console.warn("Could not clear session storage", error);
-  }
-  window.location.assign("index.html");
-}
+function handleLogout(e) { e?.preventDefault(); return AwnSession.logout(); }
 
 /**
  * Initialize dynamic navigation bindings
@@ -138,11 +127,7 @@ function handleLogout(e) {
 function initNavigation() {
   renderUserProfile();
 
-  // Attach logout listener
-  document.querySelectorAll("[data-logout], [data-admin-logout]").forEach((btn) => {
-    btn.removeEventListener("click", handleLogout);
-    btn.addEventListener("click", handleLogout);
-  });
+  // Session service owns logout for all roles.
 
   // Attach mobile sidebar toggle listener
   document.querySelectorAll('[data-sidebar-toggle], [data-mobile-menu-toggle]').forEach((btn) => {

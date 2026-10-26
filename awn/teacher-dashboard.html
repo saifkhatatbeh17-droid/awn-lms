@@ -31,306 +31,50 @@
     <!-- Tailwind & Config -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="assets/css/dashboard-theme.css" rel="stylesheet">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  </head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="assets/css/brand.css?v=1">
+    <link rel="stylesheet" href="assets/css/sidebar.css?v=1">
+    <script defer src="js/components/sidebar.js?v=1"></script>
+  <link rel="stylesheet" href="assets/css/components.css?v=1">
+    <link rel="stylesheet" href="assets/css/app-shell.css?v=1">
+    <script src="js/config/app-config.js"></script>
+    <script src="js/config/roles.js"></script>
+    <script src="js/utils/shared.js"></script>
+    <script src="js/services/http-client.js"></script>
+    <script src="js/services/demo-store.js"></script>
+    <script src="js/services/session.js"></script>
+    <script src="js/components/ui.js"></script>
+    <script src="js/components/brand.js"></script>
+    <script src="js/components/app-shell.js"></script>
+  <link rel="stylesheet" href="assets/css/plan-editor.css?v=2">
+
+<link rel="stylesheet" href="assets/css/daily-plan-editor.css?v=1">
+<link rel="stylesheet" href="assets/css/employment-profile.css?v=1">
+<link rel="stylesheet" href="assets/css/communication.css?v=1">
+<link rel="stylesheet" href="assets/css/teacher-assistant.css?v=1">
+</head>
 
   <body class="bg-background text-base font-cairo text-slate-800 min-h-screen dashboard-shell">
+    <a class="awn-sidebar-skip" href="#dashboard-main">انتقل إلى المحتوى</a>
     <!-- SIDEBAR (Light Theme - Ajyal Style) -->
     <!-- Sidebar Overlay for Mobile -->
-    <div
-      id="sidebar-overlay"
-      onclick="
-        document.getElementById('sidebar').classList.add('translate-x-full');
-        this.classList.add('hidden');
-      "
-      class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"
-    ></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity" data-awn-sidebar-backdrop=""></div>
 
     <aside
       id="sidebar"
-      class="fixed right-0 top-0 h-full w-72 bg-white transform translate-x-full lg:translate-x-0 transition-transform duration-300 z-50 text-slate-700 shadow-[2px_0_24px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto border-l border-slate-100 dashboard-shell__sidebar"
-    >
-      <div class="flex flex-col">
-        <!-- Sidebar Brand -->
-        <div
-          class="h-16 px-4 flex items-center gap-3 border-b border-slate-100 bg-slate-50/50"
-        >
-          <div
-            class="w-10 h-10 rounded-xl bg-white shadow-md border border-slate-100 shrink-0 p-1 flex items-center justify-center overflow-hidden"
-          >
-            <img
-              alt="Awn Logo"
-              class="w-full h-full object-contain"
-              src="assets/images/awn_logo.jpg"
-            />
-          </div>
-          <div class="flex flex-col">
-            <div class="flex items-center gap-1.5">
-              <span
-                class="font-bold text-lg font-cairo text-[18px] font-bold text-slate-900"
-                >منصة عون</span
-              >
-              <span
-                class="text-[10px] bg-primary-50 text-primary px-1.5 py-0.5 rounded font-bold border border-primary/20"
-                >الأردن</span
-              >
-            </div>
-            <span class="text-[11px] text-slate-500 font-medium"
-              >المنظومة الوطنية لإدارة التعليم</span
-            >
-          </div>
-        </div>
-
-        <nav class="flex flex-col px-3 gap-1 mt-4">
-          <!-- Dashboard Link -->
-          <a
-            href="#view-dashboard" data-path="view-dashboard" onclick="switchView('view-dashboard')"
-            data-path="view-dashboard"
-            class="relative flex items-center justify-between px-4 py-2.5 transition-all bg-primary-50 text-primary font-semibold rounded-xl border-r-4 border-primary cursor-pointer"
-          >
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[22px] text-primary"
-                >dashboard</span
-              >
-              <span class="">الرئيسية</span>
-            </div>
-          </a>
-
-          <!-- Curriculum Section -->
-          <div class="flex flex-col mt-2">
-            <div
-              class="flex items-center justify-between px-4 py-2 rounded-lg text-slate-700 font-semibold bg-slate-50"
-            >
-              <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-[20px] text-primary"
-                  >menu_book</span
-                >
-                <span class="">التخطيط الأكاديمي</span>
-              </div>
-              <span class="material-symbols-outlined text-[18px] text-slate-400"
-                >expand_more</span
-              >
-            </div>
-            <div
-              class="pr-6 pl-2 flex flex-col gap-1 mt-1 border-r-2 border-slate-100 mr-3"
-            >
-              <a href="#view-lesson-plans"
-                onclick="switchView('view-lesson-plans')"
-                data-path="view-lesson-plans"
-                class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
-              >
-                <span class="material-symbols-outlined text-[18px]"
-                  >calendar_month</span
-                >
-                <span class="">الخطط الفصلية</span>
-              </a>
-              <a href="#view-daily-plans"
-                onclick="switchView('view-daily-plans')"
-                data-path="view-daily-plans"
-                class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
-              >
-                <span class="material-symbols-outlined text-[18px]"
-                  >edit_calendar</span
-                >
-                <span class="">الخطط اليومية</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Other Links -->
-          <a href="#view-attendance"
-            onclick="switchView('view-attendance')"
-            data-path="view-attendance"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer mt-2 text-sm font-medium"
-          >
-            <span class="material-symbols-outlined text-[20px]"
-              >how_to_reg</span
-            >
-            <span class="">الحضور والغياب</span>
-          </a>
-          <a href="#view-grades"
-            onclick="switchView('view-grades')"
-            data-path="view-grades"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
-          >
-            <span class="material-symbols-outlined text-[20px]">grade</span>
-            <span class="">سجل العلامات</span>
-          </a>
-          <a href="#view-schedule"
-            onclick="switchView('view-schedule')"
-            data-path="view-schedule"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
-          >
-            <span class="material-symbols-outlined text-[20px]"
-              >calendar_view_week</span
-            >
-            <span class="">الجدول الدراسي</span>
-          </a>
-          <a href="#view-students"
-            onclick="switchView('view-students')"
-            data-path="view-students"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer text-sm font-medium"
-          >
-            <span class="material-symbols-outlined text-[20px]">school</span>
-            <span class="">سجل الطلاب</span>
-          </a>
-
-          <a href="#view-teacher-profile"
-            onclick="switchView('view-teacher-profile')"
-            data-path="view-teacher-profile"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer mt-2 text-sm font-medium"
-          >
-            <span class="material-symbols-outlined text-[20px]">workspace_premium</span>
-            <span>ملفي المهني</span>
-          </a>
-          <a href="#view-leave-requests"
-            onclick="switchView('view-leave-requests')"
-            data-path="view-leave-requests"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors cursor-pointer mt-2 text-sm font-medium"
-          >
-            <span class="material-symbols-outlined text-[20px]">event_available</span>
-            <span>طلب إجازة / مغادرة</span>
-          </a>
-          <!-- Support Links -->
-          <div
-            class="mt-4 mb-2 px-4 text-[11px] font-bold text-slate-500 tracking-wider"
-          >
-            الدعم والمعلومات
-          </div>
-          <a href="#view-feedback"
-            data-path="view-feedback"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
-          >
-            <span class="material-symbols-outlined text-[20px]">feedback</span>
-            <span>الملاحظات والشكاوى</span>
-          </a>
-          <a href="#view-about"
-            data-path="view-about"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 font-bold hover:bg-slate-50 hover:text-primary transition-all cursor-pointer"
-          >
-            <span class="material-symbols-outlined text-[20px]">info</span>
-            <span>عن النظام</span>
-          </a>
-        </nav>
-      </div>
-
-      <!-- Bottom Institutional Badge -->
-      <div class="px-4 pb-6 flex flex-col gap-2">
-        <div
-          class="p-3 border border-slate-100 rounded-xl flex items-center justify-between bg-slate-50"
-        >
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-[24px]"
-              >verified</span
-            >
-            <div class="flex flex-col">
-              <span class="text-[11px] font-bold text-slate-800"
-                >بوابة المعلم — نموذج تجريبي</span
-              >
-              <span class="text-[10px] text-slate-500">نموذج محلي غير رسمي</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Logout -->
-      <div class="px-4 pb-6 mt-auto">
-        <a href="index.html" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-100 transition-colors border border-red-100" data-logout>
-          <span class="material-symbols-outlined text-[18px]">logout</span>
-          <span>تسجيل الخروج</span>
-        </a>
-      </div>
-    </aside>
+      class="fixed right-0 top-0 h-full w-72 bg-white transform translate-x-full lg:translate-x-0 transition-transform duration-300 z-50 text-slate-700 shadow-[2px_0_24px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto border-l border-slate-100 dashboard-shell__sidebar awn-sidebar"
+     data-app-sidebar></aside>
 
     <!-- MAIN CONTENT AREA -->
     <div class="lg:pr-72 w-full transition-all duration-300">
       <!-- TOP HEADER -->
       <header
         class="fixed top-0 right-0 lg:right-72 left-0 h-16 bg-white/95 backdrop-blur-xl z-40 border-b border-slate-200/80 shadow-[0_1px_8px_rgba(0,0,0,0.03)] no-print dashboard-shell__header"
-      >
-        <div
-          class="h-16 px-4 lg:px-8 flex items-center justify-between gap-3 lg:gap-5"
-        >
-          <!-- Mobile Menu Toggle -->
-          <button type="button"
-            class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-            onclick="
-              document
-                .getElementById('sidebar')
-                .classList.toggle('translate-x-full');
-              document
-                .getElementById('sidebar-overlay')
-                .classList.toggle('hidden');
-            "
-          >
-            <span class="material-symbols-outlined text-[24px]">menu</span>
-          </button>
-          <!-- Search -->
-          <div class="flex-1 max-w-lg">
-            <div class="relative flex items-center w-full">
-              <span
-                class="material-symbols-outlined absolute right-3 text-slate-400 text-[20px] pointer-events-none"
-                >search</span
-              >
-              <input
-                type="search"
-                placeholder="ابحث في منصة عون..."
-                class="w-full h-10 pr-10 pl-5 bg-slate-50 border border-slate-200 text-[#111827] rounded-lg focus:outline-none focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-slate-400 transition-colors"
-              />
-            </div>
-          </div>
+       data-app-header></header>
 
-          <!-- Profile & Actions -->
-          <div class="flex items-center gap-5">
-            <div class="hidden md:flex items-center gap-3">
-              <div
-                class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 font-bold text-[12px] text-secondary"
-              >
-                <span
-                  class="w-2 h-2 rounded-full bg-secondary animate-pulse"
-                ></span>
-                <span class="">نموذج تجريبي محلي</span>
-              </div>
-              <div
-                class="flex items-center gap-1 text-[11px] font-bold text-slate-500 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200"
-              >
-                <span class="material-symbols-outlined text-[14px]">sync</span>
-                <span>لا يوجد اتصال بخادم</span>
-              </div>
-            </div>
-            <button type="button"
-              class="relative p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
-            >
-              <span class="material-symbols-outlined text-[22px]"
-                >notifications</span
-              >
-              <span
-                class="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary rounded-full ring-2 ring-white"
-              ></span>
-            </button>
-            <div class="h-6 w-px bg-slate-200"></div>
-            <div class="flex items-center gap-3">
-              <div class="flex flex-col text-left">
-                <span
-                  class="text-base font-bold font-cairo text-slate-900 leading-tight"
-                   data-teacher-name>معلم</span
-                >
-                <span class="text-[11px] text-secondary font-semibold"
-                  >معلم لغة عربية</span
-                >
-              </div>
-              <img
-                alt="الملف الشخصي"
-                class="w-9 h-9 rounded-full object-cover ring-2 ring-secondary/30"
-                src="https://lh3.googleusercontent.com/aida/AEtjO1XCaKD5fiQn1f3bZipw9X-HaDpUcr_L32g321qTdYLHhNOsrzs_XDw2frYGr7K0Y6yxSWXOwYUX4pgQQCOW54n_g3pedB-c8L9f7GFNB7b5rS9jm1vBy4NNExIgVCShA2fifuWFILabb3IDScxaeO_arPt1T-60QeESUISaOr7MwgbDKCelN5qJ0ktlAZxDFROwltU_U49nbVkuDlBnnttU3r06lJY1wV7Bu8A9DpyzCuM8NEaeRoiCw6w"
-              />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main
+      <main id="dashboard-main" tabindex="-1"
         class="w-full pt-24 px-4 md:px-6 lg:px-8 pb-6 md:pb-8 bg-slate-50 min-h-screen dashboard-shell__main"
       >
         <!-- ===================================== -->
@@ -801,11 +545,11 @@
 </div></div>
 
 
-            
 
 
 
-        
+
+
 
 <!-- ===================================== -->
         <!-- VIEW 2: LESSON PLANS (الخطط الفصلية)   -->
@@ -876,8 +620,7 @@
                     >
                   </div>
                   <p class="text-sm font-cairo text-slate-500 mt-0.5">
-                    نموذج تخطيطي تجريبي محلي
-                    وقابل للتعديل حسب مرجع مدرستك
+                    تعبئة مرنة للخطة، مع الحفاظ على تنظيم النسخة المطبوعة
                   </p>
                 </div>
               </div>
@@ -943,9 +686,11 @@
             </button>
           </div>
 
-                    <!-- Official Paper Form Container -->
+                    <div class="plan-mode-bar no-print"><div><strong>خطّط بسهولة. واطبع بالتنظيم المعتاد.</strong><p>أدخل بيانات الوحدة، ثم حدّد ما يناسب كل نتاج.</p></div><button type="button" id="plan-preview-toggle" aria-pressed="false">معاينة النموذج الورقي</button></div>
+
+<!-- Official Paper Form Container -->
           <div
-            class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
+            id="quarterly-paper" class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
             style="font-family: 'Amiri', serif"
           >
             <!-- Document Header -->
@@ -993,7 +738,7 @@
                   <input class="w-full text-base font-bold bg-transparent border-0 border-b border-dotted border-gray-400 focus:border-black focus:ring-0 p-0.5" type="text" value="مدن بلدي" />
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4 text-base font-bold font-[Cairo] border-b-2 border-black pb-3" style="font-family: 'Cairo', sans-serif">
                 <div class="flex items-center gap-1.5">
                   <span class="whitespace-nowrap font-extrabold text-black">عدد الدروس:</span>
@@ -1260,9 +1005,10 @@
             </div>
           </div>
 
-          <!-- Official Ministry Paper Document -->
+          <div class="plan-mode-bar no-print"><div><strong>درس واضح، خطوة بخطوة.</strong><p>جهّز النتاجات، ثم وزّع أدوار المعلّم والمتعلّم على مراحل الدرس.</p></div><div class="daily-editor-actions"><span id="daily-save-status" role="status" aria-live="polite"></span><button type="button" id="daily-save-draft">حفظ المسودة</button><button type="button" onclick="window.print()">طباعة</button><button type="button" id="daily-preview-toggle" aria-pressed="false">معاينة النموذج الورقي</button></div></div>
+<!-- Official Ministry Paper Document -->
           <div
-            class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
+            id="daily-paper" class="print-page-boundary mx-auto bg-white border-2 border-black p-5 md:p-7 shadow-sm rounded-sm font-[Amiri] text-black w-full"
             style="font-family: &quot;Amiri&quot;, serif"
           >
             <!-- Official Header -->
@@ -1383,7 +1129,7 @@
               style="font-family: &quot;Cairo&quot;, sans-serif"
             >
               <table
-                class="w-full min-w-[800px] border-2 border-black text-right border-collapse table-fixed text-black"
+                id="daily-stages" class="w-full min-w-[800px] border-2 border-black text-right border-collapse table-fixed text-black"
               >
                 <thead>
                   <tr class="border-b-2 border-black bg-slate-50 text-center font-extrabold text-base">
@@ -1764,24 +1510,7 @@
               </div>
             </div>
 
-            <div
-              class="md:col-span-1 bg-gradient-to-br from-primary-container to-primary rounded-xl shadow-sm border border-primary p-4 flex flex-col justify-center text-white relative overflow-hidden"
-            >
-              <i
-                class="fa-solid fa-users absolute -left-2 -bottom-2 text-6xl text-white/10"
-              ></i>
-              <h3 class="text-sm font-bold mb-1">إحصائية الحضور</h3>
-              <div class="flex justify-between items-end">
-                <div class="text-3xl font-black">
-                  29<span class="text-sm font-medium text-white/80">/32</span>
-                </div>
-                <div
-                  class="text-xs bg-white/20 px-2 py-1 rounded font-semibold backdrop-blur-sm"
-                >
-                  3 غياب
-                </div>
-              </div>
-            </div>
+<section class="awn-attendance-summary" aria-labelledby="attendance-summary-title"><h3 id="attendance-summary-title">الحضور الحالي</h3><p class="awn-attendance-summary__headline"><strong data-attendance-in-room>0</strong><span>من <b data-attendance-total>0</b> طالب في الصف</span></p><div class="awn-attendance-summary__meter" role="img" aria-label="" data-attendance-meter><span data-attendance-segment="present"></span><span data-attendance-segment="late"></span><span data-attendance-segment="absent"></span></div><dl class="awn-attendance-summary__counts"><div><dt>حاضر في الموعد</dt><dd data-attendance-count="present">0</dd></div><div><dt>متأخر</dt><dd data-attendance-count="late">0</dd></div><div><dt>غائب</dt><dd data-attendance-count="absent">0</dd></div></dl><p class="awn-attendance-summary__note" data-attendance-note>يشمل عدد الحضور الطلبة المتأخرين.</p></section>
           </div>
 
           <div
@@ -2357,79 +2086,12 @@
 
         <!-- ===================================== -->
         <!-- VIEW: TEACHER PROFESSIONAL PROFILE -->
-        <div id="view-teacher-profile" class="app-view hidden flex flex-col gap-6 w-full">
-          <section class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div class="flex items-center gap-3">
-              <span class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/10 bg-primary/5 text-primary"><span class="material-symbols-outlined">workspace_premium</span></span>
-              <div>
-                <h2 class="text-lg font-bold text-slate-900">الملف الوظيفي والتطوير المهني</h2>
-                <p class="mt-1 text-xs text-slate-500">ملخص موحد لبيانات المعلم الوظيفية والتدريبية</p>
-              </div>
-            </div>
-            <span class="rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-bold text-blue-800">نموذج تكامل تجريبي</span>
-          </section>
-
-          <div class="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">
-            <span class="material-symbols-outlined mt-0.5 text-amber-700">info</span>
-            <p><strong>معاينة توضيحية:</strong> الأرقام والسجلات أدناه نموذج لشكل البيانات التي ستُجمع من منصات وزارة التربية والتعليم. لا يوجد اتصال حي أو مزامنة فعلية حالياً، ولا تمثل هذه البيانات سجلاً رسمياً.</p>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
-            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">الدرجة الوظيفية الحالية</p><span class="material-symbols-outlined text-primary">badge</span></div><p id="careerGradeSummary" class="mt-3 truncate text-lg font-black text-primary">—</p><p class="mt-1 text-[11px] text-slate-500">مصدرها المتوقع: منصة الموظفين</p></article>
-            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">سنوات الخدمة</p><span class="material-symbols-outlined text-blue-700">work_history</span></div><p id="careerServiceSummary" class="mt-3 text-lg font-black text-slate-900">—</p><p class="mt-1 text-[11px] text-slate-500">بحسب بيانات الخدمة الوظيفية</p></article>
-            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">الترفيعات المسجلة</p><span class="material-symbols-outlined text-emerald-700">trending_up</span></div><p id="careerPromotionSummary" class="mt-3 text-lg font-black text-slate-900">—</p><p class="mt-1 text-[11px] text-slate-500">سجل مجمع من منصة الموظفين</p></article>
-            <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-semibold text-slate-500">الدورات المهنية</p><span class="material-symbols-outlined text-violet-700">school</span></div><p class="mt-3"><strong id="careerCourseSummary" class="text-lg font-black text-slate-900">—</strong> <span class="text-xs text-slate-500">دورة</span></p><p id="careerCourseHours" class="mt-1 text-[11px] text-slate-500">— ساعة تدريبية</p></article>
-          </div>
-
-          <div class="grid grid-cols-1 gap-5 2xl:grid-cols-2">
-            <section class="min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="mb-4 flex flex-wrap items-start justify-between gap-2"><div><h3 class="font-bold text-slate-900">المسار الوظيفي والترفيعات</h3><p class="mt-1 text-xs text-slate-500">أحدث المحطات الوظيفية كما يُتوقع ظهورها في الملف الموحد.</p></div><span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">منصة الموظفين</span></div>
-              <div class="overflow-x-auto"><table class="w-full min-w-[30rem] border-collapse text-right text-xs"><thead><tr class="border-b bg-slate-50 text-slate-600"><th class="p-3">المحطة</th><th class="p-3">السنة</th><th class="p-3">الدرجة / الحالة</th><th class="p-3">مصدر البيانات</th></tr></thead><tbody id="teacherPromotionRows" class="divide-y divide-slate-100"></tbody></table></div>
-            </section>
-
-            <section class="min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="mb-4 flex flex-wrap items-start justify-between gap-2"><div><h3 class="font-bold text-slate-900">التدريب والتطوير المهني</h3><p id="teacherCourseListCaption" class="mt-1 text-xs text-slate-500">الدورات المسجلة وساعات التدريب.</p></div><span class="rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700">منصة تدريب المعلمين</span></div>
-              <div class="overflow-x-auto"><table class="w-full min-w-[34rem] border-collapse text-right text-xs"><thead><tr class="border-b bg-slate-50 text-slate-600"><th class="p-3">الدورة</th><th class="p-3">المجال</th><th class="p-3">السنة</th><th class="p-3">الساعات</th></tr></thead><tbody id="teacherCourseRows" class="divide-y divide-slate-100"></tbody></table></div>
-            </section>
-          </div>
-
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div class="mb-4 flex flex-wrap items-start justify-between gap-2"><div><h3 class="font-bold text-slate-900">النشاط التدريبي حسب السنة</h3><p class="mt-1 text-xs text-slate-500">توزيع الساعات التدريبية المسجلة في منصة تدريب المعلمين.</p></div><span class="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-700">مؤشر توضيحي</span></div>
-            <div id="teacherTrainingYearChart" class="space-y-4" aria-label="مخطط الساعات التدريبية حسب السنة"></div>
-          </section>
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div class="mb-4 flex flex-wrap items-center justify-between gap-2"><div><h3 class="font-bold text-slate-900">مصادر البيانات وحالة التكامل</h3><p class="mt-1 text-xs text-slate-500">تجميع الخدمات في لوحة واحدة لتقليل انتقال المعلم بين المنصات.</p></div><span id="teacherProfessionalSyncStatus" role="status" class="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">لا توجد مزامنة فعلية</span></div>
-            <div id="teacherProfessionalSources" class="grid grid-cols-1 gap-3 md:grid-cols-2"></div>
-          </section>
-
-          <script type="application/json" id="teacherProfessionalSampleData">
-          {
-            "isSample": true,
-            "summary": { "grade": "درجة وظيفية (نموذج)", "serviceYears": 12, "promotionCount": 2, "courseCount": 8, "trainingHours": 96 },
-            "promotions": [
-              { "event": "بداية الخدمة التعليمية", "year": "2014", "grade": "بيانات وظيفية نموذجية", "source": "منصة الموظفين" },
-              { "event": "ترفيع وظيفي (نموذج)", "year": "2019", "grade": "بيانات وظيفية نموذجية", "source": "منصة الموظفين" },
-              { "event": "ترفيع وظيفي (نموذج)", "year": "2024", "grade": "درجة نموذجية", "source": "منصة الموظفين" }
-            ],
-            "courses": [
-              { "title": "التعلم الرقمي في التعليم (نموذج)", "area": "التعلم الرقمي", "year": "2025", "hours": 20 },
-              { "title": "استراتيجيات التدريس الحديثة (نموذج)", "area": "استراتيجيات التدريس", "year": "2024", "hours": 16 },
-              { "title": "التقويم من أجل التعلم (نموذج)", "area": "التقويم", "year": "2023", "hours": 12 },
-              { "title": "التعليم الدامج (نموذج)", "area": "التعليم الدامج", "year": "2022", "hours": 12 }
-            ],
-            "trainingByYear": [
-              { "year": "2022", "hours": 12 },
-              { "year": "2023", "hours": 20 },
-              { "year": "2024", "hours": 28 },
-              { "year": "2025", "hours": 36 }
-            ],
-            "sources": [
-              { "name": "منصة الموظفين", "fields": "الدرجة الوظيفية، سنوات الخدمة، سجل الترفيعات", "status": "مصدر متوقع — غير مربوط حالياً", "icon": "badge" },
-              { "name": "منصة تدريب المعلمين", "fields": "الدورات، مجالات التدريب، الساعات والشهادات", "status": "مصدر متوقع — غير مربوط حالياً", "icon": "school" }
-            ]
-          }
-          </script>
+        <div id="view-teacher-profile" class="app-view hidden employment-view">
+          <section class="employment-heading"><div><span class="employment-eyebrow">مساحتك في المدرسة</span><h1>ملفي الوظيفي والمالي</h1><p>عقدك، مستحقاتك، وتجديدك القادم. في مكان واضح.</p></div><span class="employment-badge" id="employment-source">بيانات الإدارة</span></section>
+          <p class="employment-notice" id="employment-notice"></p>
+          <div id="employment-content"></div>
         </div>
+        <script src="js/core/bootstrap.js"></script>
         <!-- VIEW: TEACHER LEAVE AND DEPARTURE REQUESTS -->
         <div id="view-leave-requests" class="app-view hidden flex flex-col gap-6 w-full">
           <section class="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -2845,26 +2507,36 @@
     </div>
 
     <!-- Scripts -->
-    
+
     <!-- Config -->
     <script src="js/config/tailwind.js"></script>
-    <script src="js/config/app-config.js"></script>
     <!-- Services (Future Backend Integration) -->
+    <script src="js/services/school-service.js"></script>
+    <script src="js/services/attendance-service.js"></script>
     <script src="js/services/apiService.js"></script>
     <script src="js/services/assignment-service.js"></script>
     <!-- Utils -->
     <script src="js/utils/helpers.js"></script>
     <!-- Components -->
-    <script src="js/components/navigation.js"></script>
-    <script src="js/components/feedback.js"></script>
+    <script src="js/components/navigation.js?v=2"></script>
+    <script src="js/services/communication-service.js?v=1"></script>
+<script src="js/components/communication.js?v=1"></script>
+<script src="js/components/feedback.js"></script>
     <script src="js/components/about.js"></script>
     <!-- Features -->
     <script src="js/features/student.js"></script>
     <script src="js/features/parent.js"></script>
     <script src="js/features/teacher.js"></script>
-    <script src="js/features/teacher-enhancements.js"></script>
+    <script src="js/features/employment-profile.js?v=1"></script>
+<script src="js/features/teacher-enhancements.js"></script>
+    <script src="js/services/leave-service.js"></script>
     <script src="js/features/leave-requests.js"></script>
-    <!-- Core -->
+    <script src="js/features/plan-editor.js?v=2"></script>
+<script src="js/features/daily-plan-editor.js?v=1"></script>
+<script src="js/services/teacher-assistant-service.js?v=1"></script>
+<script src="js/components/teacher-assistant.js?v=1"></script>
+
+<!-- Core -->
     <script src="js/core/events.js"></script>
     <script src="js/core/init.js"></script>
 

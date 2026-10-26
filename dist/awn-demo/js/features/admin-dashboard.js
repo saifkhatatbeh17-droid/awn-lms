@@ -1,20 +1,8 @@
 import "../services/admin-service.js";
 
-const DASHBOARDS_BY_ROLE = {
-  admin: "admin-dashboard.html",
-  teacher: "teacher-dashboard.html",
-  principal: "principal-dashboard.html",
-  supervisor: "supervisor-dashboard.html",
-  student: "student-dashboard.html",
-  parent: "parent-dashboard.html",
-};
-
-const session = (() => { try { return JSON.parse(localStorage.getItem("awn_session")) || {}; } catch { return {}; } })();
-if (session.role !== "admin") {
-  const redirectTarget = (session.role && DASHBOARDS_BY_ROLE[session.role]) || "index.html";
-  window.location.replace(redirectTarget);
-  throw new Error("ADMIN_ROLE_REQUIRED");
-}
+await AwnSession.ready;
+if (!AwnSession.requireRole("admin")) throw new Error("ADMIN_ROLE_REQUIRED");
+const session = AwnSession.current();
 
 const dialog = document.querySelector("[data-user-dialog]");
 const form = document.querySelector("[data-user-form]");
@@ -32,9 +20,7 @@ let auditQuery = "";
 let auditActionFilter = "all";
 let editingUserId = null;
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
-}
+function escapeHtml(value) { return AwnUtils.escapeHtml(value); }
 function showError(message) { errors.textContent = message; errors.hidden = false; }
 function clearError() { errors.textContent = ""; errors.hidden = true; }
 function roleName(role) { return roleLabels[role] || "غير معروف"; }
@@ -93,11 +79,7 @@ function renderUsers() {
     return '<tr><td><span class="admin-user-cell">' + userCell(user) + '</span></td><td dir="ltr">' + escapeHtml(user.username) + '</td><td>' + escapeHtml(roleName(user.role)) + '</td><td>' + escapeHtml(user.organization || "غير محدد") + '</td><td><span class="admin-badge ' + (active ? "admin-badge--active" : "admin-badge--inactive") + '">' + (active ? "نشط" : "موقوف") + '</span></td><td><div class="admin-user-actions"><button class="admin-table-action" type="button" data-user-action="edit" data-user-id="' + escapeHtml(user.id) + '">تعديل</button><button class="admin-table-action" type="button" data-user-action="toggle" data-user-id="' + escapeHtml(user.id) + '" aria-label="' + (active ? "إيقاف" : "تفعيل") + ' حساب ' + escapeHtml(user.name) + '">' + (active ? "إيقاف" : "تفعيل") + '</button></div></td></tr>';
   }).join("");
 }
-function dateText(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.valueOf())) return "—";
-  return new Intl.DateTimeFormat("ar-JO", { dateStyle: "medium", timeStyle: "short" }).format(date);
-}
+function dateText(value) { return AwnUtils.formatDate(value, { dateStyle: "short", timeStyle: "short" }); }
 async function filteredAuditEvents() {
   const res = await adminService.listAuditEvents();
   const rawList = res?.data || (Array.isArray(res) ? res : []);
@@ -161,15 +143,18 @@ function setView(view) {
   document.querySelector("[data-page-title]").textContent = titles[view][0];
   document.querySelector("[data-page-description]").textContent = titles[view][1];
   if (view === "activity") renderAudit();
+  AwnUI.enhance();
   if (window.matchMedia("(max-width: 760px)").matches) closeSidebar();
 }
 function closeSidebar() {
+  if (window.AwnSidebar) return window.AwnSidebar.close();
   document.querySelector("#admin-sidebar").classList.remove("is-open");
   document.querySelector("[data-sidebar-toggle]").setAttribute("aria-expanded", "false");
   document.querySelector("[data-sidebar-toggle]").setAttribute("aria-label", "فتح القائمة");
   document.querySelector("[data-sidebar-close]").hidden = true;
 }
 function openSidebar() {
+  if (window.AwnSidebar) return window.AwnSidebar.open();
   document.querySelector("#admin-sidebar").classList.add("is-open");
   document.querySelector("[data-sidebar-toggle]").setAttribute("aria-expanded", "true");
   document.querySelector("[data-sidebar-toggle]").setAttribute("aria-label", "إغلاق القائمة");
@@ -189,36 +174,15 @@ async function refreshUsers() {
     console.error("Admin users load failed", error);
   }
 }
-function csvSafe(value) {
-  let text = String(value ?? "");
-  if (/^[\s]*[=+\-@]/.test(text)) text = "'" + text;
-  return '"' + text.replace(/"/g, '""') + '"';
-}
-function downloadCsv(filename, rows) {
-  if (!rows.length) {
-    status.textContent = "لا توجد سجلات لتصديرها.";
-    return;
-  }
-  const content = "\uFEFF" + rows.map((row) => row.map(csvSafe).join(",")).join("\r\n");
-  const blob = new Blob([content], { type: "text/csv;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-  status.textContent = "تم تجهيز ملف التصدير.";
-}
+function downloadCsv(filename, rows) { return AwnUtils.downloadCsv(filename, rows); }
 function exportUsers() {
   const rows = [["الاسم", "اسم الدخول", "الدور", "الجهة", "الحالة"]];
   filteredUsers().forEach((user) => rows.push([user.name, user.username, roleName(user.role), user.organization || "غير محدد", user.isActive === false ? "موقوف" : "نشط"]));
   downloadCsv("awn-users.csv", rows);
 }
-function exportAudit() {
+async function exportAudit() {
   const rows = [["التاريخ والوقت", "منفذ الإجراء", "الإجراء", "الحساب", "اسم الدخول", "التفاصيل"]];
-  filteredAuditEvents().forEach((item) => rows.push([dateText(item.createdAt), item.actor, actionLabels[item.action] || "نشاط إداري", item.targetName, item.targetUsername, item.detail]));
+  (await filteredAuditEvents()).forEach((item) => rows.push([dateText(item.createdAt), item.actor, actionLabels[item.action] || "نشاط إداري", item.targetName, item.targetUsername, item.detail]));
   downloadCsv("awn-admin-activity.csv", rows);
 }
 function openUserDialog(user) {
@@ -244,7 +208,7 @@ function initializeConfiguration() {
   const demoMode = config.demoMode === true && !config.apiBaseUrl;
   const apiConfigured = Boolean(config.apiBaseUrl);
   document.querySelectorAll("[data-admin-name]").forEach((element) => { element.textContent = session.name || "آدمن النظام"; });
-  document.querySelector("[data-current-date]").textContent = new Intl.DateTimeFormat("ar-JO", { dateStyle: "full" }).format(new Date());
+  document.querySelector("[data-current-date]").textContent = AwnUtils.formatDate(new Date().toISOString(), { dateStyle: "full" });
   document.querySelector("[data-mode-label]").textContent = demoMode ? "وضع تجريبي" : apiConfigured ? "وضع الربط" : "تهيئة مطلوبة";
   document.querySelector("[data-api-state]").textContent = apiConfigured ? "عنوان API مضبوط" : demoMode ? "تجريبي" : "غير مضبوط";
   document.querySelector("[data-api-heading]").textContent = apiConfigured ? "عنوان خدمة API مضبوط" : demoMode ? "الواجهة تعمل في وضع تجريبي" : "خدمة API غير مهيأة";
@@ -268,7 +232,7 @@ document.addEventListener("click", async (event) => {
   }
   if (target.closest("[data-sidebar-toggle]")) return document.querySelector("#admin-sidebar").classList.contains("is-open") ? closeSidebar() : openSidebar();
   if (target.closest("[data-sidebar-close]")) return closeSidebar();
-  if (target.closest("[data-admin-logout]")) { localStorage.removeItem("awn_session"); return; }
+  if (target.closest("[data-admin-logout]")) return;
   if (target.closest("[data-dialog-close]")) return dialog.close();
   if (target.closest("[data-add-user]")) return openUserDialog(null);
   if (target.closest("[data-export-users]")) return exportUsers();
@@ -287,7 +251,7 @@ document.addEventListener("click", async (event) => {
     if (!nextIsActive && !window.confirm("سيُوقف هذا الحساب ولن يستطيع الوصول. هل تريد المتابعة؟")) return;
     action.disabled = true;
     try {
-      await adminService.setUserStatus(user.id, nextIsActive);
+      AwnUtils.unwrap(await adminService.setUserStatus(user.id, nextIsActive));
       status.textContent = nextIsActive ? "تم تفعيل الحساب." : "تم إيقاف الحساب.";
       await refreshUsers();
     } catch (error) {
@@ -313,10 +277,10 @@ form.addEventListener("submit", async (event) => {
   save.disabled = true;
   try {
     if (editingUserId) {
-      await adminService.updateUser(editingUserId, values);
+      AwnUtils.unwrap(await adminService.updateUser(editingUserId, values));
       status.textContent = "تم حفظ تعديلات الحساب.";
     } else {
-      await adminService.createUser(values);
+      AwnUtils.unwrap(await adminService.createUser(values));
       status.textContent = window.AWN_CONFIG?.demoMode === true ? "أضيف سجل المستخدم إلى بيانات العرض." : "أُرسل طلب إنشاء المستخدم إلى خدمة الإدارة.";
     }
     dialog.close();

@@ -38,7 +38,7 @@ window.switchPrincipalView = switchPrincipalView;
  */
 function handleAddTeacher() {
   if (window.Swal?.fire) {
-    window.Swal.fire({
+    window.AwnUI.dialog({
       title: "إضافة معلم جديد",
       html: `
         <div class="flex flex-col gap-3 text-right" dir="rtl">
@@ -87,7 +87,7 @@ function handleAddTeacher() {
           `;
           tbody.appendChild(row);
         }
-        window.Swal.fire({
+        window.AwnUI.dialog({
           icon: "success",
           title: "تمت إضافة المعلم بنجاح",
           timer: 1800,
@@ -103,7 +103,7 @@ function handleAddTeacher() {
  */
 function handleViewTeacherProfile(teacherName, subject) {
   if (window.Swal?.fire) {
-    window.Swal.fire({
+    window.AwnUI.dialog({
       icon: "info",
       title: teacherName || "ملف المعلم",
       html: `

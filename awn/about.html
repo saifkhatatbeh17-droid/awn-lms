@@ -1,704 +1,102 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#8a1538">
-    <meta name="description" content="منصة عون (Awn LMS) - المنظومة السحابية المتكاملة لإدارة المدارس الخاصة، الفصول الذكية، والتواصل المدرسي المتطور.">
-    <meta name="awn-demo-mode" content="false">
-    <title>منصة عون | الجيل الجديد لإدارة المدارس والتعليم الذكي</title>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="عون تجمع إدارة المدرسة والتعلم والتواصل في تجربة واحدة، بهوية مدرستك. تعرّف إلى المنظومة المصممة للمدارس الخاصة في الأردن.">
+<meta name="theme-color" content="#32131e"><meta name="awn-api-base-url" content=""><meta name="awn-demo-mode" content="false">
+<title>من نحن | عون — مساحة تجمع مدرستك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/variables.css">
+<link rel="stylesheet" href="assets/css/about.css?v=25">
+<link rel="stylesheet" href="assets/css/about-hero.css?v=1">
+<link rel="stylesheet" href="assets/css/brand.css?v=1"><script defer src="js/components/about.js?v=22"></script>
+<link rel="stylesheet" href="assets/css/components.css?v=1">
     
-    <!-- High Quality Typography & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    
-    <link rel="stylesheet" href="assets/css/variables.css">
-    <link rel="stylesheet" href="assets/css/about.css?v=16">
-    
-    <!-- Component Controller -->
-    <script defer src="js/components/about.js?v=16"></script>
+    <script src="js/config/app-config.js"></script>
+    <script src="js/config/roles.js"></script>
+    <script src="js/utils/shared.js"></script>
+    <script src="js/services/http-client.js"></script>
+    <script src="js/services/demo-store.js"></script>
+    <script src="js/services/session.js"></script>
+    <script src="js/components/ui.js"></script>
+    <script src="js/components/brand.js"></script>
   </head>
-  <body class="royal-light-theme">
-
-    <!-- Top Reading Progress Bar -->
-    <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
-    
-    <!-- Sticky Smart Navbar -->
-    <nav class="navbar-elegant" id="main-nav" aria-label="التنقل الرئيسي">
-      <div class="nav-container">
-        <a class="nav-brand" href="about.html">
-          <img class="nav-logo-app" src="assets/images/awn_logo.jpg" alt="شعار منصة عون">
-          <div class="nav-brand-text">
-            <span class="nav-title">منصة عون</span>
-            <span class="nav-subtitle">الجيل الجديد لإدارة المدارس الذكية</span>
-          </div>
-        </a>
-
-        <div class="nav-links-desktop">
-          <a href="#bento" class="nav-link">لماذا عون؟</a>
-          <a href="#roles" class="nav-link">أركان المنظومة</a>
-          <a href="#timeline" class="nav-link">رحلة التحول</a>
-          <a href="#metrics" class="nav-link">العائد والنتائج</a>
-        </div>
-
-        <div class="nav-actions">
-          <a href="#demo" class="btn-nav-demo">
-            <span>طلب عرض تجريبي</span>
-            <span class="material-symbols-outlined" aria-hidden="true" style="font-size: 1.1rem;">rocket_launch</span>
-          </a>
-          <a href="index.html" class="btn-nav-login">
-            <span>بوابة الدخول</span>
-            <span class="material-symbols-outlined" aria-hidden="true" style="font-size: 1.1rem;">login</span>
-          </a>
-          <button class="mobile-toggle" id="mobileToggle" aria-label="فتح القائمة" aria-expanded="false">
-            <span class="material-symbols-outlined">menu</span>
-          </button>
-        </div>
+<body class="awn-story">
+<svg class="symbol-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+<symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol>
+<symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 5v15M3 4h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v14h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3Z"/></symbol>
+<symbol id="icon-star" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol>
+</defs></svg>
+<a class="skip-link" href="#main-content">انتقل إلى المحتوى</a>
+<header class="site-header" id="top"><div class="shell nav-inner">
+<span data-awn-brand data-brand-href="about.html"></span>
+<nav class="desktop-nav" aria-label="القائمة الرئيسية"><a href="#story">حكاية عون</a><a href="#roles">لمن صُممت؟</a><a href="#journey">التجربة</a><a href="#questions">أسئلة تهمّك</a></nav>
+<div class="nav-actions"><a class="login-link" href="index.html">الدخول للمنظومة<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a><button class="menu-toggle" id="menu-toggle" type="button" aria-label="فتح القائمة" aria-controls="mobile-nav" aria-expanded="false"><span></span><span></span></button></div>
+</div><nav id="mobile-nav" class="mobile-nav" aria-label="قائمة الهاتف" hidden><a href="#story">حكاية عون</a><a href="#roles">لمن صُممت؟</a><a href="#journey">التجربة</a><a href="#questions">أسئلة تهمّك</a><a href="#demo">طلب عرض لمدرستك</a></nav></header>
+<main id="main-content">
+<section class="hero" aria-labelledby="hero-title">
+  <div class="shell hero-stage">
+    <div class="hero-message">
+      <p class="hero-audience">عون للمدارس الخاصة في الأردن</p>
+      <h1 class="hero-title" id="hero-title">إدارة أوضح لمدرستك.<span>ومساحة أكبر للتعلّم.</span></h1>
+      <p class="hero-description">اجمع الإدارة والمعلمين والطلبة والأسرة في مساحة واحدة. خطط، واجبات، ومتابعة يومية بهوية مدرستك، لتبقى الصورة واضحة للجميع.</p>
+      <div class="hero-ctas">
+        <a class="hero-primary" href="#demo">اطلب عرضًا لمدرستك<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+        <a class="hero-secondary" href="#roles"><span>استكشف تجربة عون</span><svg class="icon" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a>
       </div>
-
-      <!-- Mobile Dropdown Menu -->
-      <div class="mobile-menu" id="mobileMenu" hidden>
-        <a href="#bento" class="mobile-link">لماذا عون؟</a>
-        <a href="#roles" class="mobile-link">أركان المنظومة</a>
-        <a href="#timeline" class="mobile-link">رحلة التحول</a>
-        <a href="#metrics" class="mobile-link">العائد والنتائج</a>
-        <a href="#demo" class="mobile-cta-btn">طلب عرض تجريبي للمدرسة</a>
-        <a href="index.html" class="mobile-link" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem;">بوابة الدخول للمنظومة</a>
+      <ul class="hero-assurances"><li><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg>لكل دور مساحته</li><li><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg>باسم مدرستك وهويتها</li></ul>
+    </div>
+    <figure class="hero-figure" aria-labelledby="connection-caption">
+      <div class="connection-map">
+        <svg class="connection-lines" viewBox="0 0 390 300" preserveAspectRatio="none" aria-hidden="true"><path d="M273 48C273 93 118 82 118 149S273 210 273 256"/><circle cx="273" cy="48" r="4"/><circle cx="118" cy="149" r="4"/><circle cx="273" cy="256" r="4"/></svg>
+        <div class="connection-node connection-node--teacher"><span class="connection-node__icon"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg></span><div><strong>المعلم يخطّط ويعلّم</strong><p>خطة واضحة، وأدوات قريبة.</p></div><span class="connection-node__number" aria-hidden="true">01</span></div>
+        <div class="connection-node connection-node--school"><span class="connection-node__icon"><svg class="icon" aria-hidden="true"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6M9 10h.01M15 10h.01"/></svg></span><div><strong>الإدارة ترى الصورة كاملة</strong><p>تفاصيل منظّمة ومترابطة.</p></div><span class="connection-node__number" aria-hidden="true">02</span></div>
+        <div class="connection-node connection-node--family"><span class="connection-node__icon"><svg class="icon" aria-hidden="true"><path d="M4 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m2-6a4 4 0 0 1 3 4v2M15 3a4 4 0 0 1 0 8"/><circle cx="10" cy="7" r="4"/></svg></span><div><strong>الطالب والأسرة أقرب</strong><p>وضوح في مهام الطالب.</p></div><span class="connection-node__number" aria-hidden="true">03</span></div>
       </div>
-    </nav>
-
-    <main id="main-content">
-      
-      <!-- 1. Interactive Canvas Hero Section -->
-      <header class="hero-canvas-section" id="hero">
-        <!-- 60fps HTML5 Canvas Neural Network -->
-        <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
-
-        <!-- Ambient Glow Orbs -->
-        <div class="ambient-orbs-layer" aria-hidden="true">
-          <div class="ambient-orb orb-gold" style="width: 450px; height: 450px; top: 10%; right: 10%;"></div>
-          <div class="ambient-orb orb-burgundy" style="width: 400px; height: 400px; bottom: 5%; left: 10%;"></div>
-        </div>
-
-        <div class="container hero-center-box">
-          <!-- Floating 3D Brand Showcase Card -->
-          <div class="hero-brand-card" data-tilt data-spotlight>
-            
-            <div class="hero-logo-aura">
-              <img src="assets/images/awn_logo.jpg" alt="شعار منصة عون" class="hero-logo-img">
-            </div>
-
-            <div class="hero-tag">
-              <span class="tag-pulse"></span>
-              <span>المنظومة السحابية المتكاملة للمدارس الخاصة والحديثة</span>
-            </div>
-
-            <h1 class="hero-title">
-              عون.. الجيل الجديد لإدارة المدارس الذكية و<span class="gradient-shimmer">التميز الأكاديمي</span>
-            </h1>
-
-            <p class="hero-subtitle">
-              منصة سحابية رائدة تجمع بين أقوى أنظمة إدارة التعلم (LMS)، أتمتة العمليات والجداول المدرسية، وبناء جسور تواصل فوري مع أولياء الأمور — في واجهة واحدة فائقة السلاسة توفر 70% من الأعباء التشغيلية.
-            </p>
-
-            <div class="hero-cta-buttons">
-              <a href="#demo" class="btn-hero-primary">
-                <span class="material-symbols-outlined" aria-hidden="true">rocket_launch</span>
-                <span>احجز عرضاً تجريبياً لمدرستك</span>
-              </a>
-              <a href="#bento" class="btn-hero-secondary">
-                <span class="material-symbols-outlined" aria-hidden="true">explore</span>
-                <span>استكشف المنظومة</span>
-              </a>
-            </div>
-
-            <div class="hero-hint">
-              <span class="material-symbols-outlined" aria-hidden="true">touch_app</span>
-              <span>حرك المؤشر للتفاعل مع الشبكة الذكية التفاعلية</span>
-            </div>
-
-          </div>
-        </div>
-      </header>
-
-      <!-- 2. Apple-Style Interactive Bento Grid -->
-      <section class="section-bento" id="bento">
-        <div class="container">
-          <div class="section-header-saas fade-reveal-up">
-            <span class="saas-sub-badge">القيمة الاستثنائية للمدارس</span>
-            <h2 class="section-h2-title">لماذا تختار المدارس الخاصة منصة عون؟</h2>
-            <p class="section-p-subtitle">
-              صُممت عون بعناية فائقة لتجمع بين بساطة الاستخدام وقوة الأداء المؤسسي، لتلبي طموح مدراء المدارس، المعلمين، والأسرة في منصة واحدة متناغمة.
-            </p>
-          </div>
-
-          <div class="bento-grid-container">
-            
-            <!-- Bento 1: Smart Administration & Auto Scheduling (Col 8) -->
-            <div class="bento-card col-8" data-tilt data-spotlight>
-              <div class="bento-card-top">
-                <div class="bento-icon-pill">
-                  <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
-                </div>
-                <span class="bento-tag">أتمتة ذكية بدون تعارض</span>
-              </div>
-              <h3>إدارة العمليات والجداول المدرسية الذكية</h3>
-              <div class="bento-sub">خوارزمية بناء الجداول الأسبوعية بضغطة زر واحدة</div>
-              <p>
-                وداعاً للتعقيد والتعارضات؛ تتيح عون لمدير المدرسة بناء الجداول الأسبوعية وتوزيع أنصبة الحصص والقاعات بمرونة فائقة، مع إدارة فورية لحصص الاحتياط وإشعار المعلم البديل آلياً على هاتفه.
-              </p>
-              
-              <!-- Miniature Interactive Mockup -->
-              <div class="bento-mini-mockup" aria-hidden="true">
-                <div class="mini-schedule-item">
-                  <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="material-symbols-outlined" style="color: var(--brand-burgundy);">schedule</span>
-                    <strong>الحصة الثالثة: الرياضيات المتقدمة</strong>
-                    <span style="color: var(--slate-500); font-size: 0.75rem;">(الصف العاشر أ - قاعة الخوارزمي)</span>
-                  </div>
-                  <span class="status-badge-live">جارية الآن</span>
-                </div>
-                <div class="mini-schedule-item">
-                  <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span class="material-symbols-outlined" style="color: var(--brand-emerald);">verified</span>
-                    <strong>جدول الأسبوع المعتمد</strong>
-                    <span style="color: var(--slate-500); font-size: 0.75rem;">(0 تعارضات • 48 معلماً)</span>
-                  </div>
-                  <span class="status-badge-verified">مكتمل وموزع</span>
-                </div>
-              </div>
-
-              <ul class="bento-features-list" style="margin-top: 1.4rem;">
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>توزيع حصص تلقائي يراعي التفضيلات والأنصبة الأكاديمية</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>إدارة بدلاء وحصص احتياط بضغطة زر واحدة دون ارتباك</li>
-              </ul>
-            </div>
-
-            <!-- Bento 2: Real-time Parent Engagement (Col 4) -->
-            <div class="bento-card col-4" data-tilt data-spotlight>
-              <div class="bento-card-top">
-                <div class="bento-icon-pill icon-gold">
-                  <span class="material-symbols-outlined" aria-hidden="true">family_restroom</span>
-                </div>
-                <span class="bento-tag">تواصل فوري</span>
-              </div>
-              <h4>تطبيق وبوابة ولي الأمر اللحظية</h4>
-              <div class="bento-sub">ثقة كاملة ومتابعة مباشرة لمسيرة الأبناء</div>
-              <p>
-                قناة تواصل موثوقة ترسل إشعارات فورية بلحظة دخول وخروج الطالب، وتقارير أداء دورية تضع ولي الأمر في صلب المسيرة التعليمية وتزيد من رضا العائلات بنسبة تفوق 98%.
-              </p>
-              <ul class="bento-features-list">
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>تنبيهات فورية عند تسجيل الحضور والغياب</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>سجل درجات تفاعلي وبطاقات تقييم أسبوعية</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>مراسلات رسمية ضمن أوقات الدوام المعتمدة</li>
-              </ul>
-            </div>
-
-            <!-- Bento 3: Interactive E-Learning & LMS (Col 4) -->
-            <div class="bento-card col-4" data-tilt data-spotlight>
-              <div class="bento-card-top">
-                <div class="bento-icon-pill icon-emerald">
-                  <span class="material-symbols-outlined" aria-hidden="true">school</span>
-                </div>
-                <span class="bento-tag">LMS متطور</span>
-              </div>
-              <h4>التعلم الرقمي والفصول التفاعلية</h4>
-              <div class="bento-sub">واجبات واختبارات وتصحيح مؤتمت فوري</div>
-              <p>
-                بنك أسئلة معياري يدعم أسئلة التفكير الناقد، واجبات رقمية مع تصحيح تلقائي، ومسارات تعلم متمايز تراعي الفروق الفردية بين الطلبة لاختصار وقت المعلم.
-              </p>
-              <ul class="bento-features-list">
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>تصحيح إلكتروني مؤتمت وتغذية راجعة فورية</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>بنك أسئلة معياري يصنف صعوبة المهارات</li>
-              </ul>
-            </div>
-
-            <!-- Bento 4: Academic Supervision & Quality (Col 4) -->
-            <div class="bento-card col-4" data-tilt data-spotlight>
-              <div class="bento-card-top">
-                <div class="bento-icon-pill icon-cyan">
-                  <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
-                </div>
-                <span class="bento-tag">ضبط الجودة</span>
-              </div>
-              <h4>الإشراف الأكاديمي وقياس الكفايات</h4>
-              <div class="bento-sub">تطوير مستمر لمعايير التدريس الصفي</div>
-              <p>
-                أدوات تقييم رقمية تمكن المشرف الأكاديمي من توثيق الزيارات الميدانية، قياس مؤشرات التعلّم النشط، وتوجيه ورش التطوير المهني للمعلمين وفق بيانات دقيقة.
-              </p>
-              <ul class="bento-features-list">
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>نماذج استمارات إشرافية رقمية معتمدة</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>رصد استباقي لنقاط القوة والفاقد التعليمي</li>
-              </ul>
-            </div>
-
-            <!-- Bento 5: Cloud Security & Availability (Col 4) -->
-            <div class="bento-card col-4" data-tilt data-spotlight>
-              <div class="bento-card-top">
-                <div class="bento-icon-pill">
-                  <span class="material-symbols-outlined" aria-hidden="true">security</span>
-                </div>
-                <span class="bento-tag">أمان مصرفي</span>
-              </div>
-              <h4>بنية سحابية مشفرة وتوافر 99.98%</h4>
-              <div class="bento-sub">حماية مطلقة لبيانات المدرسة ونسخ يومي</div>
-              <p>
-                نظام سحابي فائق السرعة يعمل على مدار الساعة بتشفير AES-256، مع نسخ احتياطي آلي يضمن استمرارية أعمال مدرستك بأعلى درجات الموثوقية دون أي أعطال.
-              </p>
-              <ul class="bento-features-list">
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>جاهزية تشغيلية سحابية على مدار الساعة</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>صلاحيات دقيقة وتدقيق لكافة العمليات</li>
-              </ul>
-            </div>
-
-            <!-- Bento 6: Executive BI Analytics (Col 12) -->
-            <div class="bento-card col-12" data-tilt data-spotlight>
-              <div class="bento-card-top">
-                <div class="bento-icon-pill icon-gold">
-                  <span class="material-symbols-outlined" aria-hidden="true">insights</span>
-                </div>
-                <span class="bento-tag">ذكاء الأعمال (BI)</span>
-              </div>
-              <h3>لوحة القيادة التنفيذية لمالك ومدير المدرسة</h3>
-              <div class="bento-sub">رؤية بانورامية 360 درجة لجميع الأقسام والشعب ومؤشرات الأداء اللحظية</div>
-              <p>
-                تمنح لوحة مؤشرات الأداء الحية (Executive BI) صناع القرار في المدرسة قراءة فورية لنسب الانضباط اليومي، مقارنات التحصيل الأكاديمي بين الفصول، وقياس إنتاجية الأقسام بما يدعم سمعة المدرسة وتوسعها المستمر.
-              </p>
-              <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: auto;">
-                <span style="background: #ffffff; padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border-subtle);">📈 مؤشرات أداء حية (Real-time KPIs)</span>
-                <span style="background: #ffffff; padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border-subtle);">⚡ تقارير بنقرة زر بصيغ PDF و Excel</span>
-                <span style="background: #ffffff; padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-weight: 700; border: 1px solid var(--border-subtle);">🎯 نظام إنذار مبكر يرصد تعثر الطلبة فوراً</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. Interactive 6-Role Ecosystem Switcher -->
-      <section class="section-roles" id="roles">
-        <div class="container">
-          <div class="section-header-saas fade-reveal-up">
-            <span class="saas-sub-badge">تكامل شامل وتناغم مطلق</span>
-            <h2 class="section-h2-title">منظومة موحدة تلبي احتياجات كافة الأطراف</h2>
-            <p class="section-p-subtitle">
-              واجهات متخصصة لكل دور في المدرسة تمنح الجميع تجربة عمل وتعلّم فائقة السلاسة والوضوح.
-            </p>
-          </div>
-
-          <!-- 6 Role Tabs -->
-          <div class="roles-nav-tabs" role="tablist" aria-label="أدوار منظومة عون">
-            <button class="role-selector-btn active" data-role="principal" role="tab" aria-selected="true">
-              <span class="material-symbols-outlined" aria-hidden="true">corporate_fare</span>
-              <span>مدير المدرسة</span>
-            </button>
-            <button class="role-selector-btn" data-role="supervisor" role="tab" aria-selected="false">
-              <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
-              <span>المشرف الأكاديمي</span>
-            </button>
-            <button class="role-selector-btn" data-role="teacher" role="tab" aria-selected="false">
-              <span class="material-symbols-outlined" aria-hidden="true">school</span>
-              <span>المعلم</span>
-            </button>
-            <button class="role-selector-btn" data-role="student" role="tab" aria-selected="false">
-              <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
-              <span>الطالب</span>
-            </button>
-            <button class="role-selector-btn" data-role="parent" role="tab" aria-selected="false">
-              <span class="material-symbols-outlined" aria-hidden="true">family_restroom</span>
-              <span>ولي الأمر</span>
-            </button>
-            <button class="role-selector-btn" data-role="admin" role="tab" aria-selected="false">
-              <span class="material-symbols-outlined" aria-hidden="true">admin_panel_settings</span>
-              <span>مسؤول النظام</span>
-            </button>
-          </div>
-
-          <!-- Central Role Showcase Card with 3D Tilt & Mouse Spotlight -->
-          <div class="role-showcase-card" id="roleShowcaseCard" data-tilt data-spotlight>
-            
-            <div class="showcase-info-col">
-              <span class="showcase-badge">لوحة قيادة مدير المدرسة والقائد التربوي</span>
-              <h3 class="showcase-title">حوكمة مدرسية شاملة وقرارات استراتيجية بلحظة واحدة</h3>
-              <p class="showcase-desc">
-                تحكم كامل في الجداول المدرسية، أنصبة المعلمين، مؤشرات انضباط الدوام، وتصدير التقارير الرسمية بضغطة زر دون أي تعقيد أو هدر ورقي.
-              </p>
-
-              <div class="showcase-features">
-                <div class="showcase-feat-item">
-                  <span class="material-symbols-outlined feat-check" aria-hidden="true">verified</span>
-                  <span>مولد جداول خوارزمي يوزع الحصص والأنصبة مع استبعاد أي تعارض</span>
-                </div>
-                <div class="showcase-feat-item">
-                  <span class="material-symbols-outlined feat-check" aria-hidden="true">verified</span>
-                  <span>لوحة متابعة فورية لنسب حضور المعلمين والطلبة ومؤشرات الانضباط</span>
-                </div>
-                <div class="showcase-feat-item">
-                  <span class="material-symbols-outlined feat-check" aria-hidden="true">verified</span>
-                  <span>اعتماد الخطط الدراسية، الإجازات، والمعاملات المدرسية إلكترونياً</span>
-                </div>
-              </div>
-
-              <a href="principal-dashboard.html" class="showcase-cta-btn">
-                <span>الدخول كمدير مدرسة</span>
-                <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
-              </a>
-            </div>
-
-            <!-- Micro-UI Live Simulation Preview -->
-            <div class="showcase-preview-col">
-              <div class="preview-top-bar">
-                <div class="preview-avatar-circle">
-                  <span class="material-symbols-outlined preview-user-icon" aria-hidden="true">corporate_fare</span>
-                </div>
-                <div>
-                  <h4 class="preview-user-name">د. طارق العساف</h4>
-                  <p class="preview-user-role">المدير العام • مدارس الرواد الدولية</p>
-                </div>
-              </div>
-
-              <div class="preview-chips-row">
-                <div class="preview-chip">
-                  <span class="chip-num">98.6%</span>
-                  <span class="chip-text">انضباط الكادر</span>
-                </div>
-                <div class="preview-chip">
-                  <span class="chip-num">0</span>
-                  <span class="chip-text">تعارضات بالجداول</span>
-                </div>
-                <div class="preview-chip">
-                  <span class="chip-num">920</span>
-                  <span class="chip-text">طالباً مسجلاً</span>
-                </div>
-              </div>
-
-              <div class="preview-rows-list">
-                <div class="preview-mini-row">
-                  <span class="material-symbols-outlined row-bullet" aria-hidden="true">task_alt</span>
-                  <div class="mini-row-info">
-                    <span class="mini-row-title">اعتماد جداول اختبارات نهاية الفصل</span>
-                    <span class="mini-row-sub">تم التحقق وتوزيع القاعات آلياً</span>
-                  </div>
-                  <span class="mini-status-badge verified">معتمد</span>
-                </div>
-                <div class="preview-mini-row">
-                  <span class="material-symbols-outlined row-bullet" aria-hidden="true">task_alt</span>
-                  <div class="mini-row-info">
-                    <span class="mini-row-title">تقرير التقييم المؤسسي للأقسام</span>
-                    <span class="mini-row-sub">أداء ممتاز وتغطية 100% للخطط</span>
-                  </div>
-                  <span class="mini-status-badge active">مكتمل</span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      <!-- 4. Scroll-Driven Glowing Transformation Timeline -->
-      <section class="section-timeline" id="timeline">
-        <div class="container">
-          <div class="section-header-saas fade-reveal-up">
-            <span class="saas-sub-badge">رحلة التحول الرقمي السلس</span>
-            <h2 class="section-h2-title">كيف ينقل (عون) مدرستك إلى المستقبل؟</h2>
-            <p class="section-p-subtitle">
-              خطة انتقال مدروسة تحول مدرستك من الطرق التقليدية إلى قمة الريادة الرقمية في 4 خطوات بسيطة وسريعة.
-            </p>
-          </div>
-
-          <div class="timeline-outer" id="transformationTimeline">
-            <!-- Central Glowing Track -->
-            <div class="timeline-track-bar" aria-hidden="true">
-              <div class="timeline-beam-glow" id="timelineBeam">
-                <span class="timeline-beam-head-beacon" id="timelineBeamHead"></span>
-              </div>
-            </div>
-
-            <!-- Steps Container -->
-            <div class="timeline-steps-container">
-              
-              <!-- Step 1 -->
-              <div class="timeline-step-item" data-step="1">
-                <div class="step-card-col">
-                  <div class="step-card-box" data-tilt data-spotlight>
-                    <span class="step-phase-badge">الخطوة الأولى • الإعداد والتهيئة</span>
-                    <h3>التهيئة السريعة وتدريب الكوادر (48 ساعة)</h3>
-                    <p>
-                      يقوم فريقنا بنقل بيانات مدرستك، تهيئة المراحل والشعب، وتقديم تدريب عملي مبسط لكافة المعلمين والإداريين ليصبح النظام جاهزاً للعمل الفعلي فوراً.
-                    </p>
-                    <div class="step-tags-row">
-                      <span>⚡ نشر فوري في 48 ساعة</span>
-                      <span>🎯 تدريب مخصص للكادر</span>
-                      <span>🔄 استيراد سلس للبيانات</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="step-node-col">
-                  <div class="step-node-circle">
-                    <span class="material-symbols-outlined">rocket_launch</span>
-                  </div>
-                </div>
-
-                <div class="step-spacer"></div>
-              </div>
-
-              <!-- Step 2 -->
-              <div class="timeline-step-item" data-step="2">
-                <div class="step-spacer"></div>
-
-                <div class="step-node-col">
-                  <div class="step-node-circle">
-                    <span class="material-symbols-outlined">auto_schedule</span>
-                  </div>
-                </div>
-
-                <div class="step-card-col">
-                  <div class="step-card-box" data-tilt data-spotlight>
-                    <span class="step-phase-badge">الخطوة الثانية • الأتمتة التشغيلية</span>
-                    <h3>أتمتة الجداول المدرسية ورصد الحضور الذكي</h3>
-                    <p>
-                      توليد جداول الحصص الأسبوعية تلقائياً دون أي تضارب، وتفعيل نظام الحضور الذكي ليتم رصد دوام الطلاب والكادر بنقرة واحدة وتوثيق السجلات إلكترونياً.
-                    </p>
-                    <div class="step-tags-row">
-                      <span>📅 جداول بدون تعارضات</span>
-                      <span>⏱️ رصد الحضور بنقرة</span>
-                      <span>📄 إلغاء المعاملات الورقية</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Step 3 -->
-              <div class="timeline-step-item" data-step="3">
-                <div class="step-card-col">
-                  <div class="step-card-box" data-tilt data-spotlight>
-                    <span class="step-phase-badge">الخطوة الثالثة • التفاعل الأكاديمي</span>
-                    <h3>تفعيل الفصول الذكية والواجبات المؤتمتة</h3>
-                    <p>
-                      تمكين المعلمين من إنشاء الواجبات والاختبارات التفاعلية، وإتاحة بنك الأسئلة المتطور، مع بدء التصحيح التلقائي وتوجيه التغذية الراجعة للطلبة.
-                    </p>
-                    <div class="step-tags-row">
-                      <span>🧠 بنك أسئلة معياري</span>
-                      <span>✅ تصحيح مؤتمت فوري</span>
-                      <span>📊 تفريد مسارات التعلم</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="step-node-col">
-                  <div class="step-node-circle">
-                    <span class="material-symbols-outlined">psychology</span>
-                  </div>
-                </div>
-
-                <div class="step-spacer"></div>
-              </div>
-
-              <!-- Step 4 -->
-              <div class="timeline-step-item" data-step="4">
-                <div class="step-spacer"></div>
-
-                <div class="step-node-col">
-                  <div class="step-node-circle">
-                    <span class="material-symbols-outlined">insights</span>
-                  </div>
-                </div>
-
-                <div class="step-card-col">
-                  <div class="step-card-box" data-tilt data-spotlight>
-                    <span class="step-phase-badge">الخطوة الرابعة • القيادة الذكية</span>
-                    <h3>تقارير ذكاء الأعمال وشراكة الأسرة الفورية</h3>
-                    <p>
-                      إطلاق تطبيق أولياء الأمور لتلقي إشعارات الحضور والتحصيل، وتزويد إدارة المدرسة بلوحات تحليلية ذكية تمنحها السيطرة التامة على الأداء الأكاديمي والمالي.
-                    </p>
-                    <div class="step-tags-row">
-                      <span>📲 تطبيق جوال لولي الأمر</span>
-                      <span>📈 لوحات BI تنفيذية</span>
-                      <span>🛡️ أمان سحابي 24/7</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. Animated ROI & Impact Metrics -->
-      <section class="section-metrics" id="metrics">
-        <div class="container">
-          <div class="metrics-ribbon-grid">
-            
-            <div class="metric-card" data-tilt data-spotlight>
-              <div class="metric-card-header">
-                <span class="metric-prefix">+</span>
-                <span class="metric-num-counter" data-target="60">0</span>
-                <span class="metric-suffix">%</span>
-              </div>
-              <div class="metric-card-title">توفير في الوقت الإداري</div>
-              <p class="metric-card-desc">أتمتة الجداول، رصد الدرجات، وسرعة إنجاز المعاملات الورقية.</p>
-            </div>
-
-            <div class="metric-card" data-tilt data-spotlight>
-              <div class="metric-card-header">
-                <span class="metric-num-counter" data-target="6">0</span>
-                <span class="metric-suffix">بوابات</span>
-              </div>
-              <div class="metric-card-title">لوحات تحكم مترابطة</div>
-              <p class="metric-card-desc">تكامل فوري يخدم المدير، المشرف، المعلم، الطالب، والأسرة.</p>
-            </div>
-
-            <div class="metric-card" data-tilt data-spotlight>
-              <div class="metric-card-header">
-                <span class="metric-num-counter" data-target="100">0</span>
-                <span class="metric-suffix">%</span>
-              </div>
-              <div class="metric-card-title">تواصل لحظي مع أولياء الأمور</div>
-              <p class="metric-card-desc">إشعارات الحضور والتحصيل تصل إلى هاتف ولي الأمر في ثوانٍ.</p>
-            </div>
-
-            <div class="metric-card" data-tilt data-spotlight>
-              <div class="metric-card-header">
-                <span class="metric-num-counter" data-target="99.9">0</span>
-                <span class="metric-suffix">%</span>
-              </div>
-              <div class="metric-card-title">جاهزية وأمان سحابي 24/7</div>
-              <p class="metric-card-desc">سحابة مشفرة عالية الاعتمادية مع نسخ احتياطي يومي مستمر.</p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- 6. High-Conversion School Demo Lead Booking Banner -->
-      <section class="section-demo-booking" id="demo">
-        <div class="container">
-          <div class="demo-banner-box">
-            
-            <div class="demo-pitch-col">
-              <h2>جاهز لنقل مدرستك إلى العصر الرقمي الأذكى؟</h2>
-              <p>
-                احجز جلسة عرض تجريبي حي ومخصص لمدرستك، وتعرف على كيف يمكن لمنظومة عون أن تختصر أعباء إدارتك وتضاعف رضا أولياء الأمور وكفاءة التعليم من اليوم الأول.
-              </p>
-              
-              <ul class="demo-benefits-list">
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>عرض توضيحي حي مخصص حسب احتياجات مدرستك</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>خطة نشر وتدريب كامل لكادر المدرسة في 48 ساعة</li>
-                <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span>فترة تجريبية مجانية ومتابعة استشارية مباشرة</li>
-              </ul>
-            </div>
-
-            <!-- Booking Form -->
-            <div class="demo-form-col">
-              <h3 class="form-header-title">طلب عرض توضيحي للمدرسة</h3>
-              <p class="form-header-sub">املأ البيانات وسيقوم مستشارنا التعليمي بالتواصل معك فوراً</p>
-
-              <form id="schoolDemoForm" class="demo-inputs-grid">
-                <div class="demo-field-wrap">
-                  <label for="schoolName">اسم المدرسة / الأكاديمية *</label>
-                  <input type="text" id="schoolName" name="schoolName" class="demo-input" placeholder="مثال: مدارس النخبة الدولية" required>
-                </div>
-
-                <div class="demo-field-wrap">
-                  <label for="contactPerson">اسم المسؤول والصفة الوظيفية *</label>
-                  <input type="text" id="contactPerson" name="contactPerson" class="demo-input" placeholder="مثال: د. أحمد السعيد - المدير العام" required>
-                </div>
-
-                <div class="demo-field-wrap">
-                  <label for="phone">رقم الهاتف / الواتساب *</label>
-                  <input type="tel" id="phone" name="phone" class="demo-input" placeholder="مثال: 0790000000" required>
-                </div>
-
-                <div class="demo-field-wrap">
-                  <label for="email">البريد الإلكتروني المهني</label>
-                  <input type="email" id="email" name="email" class="demo-input" placeholder="admin@school.com">
-                </div>
-
-                <div class="demo-field-wrap">
-                  <label for="studentCount">عدد الطلبة التقريبي</label>
-                  <input type="text" id="studentCount" name="studentCount" class="demo-input" placeholder="مثال: 500 - 1500 طالب">
-                </div>
-
-                <button type="submit" class="btn-book-demo-submit">
-                  <span>تأكيد حجز العرض التجريبي</span>
-                  <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
-                </button>
-              </form>
-
-              <!-- Success State -->
-              <div id="demoSuccessBox" class="demo-success-box hidden">
-                <div class="success-check-aura">
-                  <span class="material-symbols-outlined" style="font-size: 2.2rem;">check_circle</span>
-                </div>
-                <h4>تم استلام طلبكم بنجاح!</h4>
-                <p>
-                  شكراً لاهتمامكم بمنظومة عون لمدرسة <strong class="confirmed-school-name" style="color: var(--brand-burgundy);">المدرسة</strong>. سيقوم فريقنا الاستشاري بالتواصل معكم لجدولة الجلسة التوضيحية وتفعيل الحساب التجريبي.
-                </p>
-                <button type="button" id="resetDemoFormBtn" class="btn-reset-demo-action">إرسال طلب آخر</button>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- Dignified SaaS Footer -->
-    <footer class="footer-saas">
-      <div class="container">
-        <div class="footer-top-row">
-          <div class="footer-brand-side">
-            <img src="assets/images/awn_logo.jpg" alt="منصة عون" class="footer-logo-app">
-            <h3>منصة عون للتعليم الذكي</h3>
-            <p>
-              المنظومة السحابية المتكاملة الرائدة لإدارة المدارس الخاصة، الفصول التفاعلية، والأتمتة الإدارية الشاملة.
-            </p>
-          </div>
-
-          <div class="footer-nav-groups">
-            <div class="footer-col">
-              <h5>المنظومة والحلول</h5>
-              <a href="#bento">المزايا الرئيسية</a>
-              <a href="#roles">أركان المنظومة</a>
-              <a href="#timeline">رحلة التحول</a>
-              <a href="#metrics">العائد على الاستثمار</a>
-            </div>
-            <div class="footer-col">
-              <h5>بوابات الدخول</h5>
-              <a href="principal-dashboard.html">لوحة مدير المدرسة</a>
-              <a href="supervisor-dashboard.html">لوحة المشرف الأكاديمي</a>
-              <a href="teacher-dashboard.html">لوحة المعلم</a>
-              <a href="student-dashboard.html">بوابة الطالب</a>
-              <a href="parent-dashboard.html">لوحة ولي الأمر</a>
-            </div>
-            <div class="footer-col">
-              <h5>التواصل والدعم</h5>
-              <a href="#demo">طلب عرض تجريبي</a>
-              <a href="mailto:contact@awnlms.com">contact@awnlms.com</a>
-              <a href="tel:+962790000000">+962 7 9000 0000</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-bottom-row">
-          <p>جميع الحقوق محفوظة &copy; 2026 - منصة عون لإدارة المدارس والتعليم الذكي (Awn LMS)</p>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة إلى أعلى الصفحة">
-      <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
-    </button>
-
-  </body>
-</html>
+      <figcaption id="connection-caption">مدرسة واحدة. كلّ الأدوار متصلة.<span>تصوّر توضيحي</span></figcaption>
+    </figure>
+  </div>
+  <div class="shell hero-bottom"><p><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg>إدارة، تعلّم، وتواصل في مكان واحد</p><p>بالعربية، من أول خطوة</p><a href="#story">حكاية بدأت من المدرسة<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
+</section>
+
+<section class="story section-space shell" id="story" aria-labelledby="story-title"><div class="story-heading"><h2 id="story-title">وراء كل مدرسة،<br>جهد يستحق <em>عونًا.</em></h2><div class="story-signature" aria-hidden="true">عَون / اسمٌ على مسمّى</div></div><div class="story-body"><p class="large-copy">المعلم يريد أن يعلّم. المدير يريد أن يرى الصورة كاملة. والأسرة تريد أن تطمئن.</p><p>بدأت فكرة عون من احتياج بسيط: أن يجد كل شخص في المدرسة ما يحتاجه، في مكان واضح. بدل أن تتوزع الخطط والواجبات والنتائج بين ملفات ورسائل متفرقة، تلتقي في تجربة مترابطة.</p><p>نطوّر عون للمدارس الخاصة في الأردن، بلغتها وسياق عملها، مع مساحة لكل مدرسة لتحتفظ بشخصيتها وتنظّم تجربتها حول احتياجاتها.</p><a class="inline-link" href="#journey">شاهد كيف تتصل التفاصيل<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div></section>
+
+<section class="roles-section section-space" id="roles" aria-labelledby="roles-title"><div class="shell"><div class="section-heading"><h2 id="roles-title">مدرسة واحدة.<br><em>وجهة واضحة لكل شخص.</em></h2><p>اختر دورًا، واكتشف كيف تساعد عون<br>في ترتيب يومه المدرسي.</p></div>
+<div class="role-tabs" role="tablist" aria-label="أدوار المنظومة">
+<button type="button" id="tab-teacher" role="tab" aria-controls="role-panel" aria-selected="true" data-role="teacher">المعلم</button>
+<button type="button" id="tab-principal" role="tab" aria-controls="role-panel" aria-selected="false" tabindex="-1" data-role="principal">مدير المدرسة</button>
+<button type="button" id="tab-student" role="tab" aria-controls="role-panel" aria-selected="false" tabindex="-1" data-role="student">الطالب</button>
+<button type="button" id="tab-parent" role="tab" aria-controls="role-panel" aria-selected="false" tabindex="-1" data-role="parent">ولي الأمر</button>
+<button type="button" id="tab-supervisor" role="tab" aria-controls="role-panel" aria-selected="false" tabindex="-1" data-role="supervisor">المشرف</button>
+<button type="button" id="tab-admin" role="tab" aria-controls="role-panel" aria-selected="false" tabindex="-1" data-role="admin">مسؤول المدرسة</button>
+</div>
+<div id="role-panel" class="role-panel" role="tabpanel" aria-labelledby="tab-teacher" tabindex="0">
+<div class="role-copy"><h3 id="role-title">مساحة أوسع للتعليم.</h3><p id="role-description">خطّط للدرس، تابع حضور طلبتك، وأعطِ كل تسليم ملاحظته. أدوات يومك قريبة، والسياق واضح من التحضير إلى التقييم.</p><ul id="role-features" class="check-list"><li>خطط دروس محفوظة ومراجعات واضحة</li><li>واجبات وتسليمات في مسار واحد</li><li>علامات وتغذية راجعة لكل طالب</li></ul><a class="inline-link" href="index.html">استكشف بوابة الدخول<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
+<div class="product-preview" aria-label="مثال توضيحي للواجهة"><div class="preview-bar"><span class="preview-brand">عون <span>/</span> <span id="preview-role">مساحة المعلم</span></span><span class="preview-avatar" aria-hidden="true">ع</span></div><div class="preview-content"><div class="preview-welcome"><span id="preview-greeting">يوم تعلّم جديد.</span><small>معاينة توضيحية</small></div><h4 id="preview-title">من التحضير إلى الأثر</h4><div id="preview-rows"><div class="preview-row"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg><div><strong>خطة درس: الفكرة الرئيسة</strong><small>اللغة العربية · العاشر</small></div><span class="preview-status">مسودة</span></div><div class="preview-row"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg><div><strong>التسليمات بانتظارك</strong><small>قراءة الإجابات وكتابة الملاحظات</small></div><span class="preview-status">للمراجعة</span></div><div class="preview-row"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg><div><strong>سجل العلامات</strong><small>رصد واضح، ثم اعتماد ونشر</small></div><span class="preview-status">متابعة</span></div></div><div class="preview-bottom"><span class="status-dot"></span><span id="preview-footnote">السياق حاضر: الشعبة، المبحث، والفصل.</span></div></div></div>
+</div></div></section>
+
+<section class="journey section-space shell" id="journey" aria-labelledby="journey-title"><div class="section-heading"><h2 id="journey-title">التعلّم رحلة.<br>وعون تصل <em>خطواتها.</em></h2><p>القيمة في وصول العمل إلى الشخص التالي،<br>بسياقه وملاحظاته وتاريخه.</p></div><ol class="journey-track"><li><span class="step-no">01</span><h3>يبدأ بخطة</h3><p>يحضّر المعلم درسه، ويحتفظ بنسخه، ويرسله للمراجعة.</p><span class="step-owner">المعلم والمشرف</span></li><li><span class="step-no">02</span><h3>يتحوّل إلى مشاركة</h3><p>يجد الطالب واجبه، يكتب إجابته، ويسلّم عمله من مساحته.</p><span class="step-owner">المعلم والطالب</span></li><li><span class="step-no">03</span><h3>ينمو بالملاحظة</h3><p>يصحح المعلم ويضيف تغذية راجعة، وتراجع الإدارة النتائج قبل نشرها.</p><span class="step-owner">المعلم والإدارة</span></li><li><span class="step-no">04</span><h3>وتكتمل الصورة</h3><p>تظهر النتيجة المعتمدة للطالب وولي أمره، لتصبح المتابعة أكثر وضوحًا.</p><span class="step-owner">الطالب والأسرة</span></li></ol></section>
+
+<section class="identity-section section-space" id="identity" aria-labelledby="identity-title"><div class="shell identity-layout"><div class="identity-copy"><h2 id="identity-title">اسمها مدرستك.<br>وشخصيتها <em>كذلك.</em></h2><p>عون هي الأساس، وهوية مدرستك هي الواجهة. الاسم والشعار والألوان يرافقون المستخدم في تجربته اليومية.</p><p>جرّب لونًا لترى الفكرة. هذه معاينة بصرية، ولا تغيّر إعدادات أي مدرسة.</p><div class="theme-options" role="group" aria-label="جرّب لون هوية المدرسة"><button type="button" class="theme-option burgundy" data-theme="burgundy" aria-label="هوية عنّابية" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button type="button" class="theme-option forest" data-theme="forest" aria-label="هوية خضراء" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button type="button" class="theme-option blue" data-theme="blue" aria-label="هوية زرقاء" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg></button><span id="theme-label" aria-live="polite">عنّابي عون</span></div></div>
+<div class="school-stationery" data-theme="burgundy"><div class="stationery-sheet back-sheet" aria-hidden="true"></div><div class="stationery-sheet front-sheet"><div class="school-mark"><svg class="icon" aria-hidden="true"><use href="#icon-book"/></svg><div>مدرستك<small>مساحة التعلّم الخاصة بنا</small></div></div><div class="sheet-rule"></div><h3>أهلًا بيومٍ<br>مليء بالاحتمالات.</h3><p>خططي <span>·</span> واجباتي <span>·</span> إنجازاتي</p><div class="sheet-lines" aria-hidden="true"><span></span><span></span><span></span></div><div class="sheet-foot"><span>بهويتنا. ولأجل طلبتنا.</span><strong>بدعم عون</strong></div></div><p class="stationery-caption">هوية واحدة، عبر تجربة المدرسة.</p></div></div></section>
+
+<section class="ai-section section-space shell" aria-labelledby="ai-title"><div class="ai-paper"><div class="ai-paper-heading"><svg class="icon" aria-hidden="true"><use href="#icon-star"/></svg><strong>من المرجع إلى مسودة</strong><span>مثال توضيحي</span></div><div class="reference-fragment"><span>المرجع الذي تختاره</span><p>«يستخرج الطالب الفكرة الرئيسة، ويدعم فهمه بدليل من النص.»</p></div><div class="ai-paper-divider" aria-hidden="true"><svg viewBox="0 0 24 24" class="icon"><path d="M12 4v16m-6-6 6 6 6-6"/></svg></div><div class="draft-fragment"><strong>اقتراح قابل للتحرير</strong><p>قراءة فردية، مناقشة الدليل، ثم كتابة ملخص قصير.</p><span><svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg>تراجعه أنت قبل إدراجه في الخطة</span></div></div><div class="ai-copy"><h2 id="ai-title">مساعدة ذكية.<br><em>والقرار لك.</em></h2><p>الفكرة أن يختصر المساعد بداية العمل: تنظيم مرجع، واقتراح نشاط، وصياغة مسودة. يبقى المعلم صاحب الخبرة والمراجعة والقرار.</p><ul class="plain-list"><li>ينطلق من مرجع تسميه وتختاره.</li><li>يعرض مسودة يمكنك تعديلها.</li><li>تختار أنت ما يُدرج في خطتك.</li></ul><p class="honest-note">المساعد في النسخة الحالية محاكاة توضيحية. تشغيل الذكاء الاصطناعي الفعلي يأتي مع ربط الخدمة.</p></div></section>
+
+<section class="principles-section"><div class="shell principles-layout"><h2>ما نؤمن به،<br>يظهر في <em>التفاصيل.</em></h2><div class="principles-list"><article><h3>وضوح يخفّف العبء</h3><p>المهمة التالية ظاهرة، وحالة العمل مفهومة، والمعلومة في سياقها.</p></article><article><h3>المدرسة تحتفظ بشخصيتها</h3><p>هوية مستقلة ومساحات بحسب الأدوار وعلاقات المدرسة.</p></article><article><h3>التقنية في خدمة الإنسان</h3><p>أدوات تدعم جهد المعلم وتقرّب الأسرة من تجربة الطالب.</p></article></div></div></section>
+
+<section class="faq-section section-space shell" id="questions" aria-labelledby="questions-title"><h2 id="questions-title">صورة أوضح،<br><em>قبل أن نبدأ.</em></h2><div class="faq-list">
+<details><summary>ما هي عون، ولمن صُممت؟<span aria-hidden="true">+</span></summary><p>عون منظومة لإدارة التعلم والعمل المدرسي، موجّهة للمدارس الخاصة في الأردن. تجمع مساحات الإدارة والإشراف والتعليم والتواصل، مع تجربة لكل من المعلم والطالب وولي الأمر.</p></details>
+<details><summary>هل تظهر المنظومة باسم مدرستنا؟<span aria-hidden="true">+</span></summary><p>نعم، تدعم الواجهات تخصيص اسم المدرسة وشعارها وألوانها. تبقى عون اسم المنتج، وتظهر مدرستك بهويتها اليومية أمام مستخدميها.</p></details>
+<details><summary>ما الذي يمكن تجربته حاليًا؟<span aria-hidden="true">+</span></summary><p>النسخة الحالية فرونت إند بمحاكاة محلية: إعداد المدرسة، الخطط، الحضور، الواجبات والتسليم، النتائج، الرسائل، والاختبارات الصفية. البيانات التجريبية محفوظة في المتصفح؛ التزامن بين الأجهزة والإرسال الخارجي وتشغيل AI الفعلي يحتاج ربط الخادم.</p></details>
+<details><summary>هل عون نظام تابع لوزارة التربية والتعليم؟<span aria-hidden="true">+</span></summary><p>عون منتج مستقل للمدارس الخاصة ضمن مرجعيتها التعليمية. لا تعني الواجهات اعتمادًا وزاريًا أو اتصالًا بأنظمة الوزارة؛ السياسات والنماذج تعتمدها المدرسة والجهات المختصة.</p></details>
+<details><summary>كيف نبدأ تجربة تناسب مدرستنا؟<span aria-hidden="true">+</span></summary><p>حدّد حجم المدرسة وأهم مسار تريد تجربته من النموذج أدناه، ثم استكشف بوابة الدخول. في العرض المحلي يحفظ النموذج طلبًا تجريبيًا فقط، ولا يرسل رسالة لفريق عون أو يؤكد حجز موعد.</p></details>
+</div></section>
+
+<section class="contact-section" id="demo" aria-labelledby="contact-title"><div class="shell contact-layout"><div class="contact-copy"><h2 id="contact-title">لنمنح يومكم<br>المدرسي <em>مساحة أفضل.</em></h2><p>كل مدرسة لها أولوياتها.<br>أخبرنا من أين تريد أن تبدأ.</p><a class="text-link" href="index.html">لديك حساب؟ ادخل إلى عون<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a></div>
+<form id="demo-form" class="demo-form"><div class="form-heading"><h3>طلب عرض لمدرستك</h3><p id="demo-mode-note">النموذج تجريبي حاليًا؛ لا يُرسل طلبًا أو يؤكد حجزًا.</p></div><label>اسم المدرسة<input name="schoolName" autocomplete="organization" required maxlength="120" placeholder="اسم مدرستك"></label><div class="form-pair"><label>اسمك<input name="contactName" autocomplete="name" required maxlength="80" placeholder="الاسم الكامل"></label><label>البريد الإلكتروني<input name="email" type="email" autocomplete="email" required maxlength="160" placeholder="name@school.com" dir="ltr"></label></div><div class="form-pair"><label>عدد الطلبة<select name="studentCount" required><option value="">اختر النطاق</option><option>أقل من 200</option><option>200–500</option><option>501–1000</option><option>أكثر من 1000</option></select></label><label>أولويتك الأولى<select name="priority" required><option value="">اختر ما يهمّك</option><option>إدارة المدرسة والطلبة</option><option>الخطط والمتابعة التعليمية</option><option>الواجبات والنتائج</option><option>التواصل مع الأسرة</option></select></label></div><button class="button button-dark" type="submit">حفظ طلب تجريبي<svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button><p id="form-status" role="status" aria-live="polite"></p><small class="form-privacy">في هذه النسخة تُحفظ البيانات محليًا في متصفحك. يُفضّل استخدام بيانات تجريبية.</small></form>
+</div></section>
+</main>
+<footer class="site-footer shell"><a class="footer-word" href="#top" aria-label="عون — العودة إلى بداية الصفحة">عـون<span>نكون عونًا، ليكون التعليم أولًا.</span></a><nav aria-label="روابط التذييل"><a href="#story">من نحن</a><a href="#questions">الأسئلة الشائعة</a><a href="index.html">بوابة الدخول</a></nav><p>عون لإدارة المدارس · الأردن<br><span>© <span id="copyright-year">2026</span> عون</span></p></footer>
+</body></html>

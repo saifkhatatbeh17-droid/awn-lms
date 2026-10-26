@@ -1,8 +1,7 @@
 // Initializes the views present on the current role dashboard.
-if (!requireDashboardRole()) {
-  // Navigation already initiated by requireDashboardRole()
-} else {
   document.addEventListener("DOMContentLoaded", async () => {
+    await AwnSession.ready;
+    if (!requireDashboardRole()) return;
     if (typeof ensureFeedbackView === "function") ensureFeedbackView();
     if (typeof ensureAboutView === "function") ensureAboutView();
 
@@ -31,6 +30,7 @@ if (!requireDashboardRole()) {
       }
     }
 
+    AwnUI.enhance();
     if (typeof ensureAccessibleNames === "function") ensureAccessibleNames(document);
     if (typeof disableDemoOnlyControls === "function") disableDemoOnlyControls();
 
@@ -52,4 +52,3 @@ if (!requireDashboardRole()) {
     const hash = location.hash.slice(1);
     if (hash && typeof navigateTo === "function") navigateTo(hash);
   });
-}

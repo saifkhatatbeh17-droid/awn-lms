@@ -3,67 +3,18 @@
  * Standardized with async/await and unified response contract: { success: boolean, data: any, message: string }
  */
 (() => {
-  const SEED_URL = "assets/data/assignments.json";
   const STORAGE_KEY = "awn_assignments";
   const config = () => window.AWN_CONFIG || { apiBaseUrl: "", demoMode: false };
-  let seedRequest;
 
-  function response(success, data = null, message = "") {
-    return { success, data, message };
-  }
 
-  async function apiRequest(path, options = {}) {
-    const settings = config();
-    if (!settings.apiBaseUrl) throw new Error("ASSIGNMENTS_API_NOT_CONFIGURED");
-    const res = await fetch(`${settings.apiBaseUrl}${path}`, {
-      ...options,
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        ...(options.body ? { "Content-Type": "application/json" } : {}),
-        ...options.headers,
-      },
-    });
-    if (!res.ok) throw new Error(`ASSIGNMENTS_API_${res.status}`);
-    if (res.status === 204) return null;
-    return res.json();
-  }
+  const response = AwnUtils.response;
 
-  async function readDemoAssignments() {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored !== null) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) return parsed;
-      } catch {
-        // Fallback to re-seed
-      }
-    }
+  async function apiRequest(path, options = {}) { return AwnHttp.data(path, options); }
 
-    const seedUrl = window.AWN_CONFIG?.getDataUrl
-      ? window.AWN_CONFIG.getDataUrl("assignments.json")
-      : SEED_URL;
-
-    seedRequest ??= fetch(seedUrl, { headers: { Accept: "application/json" } }).then((res) => {
-      if (!res.ok) throw new Error("ASSIGNMENTS_SEED_UNAVAILABLE");
-      return res.json();
-    });
-
-    let seed;
-    try {
-      seed = await seedRequest;
-    } catch (error) {
-      seedRequest = undefined;
-      throw error;
-    }
-
-    const items = Array.isArray(seed) ? seed : (seed?.items || []);
-    persistDemo(items);
-    return items;
-  }
+  async function readDemoAssignments() { return AwnDemo.collection(STORAGE_KEY, "assignments.json"); }
 
   function persistDemo(items) {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    AwnDemo.write(STORAGE_KEY, items);
   }
 
   function createId() {
@@ -72,6 +23,7 @@
 
   async function list() {
     try {
+      AwnRoles.requirePermission("assignments:read");
       if (config().apiBaseUrl) {
         const payload = await apiRequest("/api/assignments");
         const items = Array.isArray(payload) ? payload : (payload?.items || payload?.data || []);
@@ -89,6 +41,7 @@
 
   async function create(input = {}) {
     try {
+      AwnRoles.requirePermission("assignments:create");
       const title = String(input?.title ?? "").trim();
       const subject = String(input?.subject ?? "").trim();
       const dueDate = String(input?.dueDate ?? "").trim();
@@ -130,8 +83,8 @@
       ];
       for (const [role, notificationTitle, message] of notifications) {
         try {
-          if (window.ApiService?.addNotification) {
-            window.ApiService.addNotification(role, notificationTitle, message);
+          if (window.SchoolService?.addNotification) {
+            window.SchoolService.addNotification(role, notificationTitle, message);
           }
         } catch (error) {
           console.warn("Assignment was saved, but a demo notification could not be stored.", error);
@@ -146,6 +99,7 @@
 
   async function setStatus(id, status) {
     try {
+      AwnRoles.requirePermission("assignments:complete");
       if (!new Set(["pending", "completed"]).has(status)) throw new Error("ASSIGNMENT_STATUS_INVALID");
       if (config().apiBaseUrl) {
         await apiRequest(`/api/assignments/${encodeURIComponent(id)}/status`, {

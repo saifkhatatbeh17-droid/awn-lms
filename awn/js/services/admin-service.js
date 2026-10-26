@@ -3,41 +3,18 @@
  * Standardized with async/await and unified response contract: { success: boolean, data: any, message: string }
  */
 
-const DEMO_USERS_URL = "assets/data/users.json";
 const STORAGE_KEY = "awn_admin_users";
 const MAIN_USERS_KEY = "awn_users";
 const AUDIT_STORAGE_KEY = "awn_admin_audit";
 const AUDIT_LIMIT = 300;
-const ROLE_LABELS = Object.freeze({
-  admin: "آدمن النظام",
-  principal: "مدير مدرسة",
-  supervisor: "مشرف تربوي",
-  teacher: "معلم",
-  student: "طالب",
-  parent: "ولي أمر",
-});
+const ROLE_LABELS = Object.freeze(Object.fromEntries(Object.entries(AwnRoles.definitions).map(([key, role]) => [key, role.label])));
 
 const config = () => window.AWN_CONFIG || { apiBaseUrl: "", demoMode: false };
-let seedRequest;
 
-function response(success, data = null, message = "") {
-  return { success, data, message };
-}
 
-async function request(path, options = {}) {
-  const res = await fetch(config().apiBaseUrl + path, {
-    ...options,
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
-      ...options.headers,
-    },
-  });
-  if (!res.ok) throw new Error("ADMIN_API_" + res.status);
-  if (res.status === 204) return null;
-  return res.json();
-}
+const response = AwnUtils.response;
+
+async function request(path, options = {}) { return AwnHttp.data(path, options); }
 
 function readLocalArray(key) {
   const saved = localStorage.getItem(key);
@@ -55,30 +32,14 @@ async function readDemoUsers() {
   const saved = readLocalArray(STORAGE_KEY);
   if (saved !== null) return saved;
 
-  const usersUrl = window.AWN_CONFIG?.getDataUrl
-    ? window.AWN_CONFIG.getDataUrl("users.json")
-    : DEMO_USERS_URL;
-
-  seedRequest ??= fetch(usersUrl, { headers: { Accept: "application/json" } }).then((res) => {
-    if (!res.ok) throw new Error("ADMIN_SEED_UNAVAILABLE");
-    return res.json();
-  });
-
-  let raw;
-  try {
-    raw = await seedRequest;
-  } catch (error) {
-    seedRequest = undefined;
-    throw error;
-  }
-  if (!Array.isArray(raw)) throw new Error("ADMIN_SEED_INVALID");
+  const raw = await AwnDemo.collection(MAIN_USERS_KEY, "users.json");
 
   const formatted = raw.map((item, index) => ({
     id: "demo-" + (index + 1),
     username: item.username,
     name: item.name,
     role: item.role,
-    organization: item.organization || "وزارة التربية والتعليم",
+    organization: item.organization || "مدرستك",
     isActive: true,
   }));
 
@@ -131,7 +92,7 @@ function readAuditEvents() {
 function recordDemoAudit(action, user, detail) {
   if (!config().demoMode || config().apiBaseUrl) return false;
   try {
-    const session = JSON.parse(localStorage.getItem("awn_session") || "{}");
+    const session = (AwnSession.current() || {});
     const entries = readAuditEvents();
     entries.unshift({
       id: "event-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7),
@@ -154,6 +115,7 @@ function recordDemoAudit(action, user, detail) {
 
 async function listUsers() {
   try {
+    AwnRoles.requirePermission("users:read");
     const settings = config();
     if (settings.apiBaseUrl) {
       const payload = await request("/api/admin/users");
@@ -202,6 +164,7 @@ function assertUniqueUsername(users, username, exceptId) {
 
 async function createUser(input) {
   try {
+    AwnRoles.requirePermission("users:write");
     const user = normalizeUser(input);
     if (config().apiBaseUrl) {
       const payload = await request("/api/admin/users", { method: "POST", body: JSON.stringify(user) });
@@ -223,6 +186,7 @@ async function createUser(input) {
 
 async function updateUser(id, input) {
   try {
+    AwnRoles.requirePermission("users:write");
     const user = normalizeUser(input);
     if (config().apiBaseUrl) {
       const payload = await request("/api/admin/users/" + encodeURIComponent(id), {
@@ -249,6 +213,7 @@ async function updateUser(id, input) {
 
 async function setUserStatus(id, isActive) {
   try {
+    AwnRoles.requirePermission("users:write");
     const nextIsActive = Boolean(isActive);
     if (config().apiBaseUrl) {
       await request("/api/admin/users/" + encodeURIComponent(id) + "/status", {
@@ -272,7 +237,12 @@ async function setUserStatus(id, isActive) {
 }
 
 async function listAuditEvents() {
-  if (!config().demoMode || config().apiBaseUrl) return response(true, [], "OK");
+  if (!AwnRoles.can("audit:read")) return response(false, [], "FORBIDDEN");
+  if (config().apiBaseUrl) {
+    try { return response(true, await request("/api/admin/audit"), "تم جلب سجل النشاط"); }
+    catch (error) { return response(false, [], error.message); }
+  }
+  if (!config().demoMode) return response(false, [], "ADMIN_API_NOT_CONFIGURED");
   const events = readAuditEvents().sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
   return response(true, events, "تم جلب سجل النشاط");
 }
